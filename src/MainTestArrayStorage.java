@@ -5,6 +5,7 @@ public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
+        ARRAY_STORAGE.printAnyElement();
         Resume r1 = new Resume();
         r1.uuid = "uuid1";
         Resume r2 = new Resume();
@@ -16,14 +17,19 @@ public class MainTestArrayStorage {
         ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.save(r3);
 
+        printAll();
+
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.uuid));
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
+
         printAll();
+        System.out.print("Delete r1");
         ARRAY_STORAGE.delete(r1.uuid);
         printAll();
+        System.out.print("Clear All");
         ARRAY_STORAGE.clear();
         printAll();
 
