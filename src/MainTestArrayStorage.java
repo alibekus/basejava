@@ -29,6 +29,9 @@ class MainTestArrayStorage {
         System.out.print("Delete r1");
         ARRAY_STORAGE.delete(r1.uuid);
         printAll();
+        System.out.println("Update r3");
+        ARRAY_STORAGE.update(r3);
+        printAll();
         System.out.print("Clear All");
         ARRAY_STORAGE.clear();
         printAll();

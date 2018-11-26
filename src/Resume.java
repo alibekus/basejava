@@ -18,4 +18,8 @@ class Resume {
     public String toString() {
         return uuid;
     }
+
+    public boolean equals(Resume resume) {
+        return this.uuid == resume.getUuid();
+    }
 }
