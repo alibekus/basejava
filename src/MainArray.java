@@ -48,7 +48,7 @@ class MainArray {
                     break;
                 case "get":
                     try {
-                        System.out.println(ARRAY_STORAGE.get(uuid));
+                        ARRAY_STORAGE.get(uuid);
                     } catch (Exception e) {
                         e.printStackTrace();
                         System.out.println("Попытка вернуть null. Объекта Resume с таким uuid нет.");

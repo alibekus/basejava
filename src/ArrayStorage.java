@@ -18,91 +18,64 @@ class ArrayStorage {
         for (int i = 0; i < resumeCount; i++) {
             storage[i] = null;
         }
+        resumeCount = 0;
     }
-    // проверка существования объекта Resume на совпадение по uuid
-    boolean exist(Resume resume) {
+
+    private int resumeIndex(String uuid) {
         for (int i = 0; i < resumeCount; i++) {
-            if (storage[i].equals(resume))
-                return true;
+            if (storage[i].getUuid().equals(uuid))
+                return i;
         }
-        return false;
+        return -1;
     }
 
     void save(Resume r) {
-        if (!exist(r)) {
-            switch (resumeCount) {
-                case 0:
-                    storage[0] = r;
-                    break;
-                case 1:
-                    storage[1] = r;
-                    break;
-                default:
-                    if (resumeCount < 10000)
-                        storage[resumeCount] = r;
-            }
-            resumeCount++;
-        } else System.out.println("Такой resume уже есть!");
+        int rIndex = resumeIndex(r.getUuid());
+        if (rIndex != -1)
+            System.out.println("The resume with " + r.getUuid() + "already exist");
+        else if (resumeCount < storage.length) {
+            storage[resumeCount++] = r;
+        } else System.out.println("The storage is full!");
     }
 
     void update(Resume resume) {
-        if (exist(resume)) {
-            for (int i = 0; i < resumeCount; i++)
-                if (storage[i].equals(resume)) {
-                    System.out.print("Введите новое значение uuid: ");
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                    try {
-                        String newUuid = reader.readLine();
-                        Resume r = new Resume();
-                        r.setUuid(newUuid);
-                        storage[i] = r;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        System.out.println(e.getMessage() + "\n Неверно введенное значние!");
-                    }
-
-                }
-        } else System.out.println("Такого resume нет");
+        int rIndex = resumeIndex(resume.getUuid());
+        if (rIndex == -1) {
+            System.out.println("There is no to update: no such resume");
+        } else {
+            System.out.print("Enter new uuid: ");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            try {
+                String newUuid = reader.readLine();
+                Resume r = new Resume();
+                r.setUuid(newUuid);
+                storage[rIndex] = r;
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < resumeCount; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return storage[i];
-            }
+        int rIndex = resumeIndex(uuid);
+        if (rIndex == -1) {
+            System.out.println("There is no resume with uuid: " + uuid);
+        } else {
+            return storage[rIndex];
         }
-        Resume emptyResume = new Resume();
-        emptyResume.setUuid("No such resume!");
-        return emptyResume;
+        return null;
     }
 
     void delete(String uuid) {
-        Resume r = new Resume();
-        r.setUuid(uuid);
-        if (exist(r)) {
-            int deletedIndex = 0;
-            switch (resumeCount) {
-                case 1:
-                    storage[0] = null;
-                    resumeCount--;
-                    break;
-                default:
-                    for (int i = 0; i < resumeCount; i++) {
-                        if (storage[i].equals(r)) {
-                            storage[i] = null;
-                            deletedIndex = i;
-                            break;
-                        }
-                    }
-                    if (deletedIndex < resumeCount - 1) {
-                        for (int j = 0; j < resumeCount - deletedIndex - 1; j++) {
-                            storage[deletedIndex + j] = storage[deletedIndex + 1 + j];
-                        }
-                        storage[resumeCount - 1] = null;
-                    }
-                    resumeCount--;
-            }
-        } else System.out.println("Такого resume нет!");
+        int rIndex = resumeIndex(uuid);
+        if (rIndex == -1) {
+            System.out.println("Nothing to delete!");
+        } else {
+            storage[rIndex] = storage[--resumeCount];
+            storage[resumeCount] = null;
+            System.out.println("The resume with uuid " + uuid + " was deleted!");
+        }
     }
 
     /**
@@ -117,6 +90,6 @@ class ArrayStorage {
     }
 
     int size() {
-        return storage.length;
+        return resumeCount;
     }
 }
