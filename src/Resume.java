@@ -1,7 +1,7 @@
 /**
  * Initial resume class
  */
-public class Resume {
+class Resume {
 
     // Unique identifier
     String uuid;

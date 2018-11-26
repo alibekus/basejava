@@ -1,11 +1,10 @@
-import java.util.Arrays;
 
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
-    static int resumeCount = 0;
-    Resume[] storage = new Resume[10000];
+class ArrayStorage {
+    private static int resumeCount = 0;
+    private final Resume[] storage = new Resume[10000];
     // Для проверки содержимого произвольного элемента только что созданного массива
     void printAnyElement() {
         int randomIndex = (int) (Math.random() * 10000);
@@ -61,9 +60,9 @@ public class ArrayStorage {
                         break;
                     }
                 }
-                if (deletedIndex < resumeCount-1) {
-                    for (int j = 0; j < resumeCount-deletedIndex-1; j++) {
-                        storage[deletedIndex+j] = storage[deletedIndex+1+j];
+                if (deletedIndex < resumeCount - 1) {
+                    for (int j = 0; j < resumeCount - deletedIndex - 1; j++) {
+                        storage[deletedIndex + j] = storage[deletedIndex + 1 + j];
                     }
                     storage[resumeCount-1] = null;
                 }
