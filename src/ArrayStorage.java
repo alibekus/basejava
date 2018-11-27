@@ -5,19 +5,19 @@ import java.io.InputStreamReader;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
+public class ArrayStorage implements Storage{
     private int resumeCount = 0;
     private final int STORAGE_SIZE = 10_000;
     private final Resume[] storage = new Resume[STORAGE_SIZE];
 
-    void clear() {
+    public void clear() {
         for (int i = 0; i < resumeCount; i++) {
             storage[i] = null;
         }
         resumeCount = 0;
     }
 
-    void save(Resume r) {
+    public void save(Resume r) {
         int rIndex = getIndex(r.getUuid());
         if (rIndex != -1) {
             System.out.println("The resume with " + r.getUuid() + "already exist");
@@ -28,7 +28,7 @@ public class ArrayStorage {
         }
     }
 
-    void update(Resume resume) {
+    public void update(Resume resume) {
         int rIndex = getIndex(resume.getUuid());
         if (rIndex == -1) {
             System.out.println("There is no to update: no such resume");
@@ -46,7 +46,7 @@ public class ArrayStorage {
         }
     }
 
-    Resume get(String uuid) {
+    public Resume get(String uuid) {
         int rIndex = getIndex(uuid);
         if (rIndex == -1) {
             System.out.println("There is no resume with uuid: " + uuid);
@@ -56,7 +56,7 @@ public class ArrayStorage {
         }
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         int rIndex = getIndex(uuid);
         if (rIndex != -1) {
             storage[rIndex] = storage[--resumeCount];
@@ -67,13 +67,13 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
+    public Resume[] getAll() {
         Resume[] allResumes = new Resume[resumeCount];
         System.arraycopy(storage, 0, allResumes, 0, resumeCount);
         return allResumes;
     }
 
-    int size() {
+    public int size() {
         return resumeCount;
     }
 
