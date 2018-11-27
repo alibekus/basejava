@@ -5,14 +5,10 @@ import java.io.InputStreamReader;
 /**
  * Array based storage for Resumes
  */
-class ArrayStorage {
-    private static int resumeCount = 0;
-    private final Resume[] storage = new Resume[10000];
-    // Для проверки содержимого произвольного элемента только что созданного массива
-    void printAnyElement() {
-        int randomIndex = (int) (Math.random() * 10000);
-        System.out.println(randomIndex + " element in ArrayStorage: " + storage[randomIndex]);
-    }
+public class ArrayStorage {
+    private int resumeCount = 0;
+    private final int STORAGE_SIZE = 10_000;
+    private final Resume[] storage = new Resume[STORAGE_SIZE];
 
     void clear() {
         for (int i = 0; i < resumeCount; i++) {
@@ -21,25 +17,19 @@ class ArrayStorage {
         resumeCount = 0;
     }
 
-    private int resumeIndex(String uuid) {
-        for (int i = 0; i < resumeCount; i++) {
-            if (storage[i].getUuid().equals(uuid))
-                return i;
-        }
-        return -1;
-    }
-
     void save(Resume r) {
-        int rIndex = resumeIndex(r.getUuid());
-        if (rIndex != -1)
+        int rIndex = getIndex(r.getUuid());
+        if (rIndex != -1) {
             System.out.println("The resume with " + r.getUuid() + "already exist");
-        else if (resumeCount < storage.length) {
-            storage[resumeCount++] = r;
-        } else System.out.println("The storage is full!");
+        } else {
+            if (resumeCount < storage.length) {
+                storage[resumeCount++] = r;
+            } else System.out.println("The storage is full!");
+        }
     }
 
     void update(Resume resume) {
-        int rIndex = resumeIndex(resume.getUuid());
+        int rIndex = getIndex(resume.getUuid());
         if (rIndex == -1) {
             System.out.println("There is no to update: no such resume");
         } else {
@@ -47,9 +37,8 @@ class ArrayStorage {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             try {
                 String newUuid = reader.readLine();
-                Resume r = new Resume();
-                r.setUuid(newUuid);
-                storage[rIndex] = r;
+                resume.setUuid(newUuid);
+                storage[rIndex] = resume;
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println(e.getMessage());
@@ -58,23 +47,20 @@ class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        int rIndex = resumeIndex(uuid);
+        int rIndex = getIndex(uuid);
         if (rIndex == -1) {
             System.out.println("There is no resume with uuid: " + uuid);
+            return null;
         } else {
             return storage[rIndex];
         }
-        return null;
     }
 
     void delete(String uuid) {
-        int rIndex = resumeIndex(uuid);
-        if (rIndex == -1) {
-            System.out.println("Nothing to delete!");
-        } else {
+        int rIndex = getIndex(uuid);
+        if (rIndex != -1) {
             storage[rIndex] = storage[--resumeCount];
             storage[resumeCount] = null;
-            System.out.println("The resume with uuid " + uuid + " was deleted!");
         }
     }
 
@@ -83,13 +69,20 @@ class ArrayStorage {
      */
     Resume[] getAll() {
         Resume[] allResumes = new Resume[resumeCount];
-        for (int j = 0; j < resumeCount; j++) {
-            allResumes[j] = storage[j];
-        }
+        System.arraycopy(storage, 0, allResumes, 0, resumeCount);
         return allResumes;
     }
 
     int size() {
         return resumeCount;
+    }
+
+
+    private int getIndex(String uuid) {
+        for (int i = 0; i < resumeCount; i++) {
+            if (storage[i].getUuid().equals(uuid))
+                return i;
+        }
+        return -1;
     }
 }

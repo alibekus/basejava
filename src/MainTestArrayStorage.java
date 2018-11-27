@@ -1,11 +1,10 @@
 /**
  * Test for your ArrayStorage implementation
  */
-class MainTestArrayStorage {
+public class MainTestArrayStorage {
     private static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
-        ARRAY_STORAGE.printAnyElement();
         Resume r1 = new Resume();
         r1.setUuid("uuid1");
         Resume r2 = new Resume();
@@ -19,7 +18,7 @@ class MainTestArrayStorage {
 
         printAll();
 
-        System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.uuid));
+        System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));

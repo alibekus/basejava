@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
  * Interactive test for ArrayStorage implementation
  * (just run, no need to understand)
  */
-class MainArray {
+public class MainArray {
     private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) throws IOException {
@@ -32,13 +32,13 @@ class MainArray {
                     break;
                 case "save":
                     r = new Resume();
-                    r.uuid = uuid;
+                    r.setUuid(uuid);
                     ARRAY_STORAGE.save(r);
                     printAll();
                     break;
                 case "update":
                     r = new Resume();
-                    r.uuid = uuid;
+                    r.setUuid(uuid);
                     ARRAY_STORAGE.update(r);
                     printAll();
                     break;

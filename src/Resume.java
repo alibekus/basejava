@@ -1,10 +1,12 @@
+import java.util.Objects;
+
 /**
  * Initial resume class
  */
-class Resume {
+public class Resume {
 
     // Unique identifier
-    String uuid;
+    private String uuid;
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
@@ -19,7 +21,16 @@ class Resume {
         return uuid;
     }
 
-    public boolean equals(Resume resume) {
-        return this.uuid == resume.getUuid();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Resume resume = (Resume) o;
+        return Objects.equals(uuid, resume.uuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid);
     }
 }
