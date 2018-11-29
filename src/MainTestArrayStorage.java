@@ -1,8 +1,12 @@
+import model.Resume;
+import storage.ArrayStorage;
+import storage.Storage;
+
 /**
- * Test for your ArrayStorage implementation
+ * Test for your storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    private static final Storage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume();
@@ -31,7 +35,7 @@ public class MainTestArrayStorage {
         System.out.println("Update r3");
         ARRAY_STORAGE.update(r3);
         printAll();
-        System.out.print("Clear All");
+        System.out.println("Clear All");
         ARRAY_STORAGE.clear();
         printAll();
 
