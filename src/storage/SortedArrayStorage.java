@@ -44,10 +44,4 @@ public class SortedArrayStorage extends AbstractArrayStorage {
             System.out.println("There is no resume with uuid: " + uuid);
         }
     }
-
-    private void sortStorage(Resume[] storage) {
-        Resume[] storageNoNull = Arrays.copyOfRange(storage, 0, size);
-        Arrays.sort(storageNoNull);
-        System.arraycopy(storageNoNull, 0, storage, 0, storageNoNull.length);
-    }
 }
