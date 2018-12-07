@@ -43,6 +43,7 @@ public abstract class AbstractArrayStorage implements Storage {
         int rIndex = getIndex(uuid);
         if (rIndex >= 0) {
             deleteResume(rIndex);
+            storage[--size] = null;
         } else {
             System.out.println("There is no resume with uuid: " + uuid);
         }

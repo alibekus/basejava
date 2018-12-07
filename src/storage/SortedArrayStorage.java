@@ -14,7 +14,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void writeResume(Resume resume, int rIndex) {
-        rIndex = Math.abs(rIndex) - 1;
+        rIndex = -rIndex - 1;
         System.arraycopy(storage, rIndex, storage, rIndex + 1, size - rIndex);
         storage[rIndex] = resume;
         size++;
@@ -22,12 +22,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void deleteResume(int rIndex) {
-        if (rIndex == size - 1) {
-            storage[rIndex] = null;
-            size--;
-        } else {
-            System.arraycopy(storage, rIndex + 1, storage, rIndex, size - rIndex - 1);
-            storage[--size] = null;
+        int length = size - rIndex - 1;
+        if (length > 0) {
+            System.arraycopy(storage, rIndex + 1, storage, rIndex, length);
         }
     }
 }
