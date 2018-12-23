@@ -23,7 +23,6 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void deleteResume(int index) {
-        System.out.println("deleteResume at index " + index);
         resumes[index] = resumes[size - 1];
     }
 }
