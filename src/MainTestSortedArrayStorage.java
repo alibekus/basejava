@@ -3,7 +3,7 @@ import storage.SortedArrayStorage;
 import storage.Storage;
 
 /**
- * Test for your storage.ArrayStorage implementation
+ * Test for your resumes.ArrayStorage implementation
  */
 public class MainTestSortedArrayStorage {
     private static final Storage SORTED_ARRAY_STORAGE = new SortedArrayStorage();

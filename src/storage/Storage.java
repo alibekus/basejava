@@ -3,7 +3,7 @@ package storage;
 import model.Resume;
 
 /**
- * Array based storage for Resumes
+ * Array based resumes for Resumes
  */
 public interface Storage {
     void clear();

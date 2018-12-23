@@ -2,16 +2,14 @@ package storage;
 
 import model.Resume;
 
-import java.util.Arrays;
-
 /**
- * Array based storage for Resumes
+ * Array based resumes for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
     protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
+            if (resumes[i].getUuid().equals(uuid)) {
                 return i;
             }
         }
@@ -20,11 +18,12 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void writeResume(Resume resume, int index) {
-        storage[size++] = resume;
+        resumes[size++] = resume;
     }
 
     @Override
     protected void deleteResume(int index) {
-        storage[index] = storage[size-1];
+        System.out.println("deleteResume at index " + index);
+        resumes[index] = resumes[size - 1];
     }
 }
