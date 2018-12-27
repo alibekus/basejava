@@ -2,10 +2,16 @@ package storage;
 
 import model.Resume;
 
+import java.util.Collection;
+
 /**
  * Array based resumes for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage {
+
+    public ArrayStorage() {
+        super();
+    }
 
     protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
@@ -16,12 +22,10 @@ public class ArrayStorage extends AbstractArrayStorage {
         return -1;
     }
 
-    @Override
-    protected void writeResume(Resume resume, int index) {
+    protected void writeResume(int index, Resume resume) {
         resumes[size++] = resume;
     }
 
-    @Override
     protected void deleteResume(int index) {
         resumes[index] = resumes[size - 1];
     }
