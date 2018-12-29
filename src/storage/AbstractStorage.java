@@ -4,6 +4,7 @@ import exception.ExistStorageException;
 import exception.NotExistStorageException;
 import model.Resume;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -15,43 +16,68 @@ public abstract class AbstractStorage implements Storage {
         this.resumeCollection = resumeCollection;
     }
 
-    public AbstractStorage() {}
+    public AbstractStorage() {
+    }
 
+    @Override
     public void clear() {
         resumeCollection.clear();
     }
 
+    @Override
     public void save(Resume r) {
-        if (resumeCollection.contains(r)) {
-            throw new ExistStorageException(r.getUuid());
+        int index = getIndex(r.getUuid());
+        if (index < 0) {
+            writeResume(index, r);
         } else {
-            resumeCollection.add(r);
+            throw new ExistStorageException(r.getUuid());
         }
     }
 
+    @Override
+    public void update(Resume resume) {
+        int index = getIndex(resume.getUuid());
+        if (index >= 0) {
+            writeResume(index, resume);
+        } else {
+            throw new NotExistStorageException(resume.getUuid());
+        }
+    }
+
+    @Override
     public Resume get(String uuid) {
         Resume resume = new Resume(uuid);
-        if (resumeCollection.contains(resume)) {
+        int index = getIndex(uuid);
+        if (index >= 0) {
             return resume;
         } else {
             throw new NotExistStorageException(uuid);
         }
     }
 
+    @Override
     public void delete(String uuid) {
-        Resume resume = new Resume(uuid);
-        if (resumeCollection.contains(resume)) {
-            resumeCollection.remove(resume);
+        int index = getIndex(uuid);
+        if (index >= 0) {
+            deleteResume(index);
         } else {
             throw new NotExistStorageException(uuid);
         }
     }
 
+    @Override
     public Resume[] getAll() {
         return (Resume[]) resumeCollection.toArray(new Resume[resumeCollection.size()]);
     }
 
+    @Override
     public int size() {
         return resumeCollection.size();
     }
+
+    protected abstract int getIndex(String uuid);
+
+    protected abstract void writeResume(int index, Resume resume);
+
+    protected abstract void deleteResume(int index);
 }

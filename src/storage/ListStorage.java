@@ -1,6 +1,5 @@
 package storage;
 
-import exception.NotExistStorageException;
 import model.Resume;
 
 import java.util.Arrays;
@@ -15,12 +14,24 @@ public class ListStorage extends AbstractStorage {
         this.resumeList = resumeList;
     }
 
-    public void update(Resume resume) {
-        if (resumeList.contains(resume)) {
-            int index = Arrays.binarySearch(resumeList.toArray(), 0, resumeList.size(), resume);
-            resumeList.set(index,resume);
+
+    @Override
+    protected int getIndex(String uuid) {
+        Resume resume = new Resume(uuid);
+        return Arrays.binarySearch(resumeList.toArray(), 0, resumeList.size(), resume);
+    }
+
+    @Override
+    protected void writeResume(int index, Resume resume) {
+        if (index < 0) {
+            resumeList.add(resume);
         } else {
-            throw new NotExistStorageException(resume.getUuid());
+            resumeList.add(index, resume);
         }
+    }
+
+    @Override
+    protected void deleteResume(int index) {
+        resumeList.remove(index);
     }
 }
