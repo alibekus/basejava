@@ -2,36 +2,55 @@ package storage;
 
 import model.Resume;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
 
-    private List<Resume> resumeList;
-
-    public ListStorage(List resumeList) {
-        super(resumeList);
-        this.resumeList = resumeList;
-    }
-
+    private List<Resume> resumeList = new ArrayList<>();
 
     @Override
-    protected int getIndex(String uuid) {
-        Resume resume = new Resume(uuid);
-        return Arrays.binarySearch(resumeList.toArray(), 0, resumeList.size(), resume);
+    protected void doSave(Resume resume) {
+        resumeList.add(resume);
     }
 
     @Override
-    protected void writeResume(int index, Resume resume) {
-        if (index < 0) {
-            resumeList.add(resume);
+    protected void doDelete(String uuid) {
+        resumeList.remove(doGet(uuid));
+    }
+
+    @Override
+    protected String getSearchKey(String uuid) {
+        Resume getResume = new Resume(uuid);
+        if (resumeList.contains(getResume)) {
+            return uuid;
         } else {
-            resumeList.add(index, resume);
+            return "";
         }
     }
 
     @Override
-    protected void deleteResume(int index) {
-        resumeList.remove(index);
+    protected Resume doGet(String uuid) {
+        for (Resume resume : resumeList) {
+            if (resume.getUuid().equals(uuid)) {
+                return resume;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void clear() {
+        resumeList.clear();
+    }
+
+    @Override
+    public Resume[] getAll() {
+        return resumeList.toArray(new Resume[resumeList.size()]);
+    }
+
+    @Override
+    public int size() {
+        return resumeList.size();
     }
 }

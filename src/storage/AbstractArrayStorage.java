@@ -37,14 +37,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void save(Resume r) {
-        int rIndex = getIndex(r.getUuid());
+    public void save(Resume resume) {
+        int rIndex = getIndex(resume.getUuid());
         if (rIndex >= 0) {
-            throw new ExistStorageException(r.getUuid());
+            throw new ExistStorageException(resume.getUuid());
         } else if (size < resumes.length) {
-            writeResume(rIndex, r);
+            writeResume(rIndex, resume);
         } else {
-            String uuid = r.getUuid();
+            String uuid = resume.getUuid();
             throw new StorageException("Resume " + uuid + " can't be written. The storage is full!", uuid);
         }
     }
@@ -70,6 +70,26 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         }
     }
 
+    @Override
+    protected void doSave(Resume resume) {
+
+    }
+
+    @Override
+    protected void doDelete(String uuid) {
+
+    }
+
+    @Override
+    protected String getSearchKey(String uuid) {
+        return null;
+    }
+
+    @Override
+    protected Resume doGet(String uuid) {
+        return null;
+    }
+
     /**
      * @return array, contains only Resumes in resumes (without null)
      */
@@ -77,5 +97,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public Resume[] getAll() {
         return Arrays.copyOfRange(resumes, 0, size);
     }
+
+    protected abstract int getIndex(String uuid);
+
+    protected abstract void writeResume(int index, Resume resume);
+
+    protected abstract void deleteResume(int index);
 
 }

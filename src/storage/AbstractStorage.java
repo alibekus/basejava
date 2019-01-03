@@ -10,35 +10,22 @@ import java.util.Iterator;
 
 public abstract class AbstractStorage implements Storage {
 
-    private Collection resumeCollection;
-
-    public AbstractStorage(Collection resumeCollection) {
-        this.resumeCollection = resumeCollection;
-    }
-
     public AbstractStorage() {
     }
 
     @Override
-    public void clear() {
-        resumeCollection.clear();
-    }
-
-    @Override
-    public void save(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index < 0) {
-            writeResume(index, r);
+    public void save(Resume resume) {
+        if (!resume.getUuid().equals(getSearchKey(resume.getUuid()))) {
+            doSave(resume);
         } else {
-            throw new ExistStorageException(r.getUuid());
+            throw new ExistStorageException(resume.getUuid());
         }
     }
 
     @Override
     public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index >= 0) {
-            writeResume(index, resume);
+        if (resume.getUuid().equals(getSearchKey(resume.getUuid()))) {
+            doSave(resume);
         } else {
             throw new NotExistStorageException(resume.getUuid());
         }
@@ -46,38 +33,27 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        Resume resume = new Resume(uuid);
-        int index = getIndex(uuid);
-        if (index >= 0) {
-            return resume;
-        } else {
+        String searchKey = getSearchKey(uuid);
+        if (!searchKey.equals(uuid)) {
             throw new NotExistStorageException(uuid);
         }
+        return doGet(uuid);
     }
 
     @Override
     public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index >= 0) {
-            deleteResume(index);
+        if (uuid.equals(getSearchKey(uuid))) {
+            doDelete(uuid);
         } else {
             throw new NotExistStorageException(uuid);
         }
     }
 
-    @Override
-    public Resume[] getAll() {
-        return (Resume[]) resumeCollection.toArray(new Resume[resumeCollection.size()]);
-    }
+    protected abstract void doSave(Resume resume);
 
-    @Override
-    public int size() {
-        return resumeCollection.size();
-    }
+    protected abstract void doDelete(String uuid);
 
-    protected abstract int getIndex(String uuid);
+    protected abstract String getSearchKey(String uuid);
 
-    protected abstract void writeResume(int index, Resume resume);
-
-    protected abstract void deleteResume(int index);
+    protected abstract Resume doGet(String uuid);
 }
