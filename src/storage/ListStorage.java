@@ -10,33 +10,39 @@ public class ListStorage extends AbstractStorage {
     private List<Resume> resumeList = new ArrayList<>();
 
     @Override
-    protected void doSave(Resume resume) {
-        resumeList.add(resume);
-    }
-
-    @Override
-    protected void doDelete(String uuid) {
-        resumeList.remove(doGet(uuid));
-    }
-
-    @Override
-    protected String getSearchKey(String uuid) {
-        Resume getResume = new Resume(uuid);
-        if (resumeList.contains(getResume)) {
-            return uuid;
+    protected Object getSearchKey(String uuid) {
+        int index = resumeList.indexOf(new Resume(uuid));
+        if (index > 0) {
+            return resumeList.get(index);
         } else {
-            return "";
+            return null;
         }
     }
 
     @Override
-    protected Resume doGet(String uuid) {
-        for (Resume resume : resumeList) {
-            if (resume.getUuid().equals(uuid)) {
-                return resume;
-            }
-        }
-        return null;
+    protected boolean isExist(Object searchKey) {
+        return resumeList.contains(searchKey);
+    }
+
+    @Override
+    protected Resume doGet(Object searchKey) {
+        return resumeList.get(resumeList.indexOf(searchKey));
+    }
+
+    @Override
+    protected void doSave(Object searchKey) {
+        resumeList.add((Resume) searchKey);
+    }
+
+    @Override
+    protected void doUpdate(Object searchKey) {
+        resumeList.remove(resumeList.indexOf(searchKey));
+        resumeList.add((Resume) searchKey);
+    }
+
+    @Override
+    protected void doDelete(Object searchKey) {
+        resumeList.remove(searchKey);
     }
 
     @Override

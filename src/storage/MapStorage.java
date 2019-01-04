@@ -9,6 +9,42 @@ public class MapStorage extends AbstractStorage {
     private Map<String, Resume> resumeMap = new TreeMap<>();
 
     @Override
+    protected Object getSearchKey(String uuid) {
+        if (resumeMap.containsKey(uuid)) {
+            return uuid;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return resumeMap.containsValue(resumeMap.get(searchKey));
+    }
+
+    @Override
+    protected Resume doGet(Object searchKey) {
+        return resumeMap.get(searchKey);
+    }
+
+    @Override
+    protected void doSave(Object searchKey) {
+        Resume resume = (Resume) searchKey;
+        resumeMap.put(resume.getUuid(), resume);
+    }
+
+    @Override
+    protected void doUpdate(Object searchKey) {
+        Resume resume = (Resume) searchKey;
+        resumeMap.put(resume.getUuid(), resume);
+    }
+
+    @Override
+    protected void doDelete(Object searchKey) {
+        resumeMap.remove(searchKey);
+    }
+
+    @Override
     public void clear() {
         resumeMap.clear();
     }
@@ -21,35 +57,5 @@ public class MapStorage extends AbstractStorage {
     @Override
     public int size() {
         return resumeMap.size();
-    }
-
-    @Override
-    protected void doSave(Resume resume) {
-        resumeMap.put(resume.getUuid(), resume);
-    }
-
-    @Override
-    protected void doDelete(String uuid) {
-        resumeMap.remove(uuid);
-    }
-
-    @Override
-    protected String getSearchKey(String uuid) {
-        if (resumeMap.containsKey(uuid)) {
-            return uuid;
-        } else {
-            return "";
-        }
-    }
-
-    @Override
-    protected Resume doGet(String uuid) {
-        String[] keys = resumeMap.keySet().toArray(new String[resumeMap.size()]);
-        for (String key : keys) {
-            if (key.equals(uuid)) {
-                return resumeMap.get(key);
-            }
-        }
-        return null;
     }
 }

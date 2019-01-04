@@ -71,13 +71,15 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doSave(Resume resume) {
-
+    protected void doSave(Object searchKey) {
     }
 
     @Override
-    protected void doDelete(String uuid) {
+    protected void doUpdate(Object searchKey) {
+    }
 
+    @Override
+    protected void doDelete(Object searchKey) {
     }
 
     @Override
@@ -86,8 +88,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(String uuid) {
+    protected Resume doGet(Object searchKey) {
         return null;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return false;
     }
 
     /**

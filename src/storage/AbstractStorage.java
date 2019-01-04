@@ -10,12 +10,19 @@ import java.util.Iterator;
 
 public abstract class AbstractStorage implements Storage {
 
-    public AbstractStorage() {
+    @Override
+    public Resume get(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (searchKey == null) {
+            throw new NotExistStorageException(uuid);
+        }
+        return doGet(searchKey);
     }
 
     @Override
     public void save(Resume resume) {
-        if (!resume.getUuid().equals(getSearchKey(resume.getUuid()))) {
+        Object searchKey = getSearchKey(resume.getUuid());
+        if (searchKey == null) {
             doSave(resume);
         } else {
             throw new ExistStorageException(resume.getUuid());
@@ -24,36 +31,33 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        if (resume.getUuid().equals(getSearchKey(resume.getUuid()))) {
-            doSave(resume);
+        Object searchKey = getSearchKey(resume.getUuid());
+        if (searchKey != null & isExist(searchKey)) {
+            doUpdate(resume);
         } else {
             throw new NotExistStorageException(resume.getUuid());
         }
     }
 
     @Override
-    public Resume get(String uuid) {
-        String searchKey = getSearchKey(uuid);
-        if (!searchKey.equals(uuid)) {
-            throw new NotExistStorageException(uuid);
-        }
-        return doGet(uuid);
-    }
-
-    @Override
     public void delete(String uuid) {
-        if (uuid.equals(getSearchKey(uuid))) {
-            doDelete(uuid);
+        Object searchKey = getSearchKey(uuid);
+        if (searchKey != null & isExist(searchKey)) {
+            doDelete(searchKey);
         } else {
             throw new NotExistStorageException(uuid);
         }
     }
 
-    protected abstract void doSave(Resume resume);
+    protected abstract void doSave(Object searchKey);
 
-    protected abstract void doDelete(String uuid);
+    protected abstract void doUpdate(Object searchKey);
 
-    protected abstract String getSearchKey(String uuid);
+    protected abstract void doDelete(Object searchKey);
 
-    protected abstract Resume doGet(String uuid);
+    protected abstract Object getSearchKey(String uuid);
+
+    protected abstract Resume doGet(Object searchKey);
+
+    protected abstract boolean isExist(Object searchKey);
 }
