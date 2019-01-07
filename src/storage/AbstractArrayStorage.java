@@ -11,14 +11,35 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected Resume[] resumes = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
+    protected abstract void writeResume(int index, Resume resume);
+
     @Override
-    public int size() {
-        return size;
+    protected Resume doGet(Object index) {
+        return resumes[(int) index];
     }
 
     @Override
-    public Resume get(String uuid) {
-        return doGet(uuid);
+    public void doSave(Object index, Resume resume) {
+        int rIndex = (int) index;
+        if (size < resumes.length) {
+            writeResume(rIndex, resume);
+        } else {
+            String uuid = resume.getUuid();
+            throw new StorageException("Resume " + uuid + " can't be written. The storage is full!", uuid);
+        }
+    }
+
+    @Override
+    protected void doUpdate(Object index, Resume resume) {
+        resumes[(int) index] = resume;
+    }
+
+    /**
+     * @return array, contains only Resumes in resumes (without null)
+     */
+    @Override
+    public Resume[] getAll() {
+        return Arrays.copyOfRange(resumes, 0, size);
     }
 
     @Override
@@ -28,46 +49,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void save(Resume resume) {
-        int rIndex = (int) ifNotExistKey(resume.getUuid());
-        if (size < resumes.length) {
-            doSave(rIndex, resume);
-        } else {
-            String uuid = resume.getUuid();
-            throw new StorageException("Resume " + uuid + " can't be written. The storage is full!", uuid);
-        }
-    }
-
-    @Override
-    public void update(Resume resume) {
-        doUpdate(resume.getUuid(), resume);
-    }
-
-    @Override
-    protected void doUpdate(Object uuid, Resume resume) {
-        int rIndex = (int) ifExistKey((String) uuid);
-        resumes[rIndex] = resume;
-    }
-
-    @Override
-    public void delete(String uuid) {
-        int rIndex = (int) ifExistKey(uuid);
-        doDelete(rIndex);
-        resumes[--size] = null;
-    }
-
-
-    @Override
-    protected Resume doGet(Object uuid) {
-        int index = (int) ifExistKey((String) uuid);
-        return resumes[index];
-    }
-
-    /**
-     * @return array, contains only Resumes in resumes (without null)
-     */
-    @Override
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(resumes, 0, size);
+    public int size() {
+        return size;
     }
 }

@@ -19,8 +19,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected boolean isExist(String uuid, Object searchKey) {
-        return (searchKey != "" & resumeMap.containsKey(uuid)
-                & resumeMap.containsValue(resumeMap.get(uuid)));
+        return searchKey != "";
     }
 
     @Override
@@ -30,7 +29,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void doSave(Object searchKey, Resume resume) {
-        resumeMap.put((String) searchKey, resume);
+        resumeMap.put(resume.getUuid(), resume);
     }
 
     @Override

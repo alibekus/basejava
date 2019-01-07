@@ -31,8 +31,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void doUpdate(Object searchKey, Resume resume) {
-        resumeList.remove((int) searchKey);
-        resumeList.add(resume);
+        resumeList.set((int) searchKey, resume);
     }
 
     @Override
