@@ -29,14 +29,14 @@ public abstract class AbstractArrayStorage implements Storage {
         size = 0;
     }
 
-    public void save(Resume r) {
-        int rIndex = getIndex(r.getUuid());
+    public void save(Resume resume) {
+        int rIndex = getIndex(resume.getUuid());
         if (rIndex >= 0) {
-            throw new ExistStorageException(r.getUuid());
+            throw new ExistStorageException(resume.getUuid());
         } else if (size < resumes.length) {
-            writeResume(r, rIndex);
+            writeResume(resume, rIndex);
         } else {
-            String uuid = r.getUuid();
+            String uuid = resume.getUuid();
             throw new StorageException("Resume " + uuid + " can't be written. The storage is full!", uuid);
         }
     }
