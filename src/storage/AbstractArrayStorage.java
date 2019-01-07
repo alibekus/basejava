@@ -12,6 +12,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int size = 0;
 
     protected abstract void writeResume(int index, Resume resume);
+    protected abstract void deleteResume(int index);
 
     @Override
     protected Resume doGet(Object index) {
@@ -32,6 +33,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     protected void doUpdate(Object index, Resume resume) {
         resumes[(int) index] = resume;
+    }
+
+    protected void doDelete(Object index) {
+        deleteResume((int) index);
+        resumes[--size] = null;
     }
 
     /**

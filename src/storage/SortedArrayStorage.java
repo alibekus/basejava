@@ -22,14 +22,10 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void doDelete(Object index) {
-        int rIndex = (int) index;
+    protected void deleteResume(int rIndex) {
         int length = size - rIndex - 1;
         if (length > 0) {
             System.arraycopy(resumes, rIndex + 1, resumes, rIndex, length);
-            size--;
-        } else {
-            resumes[--size] = null;
         }
     }
 }
