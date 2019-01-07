@@ -13,13 +13,14 @@ public class MapStorage extends AbstractStorage {
         if (resumeMap.containsKey(uuid)) {
             return uuid;
         } else {
-            return null;
+            return "";
         }
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return resumeMap.containsValue(resumeMap.get(searchKey));
+    protected boolean isExist(String uuid, Object searchKey) {
+        return (searchKey != "" & resumeMap.containsKey(uuid)
+                & resumeMap.containsValue(resumeMap.get(uuid)));
     }
 
     @Override
@@ -28,15 +29,13 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doSave(Object searchKey) {
-        Resume resume = (Resume) searchKey;
-        resumeMap.put(resume.getUuid(), resume);
+    protected void doSave(Object searchKey, Resume resume) {
+        resumeMap.put((String) searchKey, resume);
     }
 
     @Override
-    protected void doUpdate(Object searchKey) {
-        Resume resume = (Resume) searchKey;
-        resumeMap.put(resume.getUuid(), resume);
+    protected void doUpdate(Object searchKey, Resume resume) {
+        resumeMap.put((String) searchKey, resume);
     }
 
     @Override
