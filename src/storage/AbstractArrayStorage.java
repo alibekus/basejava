@@ -7,7 +7,7 @@ import model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10_000;
     protected Resume[] resumes = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -66,8 +66,6 @@ public abstract class AbstractArrayStorage implements Storage {
     public Resume[] getAll() {
         return Arrays.copyOfRange(resumes, 0, size);
     }
-
-    protected abstract int getIndex(String uuid);
 
     protected abstract void writeResume(Resume resume, int index);
 
