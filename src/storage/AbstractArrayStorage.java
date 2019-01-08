@@ -12,7 +12,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int size = 0;
 
     protected abstract void writeResume(int index, Resume resume);
+
     protected abstract void deleteResume(int index);
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        int index = (int) searchKey;
+        return index >= 0;
+    }
 
     @Override
     protected Resume doGet(Object index) {

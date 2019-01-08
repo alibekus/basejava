@@ -20,6 +20,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
+    protected boolean isExist(Object searchKey) {
+        int index = (int) searchKey;
+        return index >= 0;
+    }
+
+    @Override
     protected Resume doGet(Object searchKey) {
         return resumeList.get((int) searchKey);
     }
