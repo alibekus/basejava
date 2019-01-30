@@ -6,10 +6,10 @@ import exception.StorageException;
 import model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static storage.AbstractArrayStorage.STORAGE_LIMIT;
 
@@ -67,6 +67,15 @@ public class AbstractStorageTest {
     }
 
     @Test
+    public void getAllSorted() {
+        List<Resume> actualResumes = Arrays.asList(RESUME1, RESUME2, RESUME3, RESUME4);
+        List<Resume> expectedResumes = storage.getAllSorted();
+        Assert.assertEquals(expectedResumes.size(), actualResumes.size());
+        Assert.assertArrayEquals(expectedResumes.toArray(new Resume[expectedResumes.size()]),
+                actualResumes.toArray(new Resume[actualResumes.size()]));
+    }
+
+    @Test
     public void clear() {
         storage.clear();
         Assert.assertEquals(0, storage.size());
@@ -84,7 +93,7 @@ public class AbstractStorageTest {
         storage.save(new Resume(UUID1));
     }
 
-    @Ignore
+
     @Test(expected = StorageException.class)
     public void overflowStorage() {
         storage.clear();
