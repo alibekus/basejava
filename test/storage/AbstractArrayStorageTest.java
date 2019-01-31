@@ -7,13 +7,10 @@ import org.junit.Test;
 
 import static storage.AbstractArrayStorage.STORAGE_LIMIT;
 
-public class AbstractArrayStorageTest extends AbstractStorageTest
-{
-    Storage storage;
+public class AbstractArrayStorageTest extends AbstractStorageTest {
 
     public AbstractArrayStorageTest(Storage storage) {
         super(storage);
-        this.storage = storage;
     }
 
     @Test(expected = StorageException.class)

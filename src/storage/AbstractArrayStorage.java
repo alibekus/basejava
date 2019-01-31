@@ -4,6 +4,7 @@ import exception.StorageException;
 import model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
 
@@ -48,12 +49,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         resumes[--size] = null;
     }
 
-    /**
-     * @return array, contains only Resumes in resumes (without null)
-     */
     @Override
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(resumes, 0, size);
+    public List<Resume> getAll() {
+        return Arrays.asList(Arrays.copyOf(resumes, size));
     }
 
     @Override

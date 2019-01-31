@@ -8,10 +8,11 @@ import java.util.Comparator;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     private static final Comparator<Resume> RESUME_COMPARATOR
-            = (resume1, resume2) -> resume1.compareTo(resume2);
+            = Comparator.naturalOrder();
+
     @Override
     protected Object getSearchKey(String uuid) {
-        Resume resume = new Resume(uuid,"");
+        Resume resume = new Resume(uuid, "");
         return Arrays.binarySearch(resumes, 0, size, resume, RESUME_COMPARATOR);
     }
 

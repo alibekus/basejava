@@ -4,10 +4,6 @@ import model.Resume;
 
 import java.util.*;
 
-/**
- * Version of class with search key as hashcode
- */
-
 public class MapStorage extends AbstractStorage {
 
     private Map<Integer, Resume> resumeMap = new HashMap<>();
@@ -15,7 +11,7 @@ public class MapStorage extends AbstractStorage {
     @Override
     protected Object getSearchKey(String uuid) {
         if (resumeMap.size() != 0) {
-            for (Resume resume: resumeMap.values()) {
+            for (Resume resume : resumeMap.values()) {
                 if (resume.getUuid().equals(uuid)) {
                     return resume.hashCode();
                 }
@@ -62,8 +58,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return resumeMap.values().toArray(new Resume[resumeMap.size()]);
+    public List<Resume> getAll() {
+        return new ArrayList<>(resumeMap.values());
     }
 
     @Override
