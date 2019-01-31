@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 public class MainReflection {
 
     public static void main(String[] args) {
-        Resume r = new Resume();
+        Resume r = new Resume("uuid","FullName");
         System.out.println("getting first declared field...");
         Field field = r.getClass().getDeclaredFields()[0];
         System.out.println("setting accessible true to the field");

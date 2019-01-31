@@ -19,7 +19,7 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void writeResume(int index, Resume resume) {
-        resumes[size++] = resume;
+        resumes[size] = resume;
     }
 
     @Override

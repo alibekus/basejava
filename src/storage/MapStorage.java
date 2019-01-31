@@ -10,7 +10,7 @@ import java.util.*;
 
 public class MapStorage extends AbstractStorage {
 
-    private Map<Integer, Resume> resumeMap = new TreeMap<>();
+    private Map<Integer, Resume> resumeMap = new HashMap<>();
 
     @Override
     protected Object getSearchKey(String uuid) {
@@ -64,13 +64,6 @@ public class MapStorage extends AbstractStorage {
     @Override
     public Resume[] getAll() {
         return resumeMap.values().toArray(new Resume[resumeMap.size()]);
-    }
-
-    @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> values = Arrays.asList(resumeMap.values().toArray(new Resume[resumeMap.size()]));
-        Collections.sort(values);
-        return values;
     }
 
     @Override

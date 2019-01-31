@@ -10,8 +10,8 @@ public class MapStorageTest extends AbstractStorageTest {
         super(new MapStorage());
     }
 
-    @Ignore
-    @Test(expected = StorageException.class)
-    public void overflowStorage() {
-    }
+//    @Ignore
+//    @Test(expected = StorageException.class)
+//    public void overflowStorage() {
+//    }
 }

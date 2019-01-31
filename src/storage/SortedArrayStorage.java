@@ -7,13 +7,16 @@ import java.util.Comparator;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
-    private static final Comparator<Resume> RESUME_COMPARATOR
-            = (resume1, resume2) -> resume1.compareTo(resume2);
+    private static final Comparator<String> RESUME_COMPARATOR
+            = (uuid1, uuid2) -> uuid1.compareTo(uuid2);
 
     @Override
     protected Object getSearchKey(String uuid) {
-        Resume searchKey = new Resume(uuid);
-        return Arrays.binarySearch(resumes, 0, size, searchKey, RESUME_COMPARATOR);
+        String[] uuids = new String[size];
+        for (int i = 0; i < size; i++) {
+            uuids[i] = resumes[i].getUuid();
+        }
+        return Arrays.binarySearch(uuids, 0, size, uuid, RESUME_COMPARATOR);
     }
 
     @Override
@@ -21,14 +24,13 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         index = -index - 1;
         System.arraycopy(resumes, index, resumes, index + 1, size - index);
         resumes[index] = resume;
-        size++;
     }
 
     @Override
-    protected void deleteResume(int rIndex) {
-        int length = size - rIndex - 1;
+    protected void deleteResume(int index) {
+        int length = size - index - 1;
         if (length > 0) {
-            System.arraycopy(resumes, rIndex + 1, resumes, rIndex, length);
+            System.arraycopy(resumes, index + 1, resumes, index, length);
         }
     }
 }

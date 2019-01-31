@@ -9,14 +9,20 @@ import java.util.UUID;
 public class Resume implements Comparable<Resume> {
 
     private String uuid;
-    private String fullName = "";
+    private String fullName;
 
     public Resume() {
         this(UUID.randomUUID().toString());
     }
 
-    public Resume(String uuid) {
+    public Resume(String fullName) {
+        this.uuid = UUID.randomUUID().toString();
+        this.fullName = fullName;
+    }
+
+    public Resume(String uuid, String fullName) {
         this.uuid = uuid;
+        this.fullName = fullName;
     }
 
     public void setUuid(String uuid) {
@@ -56,10 +62,6 @@ public class Resume implements Comparable<Resume> {
     @Override
     public int compareTo(Resume resume) {
         int compareResult = fullName.compareTo(resume.getFullName());
-        if (compareResult == 0) {
-            return uuid.compareTo(resume.getUuid());
-        } else {
-            return compareResult;
-        }
+        return (compareResult == 0) ? uuid.compareTo(resume.getUuid()) : compareResult;
     }
 }

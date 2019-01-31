@@ -4,6 +4,10 @@ import exception.ExistStorageException;
 import exception.NotExistStorageException;
 import model.Resume;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public abstract class AbstractStorage implements Storage {
 
     protected abstract void doSave(Object searchKey, Resume resume);
@@ -20,20 +24,20 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        Object key = ifExistKey(uuid);
-        return doGet(key);
+        Object searchKey = ifExistKey(uuid);
+        return doGet(searchKey);
     }
 
     @Override
     public void save(Resume resume) {
-        Object key = ifNotExistKey(resume.getUuid());
-        doSave(key, resume);
+        Object searchKey = ifNotExistKey(resume.getUuid());
+        doSave(searchKey, resume);
     }
 
     @Override
     public void update(Resume resume) {
-        Object key = ifExistKey(resume.getUuid());
-        doUpdate(key, resume);
+        Object searchKey = ifExistKey(resume.getUuid());
+        doUpdate(searchKey, resume);
     }
 
     @Override
@@ -42,7 +46,7 @@ public abstract class AbstractStorage implements Storage {
         doDelete(key);
     }
 
-    protected Object ifNotExistKey(String uuid) {
+    private Object ifNotExistKey(String uuid) {
         Object searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
             return searchKey;
@@ -51,12 +55,18 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
-    protected Object ifExistKey(String uuid) {
+    private Object ifExistKey(String uuid) {
         Object searchKey = getSearchKey(uuid);
         if (isExist(searchKey)) {
             return searchKey;
         } else {
             throw new NotExistStorageException(uuid);
         }
+    }
+
+    public List<Resume> getAllSorted() {
+        List<Resume> resumes = Arrays.asList(getAll());
+        Collections.sort(resumes);
+        return resumes;
     }
 }

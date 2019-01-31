@@ -4,13 +4,12 @@ import exception.StorageException;
 import model.Resume;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected static final int STORAGE_LIMIT = 10_000;
     protected Resume[] resumes = new Resume[STORAGE_LIMIT];
+
     protected int size = 0;
 
     protected abstract void writeResume(int index, Resume resume);
@@ -30,13 +29,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     public void doSave(Object index, Resume resume) {
-        int rIndex = (int) index;
         if (size < resumes.length) {
-            writeResume(rIndex, resume);
+            writeResume((int) index, resume);
         } else {
-            String uuid = resume.getUuid();
-            throw new StorageException("Resume " + uuid + " can't be written. The storage is full!", uuid);
+            throw new StorageException("Resume " + resume.getUuid() + " can't be written. " +
+                    "The storage is full!", resume.getUuid());
         }
+        size++;
     }
 
     @Override
@@ -55,20 +54,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     public Resume[] getAll() {
         return Arrays.copyOfRange(resumes, 0, size);
-    }
-
-    @Override
-    public List<Resume> getAllSorted() {
-        int count = 0;
-        for (Resume resume : resumes) {
-            if (resume != null) {
-                count++;
-            }
-        }
-        Resume[] filledResumes = Arrays.copyOf(resumes,count);
-        List<Resume> resumeList = Arrays.asList(filledResumes);
-        Collections.sort(resumeList);
-        return resumeList;
     }
 
     @Override
