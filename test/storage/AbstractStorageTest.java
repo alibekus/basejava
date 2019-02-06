@@ -18,19 +18,13 @@ public class AbstractStorageTest {
     private static final String UUID4 = "uuid4";
     private static final String UUID5 = "uuid5";
 
-    private static final String FULLNAME1 = "FullName1";
-    private static final String FULLNAME2 = "FullName2";
-    private static final String FULLNAME3 = "FullName3";
-    private static final String FULLNAME4 = "FullName4";
-    private static final String FULLNAME5 = "FullName5";
+    private static final Resume RESUME1 = new Resume(UUID1, "FullName1");
+    private static final Resume RESUME2 = new Resume(UUID2, "FullName2");
+    private static final Resume RESUME3 = new Resume(UUID3, "FullName3");
+    private static final Resume RESUME4 = new Resume(UUID4, "FullName4");
+    private static final Resume RESUME5 = new Resume(UUID5, "FullName5");
 
-    private static final Resume RESUME1 = new Resume(UUID1, FULLNAME1);
-    private static final Resume RESUME2 = new Resume(UUID2, FULLNAME2);
-    private static final Resume RESUME3 = new Resume(UUID3, FULLNAME3);
-    private static final Resume RESUME4 = new Resume(UUID4, FULLNAME4);
-    private static final Resume RESUME5 = new Resume(UUID5, FULLNAME5);
-
-    protected Storage storage;
+    final Storage storage;
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -62,11 +56,9 @@ public class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        List<Resume> actualResumes = Arrays.asList(RESUME1, RESUME2, RESUME3, RESUME4);
-        List<Resume> expectedResumes = storage.getAllSorted();
+        List<Resume> actualResumes = storage.getAllSorted();
+        List<Resume> expectedResumes = Arrays.asList(RESUME1, RESUME2, RESUME3, RESUME4);
         Assert.assertEquals(expectedResumes.size(), actualResumes.size());
-//        Assert.assertArrayEquals(expectedResumes.toArray(new Resume[expectedResumes.size()]),
-//                actualResumes.toArray(new Resume[actualResumes.size()]));
         Assert.assertEquals(expectedResumes, actualResumes);
     }
 

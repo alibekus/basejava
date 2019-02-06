@@ -4,12 +4,12 @@ import model.Resume;
 
 import java.util.*;
 
-public class MapStorage extends AbstractStorage {
+public class MapStorage extends AbstractStorage<Integer> {
 
-    private Map<Integer, Resume> resumeMap = new HashMap<>();
+    private final Map<Integer, Resume> resumeMap = new HashMap<>();
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         if (resumeMap.size() != 0) {
             for (Resume resume : resumeMap.values()) {
                 if (resume.getUuid().equals(uuid)) {
@@ -21,7 +21,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
+    protected boolean isExist(Integer searchKey) {
         if (resumeMap.size() != 0) {
             for (Resume resume : resumeMap.values()) {
                 if (resume.hashCode() == (int) searchKey) {
@@ -33,22 +33,22 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
+    protected Resume doGet(Integer searchKey) {
         return resumeMap.get(searchKey);
     }
 
     @Override
-    protected void doSave(Object searchKey, Resume resume) {
+    protected void doSave(Integer searchKey, Resume resume) {
         resumeMap.put(resume.hashCode(), resume);
     }
 
     @Override
-    protected void doUpdate(Object searchKey, Resume resume) {
+    protected void doUpdate(Integer searchKey, Resume resume) {
         resumeMap.put(resume.hashCode(), resume);
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
+    protected void doDelete(Integer searchKey) {
         resumeMap.remove(searchKey);
     }
 
@@ -58,7 +58,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAll() {
+    public List<Resume> doCopyAll() {
         return new ArrayList<>(resumeMap.values());
     }
 

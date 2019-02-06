@@ -11,7 +11,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
             = Comparator.naturalOrder();
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         Resume resume = new Resume(uuid, "");
         return Arrays.binarySearch(resumes, 0, size, resume, RESUME_COMPARATOR);
     }

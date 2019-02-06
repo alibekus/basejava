@@ -1,9 +1,5 @@
 package storage;
 
-import exception.StorageException;
-import org.junit.Ignore;
-import org.junit.Test;
-
 public class MapUuidStorageTest extends AbstractStorageTest {
 
     public MapUuidStorageTest() {
