@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection extends Section {
+public class ListSection extends AbstractSection {
 
     private List<String> items;
 
@@ -31,15 +31,12 @@ public class ListSection extends Section {
     }
 
     @Override
-    public void printSection() {
-        for (String item : items) {
-            System.out.println("- " + item.trim());
-        }
-    }
-
-    @Override
     public String toString() {
-        return items.toString();
+        StringBuilder stringItems = new StringBuilder();
+        for (String item : items) {
+            stringItems.append("- " + item.trim() + '\n');
+        }
+        return stringItems.toString();
     }
 
     @Override

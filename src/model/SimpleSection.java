@@ -2,7 +2,7 @@ package model;
 
 import java.util.Objects;
 
-public class SimpleSection extends Section {
+public class SimpleSection extends AbstractSection {
 
     private String description;
 
@@ -16,13 +16,8 @@ public class SimpleSection extends Section {
     }
 
     @Override
-    public void printSection() {
-        System.out.println(description);
-    }
-
-    @Override
     public String toString() {
-        return "SimpleSection {description = '" + description + "\'}";
+        return description;
     }
 
     @Override

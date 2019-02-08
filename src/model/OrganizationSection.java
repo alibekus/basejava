@@ -2,7 +2,7 @@ package model;
 
 import java.util.*;
 
-public class OrganizationSection extends Section {
+public class OrganizationSection extends AbstractSection {
 
     private List<Organization> organizations;
 
@@ -33,17 +33,12 @@ public class OrganizationSection extends Section {
     }
 
     @Override
-    public void printSection() {
-        for (Organization org : organizations) {
-            System.out.println(org);
-        }
-    }
-
-    @Override
     public String toString() {
-        return "OrganizationSection{" +
-                "organizations=" + organizations +
-                '}';
+        StringBuilder orgInfoBuilder = new StringBuilder();
+        for (Organization org : organizations) {
+            orgInfoBuilder.append(org.toString() + '\n');
+        }
+        return orgInfoBuilder.toString();
     }
 
     @Override

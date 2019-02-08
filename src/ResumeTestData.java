@@ -191,7 +191,7 @@ class ResumeTestData {
         System.out.println("===========================Sections===========================");
         for (SectionType type : SectionType.values()) {
             System.out.println("- - - - - - - - - - - - - " + type.getTitle() + "- - - - - - - - - - - - -");
-            resume.getSections().get(type).printSection();
+            System.out.println(resume.getSections().get(type));
             System.out.println("-------------End of " + type.getTitle() + "---------------------------------");
         }
         System.out.println("==============================================================");

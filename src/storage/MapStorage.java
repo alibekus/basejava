@@ -10,26 +10,12 @@ public class MapStorage extends AbstractStorage<Resume> {
 
     @Override
     protected Resume getSearchKey(String uuid) {
-        if (resumeMap.size() != 0) {
-            for (Resume resume : resumeMap.values()) {
-                if (resume.getUuid().equals(uuid)) {
-                    return resume;
-                }
-            }
-        }
-        return null;
+        return resumeMap.get(uuid);
     }
 
     @Override
     protected boolean isExist(Resume searchKey) {
-        if (resumeMap.size() != 0) {
-            for (Resume resume : resumeMap.values()) {
-                if (resume.equals(searchKey)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return resumeMap.containsValue(searchKey);
     }
 
     @Override
