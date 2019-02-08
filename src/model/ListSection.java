@@ -6,21 +6,15 @@ import java.util.Objects;
 
 public class ListSection extends Section {
 
-    private List<String> items = new ArrayList<>();
+    private List<String> items;
 
     public ListSection() {
-        super();
+        items = new ArrayList<>();
     }
 
-    public ListSection(SectionType type, String item) {
-        super(type, item);
-    }
-
-    public ListSection(SectionType type, List<String> items) {
-        Objects.requireNonNull(type, "type must not be null!");
+    public ListSection(List<String> items) {
         Objects.requireNonNull(items, "items must not be null!");
         this.items = items;
-        this.type = type;
     }
 
     public List<String> getItems() {
@@ -37,10 +31,15 @@ public class ListSection extends Section {
     }
 
     @Override
+    public void printSection() {
+        for (String item : items) {
+            System.out.println("- " + item.trim());
+        }
+    }
+
+    @Override
     public String toString() {
-        return "ListSection{" +
-                "items=" + items +
-                '}';
+        return items.toString();
     }
 
     @Override
@@ -56,11 +55,5 @@ public class ListSection extends Section {
         return Objects.hash(items);
     }
 
-    @Override
-    protected void printChildSection() {
-        for (String item : items) {
-            System.out.println("- " + item.trim());
-        }
-    }
 }
 

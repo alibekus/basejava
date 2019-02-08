@@ -2,12 +2,12 @@ package model;
 
 public class Contact {
 
+    private String title;
     private String value;
-    private ContactType type;
 
-    public Contact(ContactType type, String value) {
+    public Contact(String title, String value) {
+        this.title = title;
         this.value = value;
-        this.type = type;
     }
 
     public String getValue() {
@@ -18,16 +18,11 @@ public class Contact {
         this.value = value;
     }
 
-    public ContactType getType() {
-        return type;
+    public String getTitle() {
+        return title;
     }
 
-    public void setType(ContactType type) {
-        this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return type + type.getTitle() + ": " + value;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

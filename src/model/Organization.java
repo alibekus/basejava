@@ -1,29 +1,30 @@
 package model;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Organization {
 
     private String name;
-    private final Map<Calendar, Calendar> dates = new LinkedHashMap<>();
-    private List<Calendar> startDates = new ArrayList<>();
-    private List<Calendar> endDates = new ArrayList<>();
-    private final Map<String, String> positionDuties = new LinkedHashMap<>();
-    private List<String> positions = new ArrayList<>();
-    private List<String> duties = new ArrayList<>();
+    private String position;
+    private String duty;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public Organization(String name) {
         this.name = name;
     }
 
-    public Organization(String name, List<Calendar> startDates, List<Calendar> endDates, List<String> positions,
-                        List<String> duties) {
+    public Organization(String name, String position, String duty, LocalDate startDate, LocalDate endDate) {
         this.name = name;
-        this.startDates = startDates;
-        this.endDates = endDates;
-        this.positions = positions;
-        this.duties = duties;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.position = position;
+        this.duty = duty;
     }
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
 
     public String getName() {
         return name;
@@ -33,65 +34,62 @@ public class Organization {
         this.name = name;
     }
 
-    public List<Calendar> getStartDates() {
-        return startDates;
+    public String getPosition() {
+        return position;
     }
 
-    public void setStartDates(List<Calendar> startDates) {
-        this.startDates = startDates;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
-    public List<Calendar> getEndDates() {
-        return endDates;
+    public String getDuty() {
+        return duty;
     }
 
-    public void setEndDates(List<Calendar> endDates) {
-        this.endDates = endDates;
+    public void setDuty(String duty) {
+        this.duty = duty;
     }
 
-    public List<String> getPositions() {
-        return positions;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setPositions(List<String> positions) {
-        this.positions = positions;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public List<String> getDuties() {
-        return duties;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setDuties(List<String> duties) {
-        this.duties = duties;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
-    public void addStartDate(Calendar date) {
-        startDates.add(date);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Organization that = (Organization) o;
+        return name.equals(that.name) &&
+                Objects.equals(position, that.position) &&
+                duty.equals(that.duty) &&
+                startDate.equals(that.startDate) &&
+                endDate.equals(that.endDate);
     }
 
-    public void addEndDates(Calendar date) {
-        endDates.add(date);
-    }
-
-    public void addPosition(String position) {
-        positions.add(position);
-    }
-
-    public void addDuty(String duty) {
-        duties.add(duty);
-    }
-
-    public void setDatesPositionsDuties(Calendar startDate, Calendar endDate, String position, String duty) {
-        startDates.add(startDate);
-        endDates.add(endDate);
-        positions.add(position);
-        duties.add(duty);
-        dates.put(startDate, endDate);
-        positionDuties.put(position, duty);
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, position, duty, startDate, endDate);
     }
 
     @Override
     public String toString() {
-        return "Organization '" + name + "\'";
+        return "организация = '" + name + "\'\n" +
+                "должность = '" + position + "\'\n" +
+                "обязанности = '" + duty + "\'\n" +
+                "начало работы = " + startDate.format(formatter) + "\n" +
+                "завершение = " + endDate.format(formatter) + "\n" +
+                "-------------------------------------------------";
     }
 }

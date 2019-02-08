@@ -28,7 +28,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        LOG.info("Get" + uuid);
+        LOG.info("Get " + uuid);
         SK searchKey = ifExistKey(uuid);
         return doGet(searchKey);
     }

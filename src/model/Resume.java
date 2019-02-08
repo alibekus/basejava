@@ -16,18 +16,18 @@ public class Resume implements Comparable<Resume> {
     }
 
     public Resume(String uuid, String fullName) {
-        Objects.requireNonNull(uuid,"uuid must not be null!");
-        Objects.requireNonNull(fullName,"full name must not be null!");
+        Objects.requireNonNull(uuid, "uuid must not be null!");
+        Objects.requireNonNull(fullName, "full name must not be null!");
         this.uuid = uuid;
         this.fullName = fullName;
     }
 
-    public void addContact(Contact contact) {
-        contacts.put(contact.getType(),contact);
+    public void addContact(ContactType type, Contact contact) {
+        contacts.put(type, contact);
     }
 
-    public void addSection(Section section) {
-        sections.put(section.getType(),section);
+    public void addSection(SectionType type, Section section) {
+        sections.put(type, section);
     }
 
     public void setUuid(String uuid) {
@@ -46,12 +46,12 @@ public class Resume implements Comparable<Resume> {
         return fullName;
     }
 
-    public Contact getContacts(ContactType type) {
-        return contacts.get(type);
+    public Map<ContactType, Contact> getContacts() {
+        return contacts;
     }
 
-    public Section getSections(SectionType type) {
-        return sections.get(type);
+    public Map<SectionType, Section> getSections() {
+        return sections;
     }
 
     @Override
@@ -64,31 +64,19 @@ public class Resume implements Comparable<Resume> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return Objects.equals(uuid, resume.uuid) & Objects.equals(fullName, resume.getFullName());
+        return uuid.equals(resume.uuid) &&
+                Objects.equals(fullName, resume.fullName) &&
+                Objects.equals(contacts, resume.contacts) &&
+                Objects.equals(sections, resume.sections);
     }
 
     @Override
     public int hashCode() {
-        return 31 * Objects.hash(uuid) + Objects.hash(fullName);
+        return Objects.hash(uuid, fullName, contacts, sections);
     }
 
     @Override
     public int compareTo(Resume resume) {
         return uuid.compareTo(resume.getUuid());
-    }
-
-    public void printContacts() {
-        System.out.println("-----------------------Contacts-----------------------");
-        for (ContactType type : ContactType.values()) {
-            System.out.println(type.getTitle() + ": " + contacts.get(type).getValue());
-        }
-    }
-
-    public void printSections() {
-        System.out.println("-----------------------Sections-----------------------");
-        for (SectionType type: SectionType.values()) {
-            sections.get(type).printSection();
-            System.out.println("==============================================================");
-        }
     }
 }

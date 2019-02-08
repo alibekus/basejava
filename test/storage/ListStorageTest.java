@@ -5,8 +5,4 @@ public class ListStorageTest extends AbstractStorageTest {
         super(new ListStorage());
     }
 
-//    @Ignore
-//    @Test(expected = StorageException.class)
-//    public void overflowStorage() {
-//    }
 }

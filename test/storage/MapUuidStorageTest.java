@@ -6,8 +6,4 @@ public class MapUuidStorageTest extends AbstractStorageTest {
         super(new MapUuidStorage());
     }
 
-//    @Ignore
-//    @Test(expected = StorageException.class)
-//    public void overflowStorage() {
-//    }
 }

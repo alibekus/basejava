@@ -4,27 +4,27 @@ import model.Resume;
 
 import java.util.*;
 
-public class MapStorage extends AbstractStorage<Integer> {
+public class MapStorage extends AbstractStorage<Resume> {
 
-    private final Map<Integer, Resume> resumeMap = new HashMap<>();
+    private final Map<String, Resume> resumeMap = new HashMap<>();
 
     @Override
-    protected Integer getSearchKey(String uuid) {
+    protected Resume getSearchKey(String uuid) {
         if (resumeMap.size() != 0) {
             for (Resume resume : resumeMap.values()) {
                 if (resume.getUuid().equals(uuid)) {
-                    return resume.hashCode();
+                    return resume;
                 }
             }
         }
-        return 0;
+        return null;
     }
 
     @Override
-    protected boolean isExist(Integer searchKey) {
+    protected boolean isExist(Resume searchKey) {
         if (resumeMap.size() != 0) {
             for (Resume resume : resumeMap.values()) {
-                if (resume.hashCode() == (int) searchKey) {
+                if (resume.equals(searchKey)) {
                     return true;
                 }
             }
@@ -33,23 +33,23 @@ public class MapStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected Resume doGet(Integer searchKey) {
-        return resumeMap.get(searchKey);
+    protected Resume doGet(Resume searchKey) {
+        return resumeMap.get(searchKey.getUuid());
     }
 
     @Override
-    protected void doSave(Integer searchKey, Resume resume) {
-        resumeMap.put(resume.hashCode(), resume);
+    protected void doSave(Resume searchKey, Resume resume) {
+        resumeMap.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void doUpdate(Integer searchKey, Resume resume) {
-        resumeMap.put(resume.hashCode(), resume);
+    protected void doUpdate(Resume searchKey, Resume resume) {
+        resumeMap.replace(searchKey.getUuid(), searchKey, resume);
     }
 
     @Override
-    protected void doDelete(Integer searchKey) {
-        resumeMap.remove(searchKey);
+    protected void doDelete(Resume searchKey) {
+        resumeMap.remove(searchKey.getUuid());
     }
 
     @Override
