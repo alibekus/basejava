@@ -4,7 +4,7 @@ import java.util.*;
 
 public class OrganizationSection extends AbstractSection {
 
-    private List<Organization> organizations;
+    private final List<Organization> organizations;
 
     public OrganizationSection() {
         organizations = new ArrayList<>();
@@ -15,29 +15,29 @@ public class OrganizationSection extends AbstractSection {
         this.organizations = organizations;
     }
 
-    public List<Organization> getOrganizations() {
-        return organizations;
-    }
-
     public void addOrganization(Organization organization) {
         organizations.add(organization);
-    }
-
-    public Organization getOrganization(String name) {
-        for (Organization org : organizations) {
-            if (name.equals(org.getName())) {
-                return org;
-            }
-        }
-        return null;
     }
 
     @Override
     public String toString() {
         StringBuilder orgInfoBuilder = new StringBuilder();
-        for (Organization org : organizations) {
-            orgInfoBuilder.append(org.toString() + '\n');
+        for (int i = 0; i < organizations.size(); i++) {
+            if (i > 0) {
+                if (organizations.get(i).getLink().getName().equals(organizations.get(i - 1).getLink().getName())) {
+                    orgInfoBuilder.append("должность: ").append(organizations.get(i).getPosition()).append("\n");
+                    orgInfoBuilder.append("обязанности: ").append(organizations.get(i).getDuty()).append("\n");
+                    orgInfoBuilder.append("начало работы: ").append(organizations.get(i).getStartDate()).append("\n");
+                    orgInfoBuilder.append("завершение: ").append(organizations.get(i).getEndDate()).append("\n");
+                    orgInfoBuilder.append("-------------------------------------------------\n");
+                } else {
+                    orgInfoBuilder.append(organizations.get(i).toString()).append("\n");
+                }
+            } else {
+                orgInfoBuilder.append(organizations.get(i).toString()).append("\n");
+            }
         }
+//        orgInfoBuilder.append(org.toString() + '\n');
         return orgInfoBuilder.toString();
     }
 

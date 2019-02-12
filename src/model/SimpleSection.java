@@ -4,15 +4,11 @@ import java.util.Objects;
 
 public class SimpleSection extends AbstractSection {
 
-    private String description;
+    private final String description;
 
     public SimpleSection(String description) {
         Objects.requireNonNull(description, "description must not be null!");
         this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     @Override

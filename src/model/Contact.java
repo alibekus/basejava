@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class Contact {
 
-    private String title;
-    private String value;
+    private final String title;
+    private final String value;
 
     public Contact(String title, String value) {
         this.title = title;
@@ -14,18 +14,6 @@ public class Contact {
 
     public String getValue() {
         return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     @Override

@@ -2,68 +2,47 @@ package model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Objects;
 
 public class Organization {
 
-    private String name;
-    private String position;
-    private String duty;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private final Link link;
+    private final String position;
+    private final String duty;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
 
-    public Organization(String name) {
-        this.name = name;
-    }
-
-    public Organization(String name, String position, String duty, LocalDate startDate, LocalDate endDate) {
-        this.name = name;
+    public Organization(String name, String url, String position, String duty, LocalDate startDate,
+                        LocalDate endDate) {
+        Objects.requireNonNull(startDate, "startDate must not be null!");
+        Objects.requireNonNull(endDate, "endDate must not be null!");
+        Objects.requireNonNull(position, "positions must not be null!");
+        this.link = new Link(name, url);
         this.startDate = startDate;
         this.endDate = endDate;
         this.position = position;
         this.duty = duty;
     }
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
-
-    public String getName() {
-        return name;
+    Link getLink() {
+        return link;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPosition() {
+    String getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public String getDuty() {
+    String getDuty() {
         return duty;
     }
 
-    public void setDuty(String duty) {
-        this.duty = duty;
+    String getStartDate() {
+        return startDate.format(formatter);
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    String getEndDate() {
+        return endDate.format(formatter);
     }
 
     @Override
@@ -71,21 +50,22 @@ public class Organization {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return name.equals(that.name) &&
-                Objects.equals(position, that.position) &&
-                duty.equals(that.duty) &&
+        return link.equals(that.link) &&
+                position.equals(that.position) &&
+                Objects.equals(duty, that.duty) &&
                 startDate.equals(that.startDate) &&
                 endDate.equals(that.endDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, position, duty, startDate, endDate);
+        return Objects.hash(link, position, duty, startDate, endDate);
     }
 
     @Override
     public String toString() {
-        return "организация = '" + name + "\'\n" +
+        return "=================================================" + "\n" +
+                "организация = " + link + "\n" +
                 "должность = '" + position + "\'\n" +
                 "обязанности = '" + duty + "\'\n" +
                 "начало работы = " + startDate.format(formatter) + "\n" +

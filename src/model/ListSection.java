@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class ListSection extends AbstractSection {
 
-    private List<String> items;
+    private final List<String> items;
 
     public ListSection() {
         items = new ArrayList<>();
@@ -17,24 +17,12 @@ public class ListSection extends AbstractSection {
         this.items = items;
     }
 
-    public List<String> getItems() {
-        return items;
-    }
-
-
-    public void addItem(String item) {
-        items.add(item);
-    }
-
-    public void removeItem(int index) {
-        items.remove(index);
-    }
 
     @Override
     public String toString() {
         StringBuilder stringItems = new StringBuilder();
         for (String item : items) {
-            stringItems.append("- " + item.trim() + '\n');
+            stringItems.append("- ").append(item.trim()).append('\n');
         }
         return stringItems.toString();
     }

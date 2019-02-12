@@ -1,4 +1,7 @@
+package storage;
+
 import model.*;
+import util.DateUtil;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -30,7 +33,6 @@ class ResumeTestData {
     private static final List<String> achievements = new ArrayList<>();
     private static final List<String> qualifications = new ArrayList<>();
     private static final List<String> eduNames = new ArrayList<>();
-    private static final List<Organization> eduOrgs = new ArrayList<>();
 
     static {
         contactItems.add(PHONENUMBER);
@@ -88,24 +90,23 @@ class ResumeTestData {
         jobPositions.add("Разработчик ПО");
         jobPositions.add("Инженер по аппаратному и программному тестированию");
 
-        ;
-        startJobDates.add(LocalDate.of(2013, Month.OCTOBER, 1));
-        startJobDates.add(LocalDate.of(2014, Month.OCTOBER, 1));
-        startJobDates.add(LocalDate.of(2012, Month.APRIL, 1));
-        startJobDates.add(LocalDate.of(2010, Month.DECEMBER, 1));
-        startJobDates.add(LocalDate.of(2008, Month.JUNE, 1));
-        startJobDates.add(LocalDate.of(2007, Month.MARCH, 1));
-        startJobDates.add(LocalDate.of(2005, Month.JANUARY, 1));
-        startJobDates.add(LocalDate.of(1997, Month.SEPTEMBER, 1));
+        startJobDates.add(DateUtil.of(2013, Month.OCTOBER));
+        startJobDates.add(DateUtil.of(2014, Month.OCTOBER));
+        startJobDates.add(DateUtil.of(2012, Month.APRIL));
+        startJobDates.add(DateUtil.of(2010, Month.DECEMBER));
+        startJobDates.add(DateUtil.of(2008, Month.JUNE));
+        startJobDates.add(DateUtil.of(2007, Month.MARCH));
+        startJobDates.add(DateUtil.of(2005, Month.JANUARY));
+        startJobDates.add(DateUtil.of(1997, Month.SEPTEMBER));
 
-        endJobDates.add(LocalDate.of(9999, Month.DECEMBER, 1));
-        endJobDates.add(LocalDate.of(2016, Month.JANUARY, 1));
-        endJobDates.add(LocalDate.of(2014, Month.OCTOBER, 1));
-        endJobDates.add(LocalDate.of(2012, Month.APRIL, 1));
-        endJobDates.add(LocalDate.of(2010, Month.DECEMBER, 1));
-        endJobDates.add(LocalDate.of(2008, Month.JUNE, 1));
-        endJobDates.add(LocalDate.of(2007, Month.FEBRUARY, 1));
-        endJobDates.add(LocalDate.of(2005, Month.JANUARY, 1));
+        endJobDates.add(DateUtil.of(9999, Month.DECEMBER));
+        endJobDates.add(DateUtil.of(2016, Month.JANUARY));
+        endJobDates.add(DateUtil.of(2014, Month.OCTOBER));
+        endJobDates.add(DateUtil.of(2012, Month.APRIL));
+        endJobDates.add(DateUtil.of(2010, Month.DECEMBER));
+        endJobDates.add(DateUtil.of(2008, Month.JUNE));
+        endJobDates.add(DateUtil.of(2007, Month.FEBRUARY));
+        endJobDates.add(DateUtil.of(2005, Month.JANUARY));
 
         jobDuties.add("Создание, организация и проведение Java онлайн проектов и стажировок.");
         jobDuties.add("Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, " +
@@ -141,21 +142,21 @@ class ResumeTestData {
                 "механики и оптики");
         eduNames.add("Заочная физико-техническая школа при МФТИ");
 
-        startEduDates.add(LocalDate.of(2013, Month.MARCH, 1));
-        startEduDates.add(LocalDate.of(2011, Month.MARCH, 1));
-        startEduDates.add(LocalDate.of(2005, Month.JANUARY, 1));
-        startEduDates.add(LocalDate.of(1997, Month.SEPTEMBER, 1));
-        startEduDates.add(LocalDate.of(1993, Month.SEPTEMBER, 1));
-        startEduDates.add(LocalDate.of(1987, Month.SEPTEMBER, 1));
-        startEduDates.add(LocalDate.of(1984, Month.SEPTEMBER, 1));
+        startEduDates.add(DateUtil.of(2013, Month.MARCH));
+        startEduDates.add(DateUtil.of(2011, Month.MARCH));
+        startEduDates.add(DateUtil.of(2005, Month.JANUARY));
+        startEduDates.add(DateUtil.of(1997, Month.SEPTEMBER));
+        startEduDates.add(DateUtil.of(1993, Month.SEPTEMBER));
+        startEduDates.add(DateUtil.of(1987, Month.SEPTEMBER));
+        startEduDates.add(DateUtil.of(1984, Month.SEPTEMBER));
 
-        endEduDates.add(LocalDate.of(2013, Month.MAY, 1));
-        endEduDates.add(LocalDate.of(2011, Month.APRIL, 1));
-        endEduDates.add(LocalDate.of(2005, Month.APRIL, 1));
-        endEduDates.add(LocalDate.of(1998, Month.MARCH, 1));
-        endEduDates.add(LocalDate.of(1996, Month.JULY, 1));
-        endEduDates.add(LocalDate.of(1993, Month.JULY, 1));
-        endEduDates.add(LocalDate.of(1987, Month.JUNE, 1));
+        endEduDates.add(DateUtil.of(2013, Month.MAY));
+        endEduDates.add(DateUtil.of(2011, Month.APRIL));
+        endEduDates.add(DateUtil.of(2005, Month.APRIL));
+        endEduDates.add(DateUtil.of(1998, Month.MARCH));
+        endEduDates.add(DateUtil.of(1996, Month.JULY));
+        endEduDates.add(DateUtil.of(1993, Month.JULY));
+        endEduDates.add(DateUtil.of(1987, Month.JUNE));
 
         eduDuties.add("\"Functional Programming Principles in Scala\" by Martin Odersky");
         eduDuties.add("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML\"");
@@ -166,42 +167,10 @@ class ResumeTestData {
         eduDuties.add("Закончил с отличием");
     }
 
-
-    private static void fillOrganizations(int count, SectionType sectionType, List<String> companyNames,
-                                          List<String> positions, List<String> duties, List<LocalDate> startDates,
-                                          List<LocalDate> endDates, Resume resume) {
-        OrganizationSection organizationSection = new OrganizationSection();
-        for (int i = 0; i < count; i++) {
-            Organization organization = new Organization(companyNames.get(i), positions.get(i), duties.get(i),
-                    startDates.get(i), endDates.get(i));
-            organizationSection.addOrganization(organization);
-        }
-        resume.addSection(sectionType, organizationSection);
-    }
-
-    private static void printContacts(Resume resume) {
-        System.out.println("===========================Contacts===========================");
-        for (ContactType type : ContactType.values()) {
-            System.out.println(type.getTitle() + ": " + resume.getContacts().get(type).getValue());
-        }
-        System.out.println("==============================================================");
-    }
-
-    private static void printSections(Resume resume) {
-        System.out.println("===========================Sections===========================");
-        for (SectionType type : SectionType.values()) {
-            System.out.println("- - - - - - - - - - - - - " + type.getTitle() + "- - - - - - - - - - - - -");
-            System.out.println(resume.getSections().get(type));
-            System.out.println("-------------End of " + type.getTitle() + "---------------------------------");
-        }
-        System.out.println("==============================================================");
-    }
-
-
-    public static void main(String[] args) {
+    static Resume fillResume(String uuid, String fullName) {
         SimpleSection simpleSection;
         ListSection listSection;
-        Resume resume = new Resume(FULLNAME);
+        Resume resume = new Resume(uuid, fullName);
         System.out.println("=================Entering sections===================");
         for (SectionType sectionType : SectionType.values()) {
             System.out.println("Section: " + sectionType.getTitle());
@@ -242,6 +211,42 @@ class ResumeTestData {
                 resume.addContact(type, contact);
             }
         }
+        return resume;
+    }
+
+    private static void fillOrganizations(int count, SectionType sectionType, List<String> companyNames,
+                                          List<String> positions, List<String> duties, List<LocalDate> startDates,
+                                          List<LocalDate> endDates, Resume resume) {
+        OrganizationSection organizationSection = new OrganizationSection();
+        for (int i = 0; i < count; i++) {
+            Organization organization = new Organization(companyNames.get(i), "", positions.get(i), duties.get(i),
+                    startDates.get(i), endDates.get(i));
+            organizationSection.addOrganization(organization);
+        }
+        resume.addSection(sectionType, organizationSection);
+    }
+
+    private static void printContacts(Resume resume) {
+        System.out.println("===========================Contacts===========================");
+        for (ContactType type : ContactType.values()) {
+            System.out.println(type.getTitle() + ": " + resume.getContacts().get(type).getValue());
+        }
+        System.out.println("==============================================================");
+    }
+
+    private static void printSections(Resume resume) {
+        System.out.println("===========================Sections===========================");
+        for (SectionType type : SectionType.values()) {
+            System.out.println("- - - - - - - - - - - - - " + type.getTitle() + "- - - - - - - - - - - - -");
+            System.out.println(resume.getSections().get(type));
+            System.out.println("-------------End of " + type.getTitle() + "---------------------------------");
+        }
+        System.out.println("==============================================================");
+    }
+
+
+    public static void main(String[] args) {
+        Resume resume = fillResume("uudi1", FULLNAME);
         //------------Resume's info printing--------------
         System.out.println("==============================Print resume==============================");
         System.out.println(resume.toString());

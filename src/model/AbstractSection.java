@@ -1,4 +1,4 @@
 package model;
 
-public abstract class AbstractSection {
+abstract class AbstractSection {
 }

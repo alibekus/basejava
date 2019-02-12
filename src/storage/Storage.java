@@ -4,7 +4,7 @@ import model.Resume;
 
 import java.util.List;
 
-public interface Storage {
+interface Storage {
     void clear();
 
     void save(Resume resume);
