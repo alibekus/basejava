@@ -20,11 +20,24 @@ public class OrganizationSection extends AbstractSection {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrganizationSection that = (OrganizationSection) o;
+        return organizations.equals(that.organizations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(organizations);
+    }
+
+    @Override
     public String toString() {
         StringBuilder orgInfoBuilder = new StringBuilder();
         for (int i = 0; i < organizations.size(); i++) {
             if (i > 0) {
-                if (organizations.get(i).getLink().getName().equals(organizations.get(i - 1).getLink().getName())) {
+                if (organizations.get(i).getName().getValue().equals(organizations.get(i - 1).getName().getValue())) {
                     orgInfoBuilder.append("должность: ").append(organizations.get(i).getPosition()).append("\n");
                     orgInfoBuilder.append("обязанности: ").append(organizations.get(i).getDuty()).append("\n");
                     orgInfoBuilder.append("начало работы: ").append(organizations.get(i).getStartDate()).append("\n");
@@ -39,18 +52,5 @@ public class OrganizationSection extends AbstractSection {
         }
 //        orgInfoBuilder.append(org.toString() + '\n');
         return orgInfoBuilder.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OrganizationSection that = (OrganizationSection) o;
-        return organizations.equals(that.organizations);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(organizations);
     }
 }

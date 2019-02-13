@@ -6,7 +6,8 @@ import java.util.Objects;
 
 public class Organization {
 
-    private final Link link;
+    private final Contact name;
+    private final Contact url;
     private final String position;
     private final String duty;
     private final LocalDate startDate;
@@ -18,15 +19,16 @@ public class Organization {
         Objects.requireNonNull(startDate, "startDate must not be null!");
         Objects.requireNonNull(endDate, "endDate must not be null!");
         Objects.requireNonNull(position, "positions must not be null!");
-        this.link = new Link(name, url);
+        this.name = new Contact("организация", name);
+        this.url = new Contact("url", url);
         this.startDate = startDate;
         this.endDate = endDate;
         this.position = position;
         this.duty = duty;
     }
 
-    Link getLink() {
-        return link;
+    Contact getName() {
+        return name;
     }
 
     String getPosition() {
@@ -50,7 +52,7 @@ public class Organization {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return link.equals(that.link) &&
+        return name.equals(that.name) &&
                 position.equals(that.position) &&
                 Objects.equals(duty, that.duty) &&
                 startDate.equals(that.startDate) &&
@@ -59,17 +61,17 @@ public class Organization {
 
     @Override
     public int hashCode() {
-        return Objects.hash(link, position, duty, startDate, endDate);
+        return Objects.hash(name, position, duty, startDate, endDate);
     }
 
     @Override
     public String toString() {
         return "=================================================" + "\n" +
-                "организация = " + link + "\n" +
-                "должность = '" + position + "\'\n" +
-                "обязанности = '" + duty + "\'\n" +
-                "начало работы = " + startDate.format(formatter) + "\n" +
-                "завершение = " + endDate.format(formatter) + "\n" +
+                name + "\n" + url + "\n" +
+                "должность: " + position + "\n" +
+                "обязанности: " + duty + "\n" +
+                "начало работы: " + startDate.format(formatter) + "\n" +
+                "завершение: " + endDate.format(formatter) + "\n" +
                 "-------------------------------------------------";
     }
 }

@@ -11,38 +11,56 @@ import java.util.List;
 
 class ResumeTestData {
 
-    private static final String FULLNAME = "Григорий Кислин";
-    private static final String PHONENUMBER = "+7(921) 855-0482";
-    private static final String SKYPE = "grigory.kislin";
-    private static final String EMAIL = "gkislin@yandex.ru";
-    private static final String LINKEDIN = "https://www.linkedin.com/in/gkislin";
-    private static final String GITHUB = "https://github.com/gkislin";
-    private static final String STACKOVERFLOW = "https://stackoverflow.com/users/548473";
-    private static final String HOMEPAGE = "http://gkislin.ru/";
-    private static final String personalInfo = "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.";
-    private static final String objective = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
-    private static final List<String> companyNames = new ArrayList<>();
-    private static final List<String> jobPositions = new ArrayList<>();
-    private static final List<LocalDate> startJobDates = new ArrayList<>();
-    private static final List<LocalDate> endJobDates = new ArrayList<>();
-    private static final List<String> jobDuties = new ArrayList<>();
-    private static final List<LocalDate> startEduDates = new ArrayList<>();
-    private static final List<LocalDate> endEduDates = new ArrayList<>();
-    private static final List<String> eduDuties = new ArrayList<>();
-    private static final List<String> contactItems = new ArrayList<>();
-    private static final List<String> achievements = new ArrayList<>();
-    private static final List<String> qualifications = new ArrayList<>();
-    private static final List<String> eduNames = new ArrayList<>();
+    private String fullName;
+    private final String uuid;
+    private final String phoneNumber = "+7(921) 855-0482";
+    private final String skype = "grigory.kislin";
+    private final String email = "gkislin@yandex.ru";
+    private final String linkedIn = "https://www.linkedin.com/in/gkislin";
+    private final String gitHub = "https://gitHub.com/gkislin";
+    private final String stackOverflow = "https://stackoverflow.com/users/548473";
+    private final String homePage = "http://gkislin.ru/";
+    private String personalInfo;
+    private String objective;
+    private List<String> companyNames = new ArrayList<>();
+    private List<String> jobPositions = new ArrayList<>();
+    private List<String> jobDuties = new ArrayList<>();
+    private List<LocalDate> startJobDates = new ArrayList<>();
+    private List<LocalDate> endJobDates = new ArrayList<>();
+    private List<String> eduNames = new ArrayList<>();
+    private List<String> eduPositions = new ArrayList<>();
+    private List<String> eduDuties = new ArrayList<>();
+    private List<LocalDate> startEduDates = new ArrayList<>();
+    private List<LocalDate> endEduDates = new ArrayList<>();
+    private List<String> contactItems = new ArrayList<>();
+    private List<String> achievements = new ArrayList<>();
+    private List<String> qualifications = new ArrayList<>();
 
-    static {
-        contactItems.add(PHONENUMBER);
-        contactItems.add(EMAIL);
-        contactItems.add(HOMEPAGE);
-        contactItems.add(LINKEDIN);
-        contactItems.add(GITHUB);
-        contactItems.add(STACKOVERFLOW);
-        contactItems.add(SKYPE);
+    public ResumeTestData(String uuid, String fullName) {
+        this.uuid = uuid;
+        this.fullName = fullName;
+    }
 
+    private void fillContacts() {
+        contactItems.add(phoneNumber);
+        contactItems.add(email);
+        contactItems.add(homePage);
+        contactItems.add(linkedIn);
+        contactItems.add(gitHub);
+        contactItems.add(stackOverflow);
+        contactItems.add(skype);
+    }
+
+    private void fillObjective() {
+        this.objective = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
+    }
+
+    private void fillPersonalInfo() {
+        this.personalInfo = "Аналитический склад ума, сильная логика, креативность, инициативность. " +
+                "Пурист кода и архитектуры.";
+    }
+
+    private void fillAchievements() {
         achievements.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", " +
                 "\"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное " +
                 "взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
@@ -59,7 +77,9 @@ class ResumeTestData {
                 "по JMX (Jython/ Django).");
         achievements.add("Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, " +
                 "Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
+    }
 
+    private void fillQualifications() {
         qualifications.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2.");
         qualifications.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce.");
         qualifications.add("DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle.");
@@ -71,7 +91,9 @@ class ResumeTestData {
                 "ExtGWT/GXT), Vaadin, Jasperreports, Apache Commons, Eclipse SWT, JUnit, Selenium (htmlelements).");
         qualifications.add("Python: Django.");
         qualifications.add("JavaScript: jQuery, ExtJS, Bootstrap.js, underscore.js.");
+    }
 
+    private void fillCompanyNames() {
         companyNames.add("Java Online Projects");
         companyNames.add("Wrike");
         companyNames.add("RIT Center");
@@ -80,7 +102,9 @@ class ResumeTestData {
         companyNames.add("Enkata");
         companyNames.add("Siemens AG");
         companyNames.add("Alcatel");
+    }
 
+    private void fillJobPositions() {
         jobPositions.add("Автор проекта");
         jobPositions.add("Старший разработчик (backend)");
         jobPositions.add("Java архитектор");
@@ -89,76 +113,101 @@ class ResumeTestData {
         jobPositions.add("Разработчик ПО");
         jobPositions.add("Разработчик ПО");
         jobPositions.add("Инженер по аппаратному и программному тестированию");
+    }
 
-        startJobDates.add(DateUtil.of(2013, Month.OCTOBER));
-        startJobDates.add(DateUtil.of(2014, Month.OCTOBER));
-        startJobDates.add(DateUtil.of(2012, Month.APRIL));
-        startJobDates.add(DateUtil.of(2010, Month.DECEMBER));
-        startJobDates.add(DateUtil.of(2008, Month.JUNE));
-        startJobDates.add(DateUtil.of(2007, Month.MARCH));
-        startJobDates.add(DateUtil.of(2005, Month.JANUARY));
-        startJobDates.add(DateUtil.of(1997, Month.SEPTEMBER));
+    private void fillJobStartDates() {
+        startJobDates.add(DateUtil.of(2013,Month.OCTOBER));
+        startJobDates.add(DateUtil.of(2014,Month.OCTOBER));
+        startJobDates.add(DateUtil.of(2012,Month.APRIL));
+        startJobDates.add(DateUtil.of(2010,Month.DECEMBER));
+        startJobDates.add(DateUtil.of(2008,Month.JUNE));
+        startJobDates.add(DateUtil.of(2007,Month.MARCH));
+        startJobDates.add(DateUtil.of(2005,Month.JANUARY));
+        startJobDates.add(DateUtil.of(1997,Month.SEPTEMBER));
+    }
 
-        endJobDates.add(DateUtil.of(9999, Month.DECEMBER));
-        endJobDates.add(DateUtil.of(2016, Month.JANUARY));
-        endJobDates.add(DateUtil.of(2014, Month.OCTOBER));
-        endJobDates.add(DateUtil.of(2012, Month.APRIL));
-        endJobDates.add(DateUtil.of(2010, Month.DECEMBER));
-        endJobDates.add(DateUtil.of(2008, Month.JUNE));
-        endJobDates.add(DateUtil.of(2007, Month.FEBRUARY));
-        endJobDates.add(DateUtil.of(2005, Month.JANUARY));
+    private void fillJobEndDates() {
+        endJobDates.add(DateUtil.of(9999,Month.DECEMBER));
+        endJobDates.add(DateUtil.of(2016,Month.JANUARY));
+        endJobDates.add(DateUtil.of(2014,Month.OCTOBER));
+        endJobDates.add(DateUtil.of(2012,Month.APRIL));
+        endJobDates.add(DateUtil.of(2010,Month.DECEMBER));
+        endJobDates.add(DateUtil.of(2008,Month.JUNE));
+        endJobDates.add(DateUtil.of(2007,Month.FEBRUARY));
+        endJobDates.add(DateUtil.of(2005,Month.JANUARY));
+    }
 
+    private void fillJobDuties() {
         jobDuties.add("Создание, организация и проведение Java онлайн проектов и стажировок.");
-        jobDuties.add("Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, " +
-                "MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, " +
+        jobDuties.add("Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, "+
+                "MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, "+
                 "OAuth2, JWT SSO.");
-        jobDuties.add("Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, " +
-                "ведение CI (Jenkins миграция базы (кастомизация Flyway конфигурирование системы (pgBoucer, " +
-                "Nginx AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, " +
-                "BPMN2, 1C (WebServices сервисов общего назначения (почта, экспорт в pdf, doc, html). " +
-                "Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + " +
-                "plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, " +
+        jobDuties.add("Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, "+
+                "ведение CI (Jenkins миграция базы (кастомизация Flyway конфигурирование системы (pgBoucer, "+
+                "Nginx AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, "+
+                "BPMN2, 1C (WebServices сервисов общего назначения (почта, экспорт в pdf, doc, html). "+
+                "Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + "+
+                "plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, "+
                 "OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python.");
-        jobDuties.add("Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, Spring MVC, SmartGWT, GWT, " +
-                "Jasper, Oracle). Реализация клиентской и серверной части CRM. Реализация RIA-приложения " +
-                "для администрирования, мониторинга и анализа результатов в области алгоритмического трейдинга. " +
+        jobDuties.add("Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, Spring MVC, SmartGWT, GWT, "+
+                "Jasper, Oracle). Реализация клиентской и серверной части CRM. Реализация RIA-приложения "+
+                "для администрирования, мониторинга и анализа результатов в области алгоритмического трейдинга. "+
                 "JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT Highstock, Commet, HTML5.");
-        jobDuties.add("Дизайн и имплементация Java EE фреймворка для отдела \"Платежные Системы\" (GlassFish v2.1, v3, " +
-                "OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, JSP, JMX, JMS, Maven2). Реализация администрирования, " +
+        jobDuties.add("Дизайн и имплементация Java EE фреймворка для отдела \"Платежные Системы\" (GlassFish v2.1, v3, "+
+                "OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, JSP, JMX, JMS, Maven2). Реализация администрирования, "+
                 "статистики и мониторинга фреймворка. Разработка online JMX клиента (Python/ Jython, Django, ExtJS).");
-        jobDuties.add("Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей " +
+        jobDuties.add("Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей "+
                 "кластерного J2EE приложения (OLAP, Data mining).");
-        jobDuties.add("Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной " +
+        jobDuties.add("Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной "+
                 "IN платформе Siemens @vantage (Java, Unix).");
         jobDuties.add("Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM).");
+    }
 
+    private void fillEduOrgs() {
         eduNames.add("Coursera");
         eduNames.add("Luxoft");
         eduNames.add("Siemens AG");
         eduNames.add("Alcatel");
-        eduNames.add("Санкт-Петербургский национальный исследовательский университет информационных технологий, " +
+        eduNames.add("Санкт-Петербургский национальный исследовательский университет информационных технологий, "+
                 "механики и оптики");
-        eduNames.add("Санкт-Петербургский национальный исследовательский университет информационных технологий, " +
+        eduNames.add("Санкт-Петербургский национальный исследовательский университет информационных технологий, "+
                 "механики и оптики");
         eduNames.add("Заочная физико-техническая школа при МФТИ");
+    }
 
-        startEduDates.add(DateUtil.of(2013, Month.MARCH));
-        startEduDates.add(DateUtil.of(2011, Month.MARCH));
-        startEduDates.add(DateUtil.of(2005, Month.JANUARY));
-        startEduDates.add(DateUtil.of(1997, Month.SEPTEMBER));
-        startEduDates.add(DateUtil.of(1993, Month.SEPTEMBER));
-        startEduDates.add(DateUtil.of(1987, Month.SEPTEMBER));
-        startEduDates.add(DateUtil.of(1984, Month.SEPTEMBER));
+    private void fillEduPositions() {
+        eduPositions.add("Слушатель");
+        eduPositions.add("Слушатель");
+        eduPositions.add("Практикант");
+        eduPositions.add("Практикант");
+        eduPositions.add("Аспирант");
+        eduPositions.add("Студент");
+        eduPositions.add("Школьник");
+    }
 
-        endEduDates.add(DateUtil.of(2013, Month.MAY));
-        endEduDates.add(DateUtil.of(2011, Month.APRIL));
-        endEduDates.add(DateUtil.of(2005, Month.APRIL));
-        endEduDates.add(DateUtil.of(1998, Month.MARCH));
-        endEduDates.add(DateUtil.of(1996, Month.JULY));
-        endEduDates.add(DateUtil.of(1993, Month.JULY));
-        endEduDates.add(DateUtil.of(1987, Month.JUNE));
 
-        eduDuties.add("\"Functional Programming Principles in Scala\" by Martin Odersky");
+    private void fillEduStartDates() {
+        startEduDates.add(DateUtil.of(2013,Month.MARCH));
+        startEduDates.add(DateUtil.of(2011,Month.MARCH));
+        startEduDates.add(DateUtil.of(2005,Month.JANUARY));
+        startEduDates.add(DateUtil.of(1997,Month.SEPTEMBER));
+        startEduDates.add(DateUtil.of(1993,Month.SEPTEMBER));
+        startEduDates.add(DateUtil.of(1987,Month.SEPTEMBER));
+        startEduDates.add(DateUtil.of(1984,Month.SEPTEMBER));
+    }
+
+    private void fillEduEndDates() {
+        endEduDates.add(DateUtil.of(2013,Month.MAY));
+        endEduDates.add(DateUtil.of(2011,Month.APRIL));
+        endEduDates.add(DateUtil.of(2005,Month.APRIL));
+        endEduDates.add(DateUtil.of(1998,Month.MARCH));
+        endEduDates.add(DateUtil.of(1996,Month.JULY));
+        endEduDates.add(DateUtil.of(1993,Month.JULY));
+        endEduDates.add(DateUtil.of(1987,Month.JUNE));
+    }
+
+    private void fillEduDuties() {
+        eduDuties.add("Курс \"Functional Programming Principles in Scala\" by Martin Odersky\"");
         eduDuties.add("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML\"");
         eduDuties.add("3 месяца обучения мобильным IN сетям (Берлин)");
         eduDuties.add("6 месяцев обучения цифровым телефонным сетям (Москва)");
@@ -167,10 +216,26 @@ class ResumeTestData {
         eduDuties.add("Закончил с отличием");
     }
 
-    static Resume fillResume(String uuid, String fullName) {
+
+    Resume fillResume() {
         SimpleSection simpleSection;
         ListSection listSection;
         Resume resume = new Resume(uuid, fullName);
+        fillContacts();
+        fillObjective();
+        fillPersonalInfo();
+        fillAchievements();
+        fillQualifications();
+        fillCompanyNames();
+        fillJobPositions();
+        fillJobDuties();
+        fillJobStartDates();
+        fillJobEndDates();
+        fillEduOrgs();
+        fillEduPositions();
+        fillEduDuties();
+        fillEduStartDates();
+        fillEduEndDates();
         System.out.println("=================Entering sections===================");
         for (SectionType sectionType : SectionType.values()) {
             System.out.println("Section: " + sectionType.getTitle());
@@ -196,7 +261,7 @@ class ResumeTestData {
                             startJobDates, endJobDates, resume);
                     break;
                 case EDUCATION:
-                    fillOrganizations(eduNames.size(), sectionType, eduNames, jobPositions, eduDuties,
+                    fillOrganizations(eduNames.size(), sectionType, eduNames, eduPositions, eduDuties,
                             startEduDates, endEduDates, resume);
                     break;
             }
@@ -214,9 +279,9 @@ class ResumeTestData {
         return resume;
     }
 
-    private static void fillOrganizations(int count, SectionType sectionType, List<String> companyNames,
-                                          List<String> positions, List<String> duties, List<LocalDate> startDates,
-                                          List<LocalDate> endDates, Resume resume) {
+    private void fillOrganizations(int count, SectionType sectionType, List<String> companyNames,
+                                   List<String> positions, List<String> duties, List<LocalDate> startDates,
+                                   List<LocalDate> endDates, Resume resume) {
         OrganizationSection organizationSection = new OrganizationSection();
         for (int i = 0; i < count; i++) {
             Organization organization = new Organization(companyNames.get(i), "", positions.get(i), duties.get(i),
@@ -226,15 +291,15 @@ class ResumeTestData {
         resume.addSection(sectionType, organizationSection);
     }
 
-    private static void printContacts(Resume resume) {
+    private void printContacts(Resume resume) {
         System.out.println("===========================Contacts===========================");
         for (ContactType type : ContactType.values()) {
-            System.out.println(type.getTitle() + ": " + resume.getContacts().get(type).getValue());
+            System.out.println(resume.getContacts().get(type));
         }
         System.out.println("==============================================================");
     }
 
-    private static void printSections(Resume resume) {
+    private void printSections(Resume resume) {
         System.out.println("===========================Sections===========================");
         for (SectionType type : SectionType.values()) {
             System.out.println("- - - - - - - - - - - - - " + type.getTitle() + "- - - - - - - - - - - - -");
@@ -246,12 +311,14 @@ class ResumeTestData {
 
 
     public static void main(String[] args) {
-        Resume resume = fillResume("uudi1", FULLNAME);
+        ResumeTestData dataTest = new ResumeTestData("uuid1","Григорий Кислин");
+        Resume resume = dataTest.fillResume();
         //------------Resume's info printing--------------
         System.out.println("==============================Print resume==============================");
         System.out.println(resume.toString());
-        printContacts(resume);
-        printSections(resume);
+        dataTest.printContacts(resume);
+        dataTest.printSections(resume);
     }
+
 }
 

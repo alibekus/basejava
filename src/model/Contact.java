@@ -8,9 +8,13 @@ public class Contact {
     private final String value;
 
     public Contact(String title, String value) {
+        Objects.requireNonNull(title, "title must not be null!");
+        Objects.requireNonNull(value, "value must not be null!");
         this.title = title;
         this.value = value;
     }
+
+    public String getTitle() {return title;}
 
     public String getValue() {
         return value;
@@ -28,5 +32,10 @@ public class Contact {
     @Override
     public int hashCode() {
         return Objects.hash(title, value);
+    }
+
+    @Override
+    public String toString() {
+        return title + ": " + value;
     }
 }
