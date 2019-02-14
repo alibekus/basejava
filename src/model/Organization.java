@@ -6,8 +6,7 @@ import java.util.Objects;
 
 public class Organization {
 
-    private final Contact name;
-    private final Contact url;
+    private final Contact nameLink;
     private final String position;
     private final String duty;
     private final LocalDate startDate;
@@ -19,16 +18,15 @@ public class Organization {
         Objects.requireNonNull(startDate, "startDate must not be null!");
         Objects.requireNonNull(endDate, "endDate must not be null!");
         Objects.requireNonNull(position, "positions must not be null!");
-        this.name = new Contact("организация", name);
-        this.url = new Contact("url", url);
+        this.nameLink = new Contact(name, url);
         this.startDate = startDate;
         this.endDate = endDate;
         this.position = position;
         this.duty = duty;
     }
 
-    Contact getName() {
-        return name;
+    String getName() {
+        return nameLink.getTitle();
     }
 
     String getPosition() {
@@ -52,7 +50,7 @@ public class Organization {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return name.equals(that.name) &&
+        return nameLink.equals(that.nameLink) &&
                 position.equals(that.position) &&
                 Objects.equals(duty, that.duty) &&
                 startDate.equals(that.startDate) &&
@@ -61,13 +59,14 @@ public class Organization {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, position, duty, startDate, endDate);
+        return Objects.hash(nameLink, position, duty, startDate, endDate);
     }
 
     @Override
     public String toString() {
         return "=================================================" + "\n" +
-                name + "\n" + url + "\n" +
+                "организация: " + nameLink.getTitle() + "\n" +
+                "url: " + nameLink.getValue() + "\n" +
                 "должность: " + position + "\n" +
                 "обязанности: " + duty + "\n" +
                 "начало работы: " + startDate.format(formatter) + "\n" +

@@ -1,17 +1,16 @@
 import java.io.File;
 
 class ListFilesMain {
-    private static void printDirectoryContent(File file, String tab) {
+    private static void printDirectoryContent(File file) {
         if (!file.isDirectory()) {
-            System.out.println(tab + "-" + file.getName());
+            System.out.println(file.getName());
         }
         if (file.isDirectory()) {
-            System.out.println(tab + "|");
             File[] structure = file.listFiles();
             if (structure != null) {
                 for (File unit : structure) {
                     if (!unit.getName().equals(".git")) {
-                        printDirectoryContent(unit, tab + "\t");
+                        printDirectoryContent(unit);
                     }
                 }
             }
@@ -21,6 +20,6 @@ class ListFilesMain {
     public static void main(String[] args) {
         File file = new File(".");
         System.out.println(file.getAbsolutePath());
-        printDirectoryContent(file, "\t");
+        printDirectoryContent(file);
     }
 }

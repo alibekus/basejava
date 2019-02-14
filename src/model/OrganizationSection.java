@@ -37,7 +37,7 @@ public class OrganizationSection extends AbstractSection {
         StringBuilder orgInfoBuilder = new StringBuilder();
         for (int i = 0; i < organizations.size(); i++) {
             if (i > 0) {
-                if (organizations.get(i).getName().getValue().equals(organizations.get(i - 1).getName().getValue())) {
+                if (organizations.get(i).getName().equals(organizations.get(i - 1).getName())) {
                     orgInfoBuilder.append("должность: ").append(organizations.get(i).getPosition()).append("\n");
                     orgInfoBuilder.append("обязанности: ").append(organizations.get(i).getDuty()).append("\n");
                     orgInfoBuilder.append("начало работы: ").append(organizations.get(i).getStartDate()).append("\n");
