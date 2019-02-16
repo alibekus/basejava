@@ -5,17 +5,18 @@ import model.Resume;
 import java.util.List;
 
 interface Storage {
-    void clear();
+
+    int size();
+
+    Resume get(String uuid);
+
+    List<Resume> getAllSorted();
 
     void save(Resume resume);
 
     void update(Resume resume);
 
-    Resume get(String uuid);
-
     void delete(String uuid);
 
-    List<Resume> getAllSorted();
-
-    int size();
+    void clear();
 }

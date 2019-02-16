@@ -36,7 +36,7 @@ class ResumeTestData {
     private List<String> achievements = new ArrayList<>();
     private List<String> qualifications = new ArrayList<>();
 
-    public ResumeTestData(String uuid, String fullName) {
+    ResumeTestData(String uuid, String fullName) {
         this.uuid = uuid;
         this.fullName = fullName;
     }
@@ -116,49 +116,49 @@ class ResumeTestData {
     }
 
     private void fillJobStartDates() {
-        startJobDates.add(DateUtil.of(2013,Month.OCTOBER));
-        startJobDates.add(DateUtil.of(2014,Month.OCTOBER));
-        startJobDates.add(DateUtil.of(2012,Month.APRIL));
-        startJobDates.add(DateUtil.of(2010,Month.DECEMBER));
-        startJobDates.add(DateUtil.of(2008,Month.JUNE));
-        startJobDates.add(DateUtil.of(2007,Month.MARCH));
-        startJobDates.add(DateUtil.of(2005,Month.JANUARY));
-        startJobDates.add(DateUtil.of(1997,Month.SEPTEMBER));
+        startJobDates.add(DateUtil.of(2013, Month.OCTOBER));
+        startJobDates.add(DateUtil.of(2014, Month.OCTOBER));
+        startJobDates.add(DateUtil.of(2012, Month.APRIL));
+        startJobDates.add(DateUtil.of(2010, Month.DECEMBER));
+        startJobDates.add(DateUtil.of(2008, Month.JUNE));
+        startJobDates.add(DateUtil.of(2007, Month.MARCH));
+        startJobDates.add(DateUtil.of(2005, Month.JANUARY));
+        startJobDates.add(DateUtil.of(1997, Month.SEPTEMBER));
     }
 
     private void fillJobEndDates() {
-        endJobDates.add(DateUtil.of(9999,Month.DECEMBER));
-        endJobDates.add(DateUtil.of(2016,Month.JANUARY));
-        endJobDates.add(DateUtil.of(2014,Month.OCTOBER));
-        endJobDates.add(DateUtil.of(2012,Month.APRIL));
-        endJobDates.add(DateUtil.of(2010,Month.DECEMBER));
-        endJobDates.add(DateUtil.of(2008,Month.JUNE));
-        endJobDates.add(DateUtil.of(2007,Month.FEBRUARY));
-        endJobDates.add(DateUtil.of(2005,Month.JANUARY));
+        endJobDates.add(DateUtil.of(9999, Month.DECEMBER));
+        endJobDates.add(DateUtil.of(2016, Month.JANUARY));
+        endJobDates.add(DateUtil.of(2014, Month.OCTOBER));
+        endJobDates.add(DateUtil.of(2012, Month.APRIL));
+        endJobDates.add(DateUtil.of(2010, Month.DECEMBER));
+        endJobDates.add(DateUtil.of(2008, Month.JUNE));
+        endJobDates.add(DateUtil.of(2007, Month.FEBRUARY));
+        endJobDates.add(DateUtil.of(2005, Month.JANUARY));
     }
 
     private void fillJobDuties() {
         jobDuties.add("Создание, организация и проведение Java онлайн проектов и стажировок.");
-        jobDuties.add("Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, "+
-                "MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, "+
+        jobDuties.add("Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, " +
+                "MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, " +
                 "OAuth2, JWT SSO.");
-        jobDuties.add("Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, "+
-                "ведение CI (Jenkins миграция базы (кастомизация Flyway конфигурирование системы (pgBoucer, "+
-                "Nginx AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, "+
-                "BPMN2, 1C (WebServices сервисов общего назначения (почта, экспорт в pdf, doc, html). "+
-                "Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + "+
-                "plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, "+
+        jobDuties.add("Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, " +
+                "ведение CI (Jenkins миграция базы (кастомизация Flyway конфигурирование системы (pgBoucer, " +
+                "Nginx AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, " +
+                "BPMN2, 1C (WebServices сервисов общего назначения (почта, экспорт в pdf, doc, html). " +
+                "Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + " +
+                "plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, " +
                 "OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python.");
-        jobDuties.add("Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, Spring MVC, SmartGWT, GWT, "+
-                "Jasper, Oracle). Реализация клиентской и серверной части CRM. Реализация RIA-приложения "+
-                "для администрирования, мониторинга и анализа результатов в области алгоритмического трейдинга. "+
+        jobDuties.add("Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, Spring MVC, SmartGWT, GWT, " +
+                "Jasper, Oracle). Реализация клиентской и серверной части CRM. Реализация RIA-приложения " +
+                "для администрирования, мониторинга и анализа результатов в области алгоритмического трейдинга. " +
                 "JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT Highstock, Commet, HTML5.");
-        jobDuties.add("Дизайн и имплементация Java EE фреймворка для отдела \"Платежные Системы\" (GlassFish v2.1, v3, "+
-                "OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, JSP, JMX, JMS, Maven2). Реализация администрирования, "+
+        jobDuties.add("Дизайн и имплементация Java EE фреймворка для отдела \"Платежные Системы\" (GlassFish v2.1, v3, " +
+                "OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, JSP, JMX, JMS, Maven2). Реализация администрирования, " +
                 "статистики и мониторинга фреймворка. Разработка online JMX клиента (Python/ Jython, Django, ExtJS).");
-        jobDuties.add("Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей "+
+        jobDuties.add("Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей " +
                 "кластерного J2EE приложения (OLAP, Data mining).");
-        jobDuties.add("Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной "+
+        jobDuties.add("Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной " +
                 "IN платформе Siemens @vantage (Java, Unix).");
         jobDuties.add("Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM).");
     }
@@ -168,9 +168,9 @@ class ResumeTestData {
         eduNames.add("Luxoft");
         eduNames.add("Siemens AG");
         eduNames.add("Alcatel");
-        eduNames.add("Санкт-Петербургский национальный исследовательский университет информационных технологий, "+
+        eduNames.add("Санкт-Петербургский национальный исследовательский университет информационных технологий, " +
                 "механики и оптики");
-        eduNames.add("Санкт-Петербургский национальный исследовательский университет информационных технологий, "+
+        eduNames.add("Санкт-Петербургский национальный исследовательский университет информационных технологий, " +
                 "механики и оптики");
         eduNames.add("Заочная физико-техническая школа при МФТИ");
     }
@@ -187,23 +187,23 @@ class ResumeTestData {
 
 
     private void fillEduStartDates() {
-        startEduDates.add(DateUtil.of(2013,Month.MARCH));
-        startEduDates.add(DateUtil.of(2011,Month.MARCH));
-        startEduDates.add(DateUtil.of(2005,Month.JANUARY));
-        startEduDates.add(DateUtil.of(1997,Month.SEPTEMBER));
-        startEduDates.add(DateUtil.of(1993,Month.SEPTEMBER));
-        startEduDates.add(DateUtil.of(1987,Month.SEPTEMBER));
-        startEduDates.add(DateUtil.of(1984,Month.SEPTEMBER));
+        startEduDates.add(DateUtil.of(2013, Month.MARCH));
+        startEduDates.add(DateUtil.of(2011, Month.MARCH));
+        startEduDates.add(DateUtil.of(2005, Month.JANUARY));
+        startEduDates.add(DateUtil.of(1997, Month.SEPTEMBER));
+        startEduDates.add(DateUtil.of(1993, Month.SEPTEMBER));
+        startEduDates.add(DateUtil.of(1987, Month.SEPTEMBER));
+        startEduDates.add(DateUtil.of(1984, Month.SEPTEMBER));
     }
 
     private void fillEduEndDates() {
-        endEduDates.add(DateUtil.of(2013,Month.MAY));
-        endEduDates.add(DateUtil.of(2011,Month.APRIL));
-        endEduDates.add(DateUtil.of(2005,Month.APRIL));
-        endEduDates.add(DateUtil.of(1998,Month.MARCH));
-        endEduDates.add(DateUtil.of(1996,Month.JULY));
-        endEduDates.add(DateUtil.of(1993,Month.JULY));
-        endEduDates.add(DateUtil.of(1987,Month.JUNE));
+        endEduDates.add(DateUtil.of(2013, Month.MAY));
+        endEduDates.add(DateUtil.of(2011, Month.APRIL));
+        endEduDates.add(DateUtil.of(2005, Month.APRIL));
+        endEduDates.add(DateUtil.of(1998, Month.MARCH));
+        endEduDates.add(DateUtil.of(1996, Month.JULY));
+        endEduDates.add(DateUtil.of(1993, Month.JULY));
+        endEduDates.add(DateUtil.of(1987, Month.JUNE));
     }
 
     private void fillEduDuties() {
@@ -283,35 +283,43 @@ class ResumeTestData {
                                    List<String> positions, List<String> duties, List<LocalDate> startDates,
                                    List<LocalDate> endDates, Resume resume) {
         OrganizationSection organizationSection = new OrganizationSection();
+        Organization organization = null;
         for (int i = 0; i < count; i++) {
-            Organization organization = new Organization(companyNames.get(i), "", positions.get(i), duties.get(i),
-                    startDates.get(i), endDates.get(i));
+            if (i == 0) {
+                organization = new Organization(companyNames.get(i), "",
+                        new Organization.Position(startDates.get(i), endDates.get(i), positions.get(i), duties.get(i)));
+            }
+            if (i > 0) {
+                if (companyNames.get(i).equals(companyNames.get(i - 1))) {
+                    Organization.Position position = new Organization.Position(startDates.get(i), endDates.get(i),
+                            positions.get(i), duties.get(i));
+                    organization.addPosition(position);
+                }
+                organization = new Organization(companyNames.get(i), "",
+                        new Organization.Position(startDates.get(i), endDates.get(i), positions.get(i), duties.get(i)));
+            }
             organizationSection.addOrganization(organization);
         }
         resume.addSection(sectionType, organizationSection);
     }
 
     private void printContacts(Resume resume) {
-        System.out.println("===========================Contacts===========================");
+        System.out.println("- - - - - - - - - - - - - Контакты- - - - - - - - - - - - - ");
         for (ContactType type : ContactType.values()) {
             System.out.println(resume.getContacts().get(type));
         }
-        System.out.println("==============================================================");
     }
 
     private void printSections(Resume resume) {
-        System.out.println("===========================Sections===========================");
         for (SectionType type : SectionType.values()) {
             System.out.println("- - - - - - - - - - - - - " + type.getTitle() + "- - - - - - - - - - - - -");
             System.out.println(resume.getSections().get(type));
-            System.out.println("-------------End of " + type.getTitle() + "---------------------------------");
         }
-        System.out.println("==============================================================");
     }
 
 
     public static void main(String[] args) {
-        ResumeTestData dataTest = new ResumeTestData("uuid1","Григорий Кислин");
+        ResumeTestData dataTest = new ResumeTestData("uuid1", "Григорий Кислин");
         Resume resume = dataTest.fillResume();
         //------------Resume's info printing--------------
         System.out.println("==============================Print resume==============================");

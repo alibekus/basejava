@@ -1,9 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Contact {
+public class Contact implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private final String title;
     private final String value;
 
@@ -14,7 +16,7 @@ public class Contact {
         this.value = value;
     }
 
-    public String getTitle() {return title;}
+    String getTitle() {return title;}
 
     public String getValue() {
         return value;

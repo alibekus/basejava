@@ -4,10 +4,14 @@ import java.util.*;
 
 public class OrganizationSection extends AbstractSection {
 
+    private static final long serialVersionUID = 1L;
     private final List<Organization> organizations;
-
     public OrganizationSection() {
         organizations = new ArrayList<>();
+    }
+
+    public OrganizationSection(Organization... organizations) {
+        this.organizations = Arrays.asList(organizations);
     }
 
     public OrganizationSection(List<Organization> organizations) {
@@ -35,22 +39,9 @@ public class OrganizationSection extends AbstractSection {
     @Override
     public String toString() {
         StringBuilder orgInfoBuilder = new StringBuilder();
-        for (int i = 0; i < organizations.size(); i++) {
-            if (i > 0) {
-                if (organizations.get(i).getName().equals(organizations.get(i - 1).getName())) {
-                    orgInfoBuilder.append("должность: ").append(organizations.get(i).getPosition()).append("\n");
-                    orgInfoBuilder.append("обязанности: ").append(organizations.get(i).getDuty()).append("\n");
-                    orgInfoBuilder.append("начало работы: ").append(organizations.get(i).getStartDate()).append("\n");
-                    orgInfoBuilder.append("завершение: ").append(organizations.get(i).getEndDate()).append("\n");
-                    orgInfoBuilder.append("-------------------------------------------------\n");
-                } else {
-                    orgInfoBuilder.append(organizations.get(i).toString()).append("\n");
-                }
-            } else {
-                orgInfoBuilder.append(organizations.get(i).toString()).append("\n");
-            }
+        for (Organization org : organizations) {
+            orgInfoBuilder.append(org.toString() + '\n');
         }
-//        orgInfoBuilder.append(org.toString() + '\n');
         return orgInfoBuilder.toString();
     }
 }

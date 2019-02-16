@@ -7,6 +7,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,12 +21,6 @@ public class AbstractStorageTest {
     private static final String UUID4 = "uuid4";
     private static final String UUID5 = "uuid5";
 
-    /*private static final Resume RESUME1 = new Resume(UUID1, "FullName1");
-    private static final Resume RESUME2 = new Resume(UUID2, "FullName2");
-    private static final Resume RESUME3 = new Resume(UUID3, "FullName3");
-    private static final Resume RESUME4 = new Resume(UUID4, "FullName4");
-    private static final Resume RESUME5 = new Resume(UUID5, "FullName5");*/
-
     private static final Resume RESUME1 = new ResumeTestData(UUID1, "FullName1").fillResume();
     private static final Resume RESUME2 = new ResumeTestData(UUID2, "FullName2").fillResume();
     private static final Resume RESUME3 = new ResumeTestData(UUID3, "FullName3").fillResume();
@@ -31,6 +28,8 @@ public class AbstractStorageTest {
     private static final Resume RESUME5 = new ResumeTestData(UUID5, "FullName5").fillResume();
 
     final Storage storage;
+
+    protected static final File STORAGE_DIR = new File("TestStorageDir");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -102,7 +101,7 @@ public class AbstractStorageTest {
     public void update() {
         Resume updateResume = new Resume(UUID1,"Dummy");
         storage.update(updateResume);
-        Assert.assertSame(updateResume, storage.get(UUID1));
+        Assert.assertEquals(storage.get(UUID1),updateResume);
     }
 
     @Test(expected = NotExistStorageException.class)
