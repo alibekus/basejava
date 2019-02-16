@@ -4,7 +4,7 @@ import model.Resume;
 
 import java.util.List;
 
-interface Storage {
+public interface Storage {
 
     int size();
 
