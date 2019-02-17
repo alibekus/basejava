@@ -11,8 +11,8 @@ import java.util.List;
 
 class ResumeTestData {
 
-    private String fullName;
-    private final String uuid;
+    private static ResumeTestData instance;
+
     private final String phoneNumber = "+7(921) 855-0482";
     private final String skype = "grigory.kislin";
     private final String email = "gkislin@yandex.ru";
@@ -36,9 +36,11 @@ class ResumeTestData {
     private List<String> achievements = new ArrayList<>();
     private List<String> qualifications = new ArrayList<>();
 
-    ResumeTestData(String uuid, String fullName) {
-        this.uuid = uuid;
-        this.fullName = fullName;
+    public static Resume getResumeInstance(String uuid, String fullName) {
+        if (instance == null) {
+            instance = new ResumeTestData();
+        }
+        return instance.fillResume(uuid, fullName);
     }
 
     private void fillContacts() {
@@ -50,6 +52,8 @@ class ResumeTestData {
         contactItems.add(stackOverflow);
         contactItems.add(skype);
     }
+
+
 
     private void fillObjective() {
         this.objective = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
@@ -217,7 +221,7 @@ class ResumeTestData {
     }
 
 
-    Resume fillResume() {
+    Resume fillResume(String uuid, String fullName) {
         SimpleSection simpleSection;
         ListSection listSection;
         Resume resume = new Resume(uuid, fullName);
@@ -319,8 +323,8 @@ class ResumeTestData {
 
 
     public static void main(String[] args) {
-        ResumeTestData dataTest = new ResumeTestData("uuid1", "Григорий Кислин");
-        Resume resume = dataTest.fillResume();
+        ResumeTestData dataTest = new ResumeTestData();
+        Resume resume = dataTest.getResumeInstance("uuid1", "Григорий Кислин");
         //------------Resume's info printing--------------
         System.out.println("==============================Print resume==============================");
         System.out.println(resume.toString());

@@ -2,7 +2,7 @@ package storage;
 
 import exception.StorageException;
 import model.Resume;
-import serialization.SerializationStrategy;
+import storage.serialization.StorageSerialization;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,12 +13,12 @@ public class FileStorage extends AbstractStorage<File> {
 
     private File directory;
 
-    private SerializationStrategy serialization;
+    private StorageSerialization serializer;
 
-    protected FileStorage(File directory, SerializationStrategy serialization) {
+    protected FileStorage(File directory, StorageSerialization serializer) {
         Objects.requireNonNull(directory, "directory must not be null");
         this.directory = directory;
-        this.serialization = serialization;
+        this.serializer = serializer;
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
         }
@@ -40,7 +40,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            return serialization.doRead(new BufferedInputStream(new FileInputStream(file)));
+            return serializer.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("File read error!", file.getName(), e);
         }
@@ -49,9 +49,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doSave(File file, Resume resume) {
         try {
-            if (file.createNewFile()) {
-                serialization.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
-            }
+            serializer.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Couldn't create file " + file.getAbsolutePath(), file.getName(), e);
         }
@@ -61,7 +59,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(File file, Resume resume) {
         try {
-            serialization.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            serializer.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("File write error", resume.getUuid(), e);
         }

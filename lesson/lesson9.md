@@ -9,7 +9,7 @@
 - <a href="http://www.intuit.ru/studies/courses/16/16/lecture/27133?page=4">Классы Reader и Writer.</a>
  
 ## Сериализация
-- <a href="http://www.intuit.ru/studies/courses/16/16/lecture/27133?page=3">Сериализация объектов (serialization)</a>
+- <a href="http://www.intuit.ru/studies/courses/16/16/lecture/27133?page=3">Сериализация объектов (storage.serializer)</a>
 - Реализация Storage используя <a href="https://habrahabr.ru/post/60317/">сериализацию</a>.
  
 ## NIO

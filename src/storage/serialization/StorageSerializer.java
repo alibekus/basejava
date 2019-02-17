@@ -1,11 +1,11 @@
-package serialization;
+package storage.serialization;
 
 import exception.StorageException;
 import model.Resume;
 
 import java.io.*;
 
-public class StorageSerialization implements SerializationStrategy {
+public class StorageSerializer implements StorageSerialization {
 
     public void doWrite(Resume resume, OutputStream os) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(os)) {

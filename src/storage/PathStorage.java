@@ -2,7 +2,7 @@ package storage;
 
 import exception.StorageException;
 import model.Resume;
-import serialization.SerializationStrategy;
+import storage.serialization.StorageSerialization;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -18,12 +18,12 @@ import java.util.stream.Stream;
 public class PathStorage extends AbstractStorage<Path> {
 
     private Path directory;
-    private SerializationStrategy serialization;
+    private StorageSerialization serializer;
 
-    protected PathStorage(String dir, SerializationStrategy serialization) {
+    protected PathStorage(String dir, StorageSerialization serializer) {
+        Objects.requireNonNull(dir, "directory must not be null");
         directory = Paths.get(dir);
-        Objects.requireNonNull(directory, "directory must not be null");
-        this.serialization = serialization;
+        this.serializer = serializer;
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
@@ -42,9 +42,9 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path searchKey) {
         try {
-            return serialization.doRead(new BufferedInputStream(Files.newInputStream(searchKey)));
+            return serializer.doRead(new BufferedInputStream(Files.newInputStream(searchKey)));
         } catch (IOException e) {
-            throw new StorageException("Path read error", searchKey.toString(), e);
+            throw new StorageException("Path read error", searchKey.getFileName().toString(), e);
         }
     }
 
@@ -53,7 +53,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.createFile(searchKey);
         } catch (IOException e) {
-            throw new StorageException("Couldn't create Path " + searchKey.toString(),
+            throw new StorageException("Couldn't create Path " + searchKey.getFileName().toString(),
                     searchKey.getFileName().toString(), e);
         }
         doUpdate(searchKey, resume);
@@ -62,7 +62,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Path searchKey, Resume resume) {
         try {
-            serialization.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(searchKey)));
+            serializer.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(searchKey)));
         } catch (IOException e) {
             throw new StorageException("Path write error", searchKey.getFileName().toString(), e);
         }
@@ -71,10 +71,10 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doDelete(Path searchKey) {
         try {
-            Files.deleteIfExists(searchKey);
+            Files.delete(searchKey);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new StorageException("Path " + searchKey.toString() + " delete error", searchKey.toString());
+            throw new StorageException("Path delete error", searchKey.getFileName().toString());
         }
     }
 
@@ -90,9 +90,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public int size() {
-        int i = 0;
-        i = (int) getPathStream().count();
-        return i;
+        return (int) getPathStream().count();
     }
 
     private Stream<Path> getPathStream() {

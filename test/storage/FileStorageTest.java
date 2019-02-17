@@ -1,10 +1,10 @@
 package storage;
 
-import serialization.StorageSerialization;
+import storage.serialization.StorageSerializer;
 
 public class FileStorageTest extends AbstractStorageTest {
     public FileStorageTest() {
-        super(new FileStorage(STORAGE_DIR, new StorageSerialization()));
+        super(new FileStorage(STORAGE_DIR, new StorageSerializer()));
     }
 
 }
