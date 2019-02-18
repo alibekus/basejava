@@ -1,8 +1,11 @@
 package model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.*;
 
-public class OrganizationSection extends AbstractSection {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class OrganizationSection extends Section {
 
     private static final long serialVersionUID = 1L;
     private final List<Organization> organizations;
@@ -23,6 +26,19 @@ public class OrganizationSection extends AbstractSection {
         organizations.add(organization);
     }
 
+    public List<Organization> getOrganizations() {
+        return organizations;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder orgInfoBuilder = new StringBuilder();
+        for (Organization org : organizations) {
+            orgInfoBuilder.append(org.toString() + '\n');
+        }
+        return orgInfoBuilder.toString();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -34,14 +50,5 @@ public class OrganizationSection extends AbstractSection {
     @Override
     public int hashCode() {
         return Objects.hash(organizations);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder orgInfoBuilder = new StringBuilder();
-        for (Organization org : organizations) {
-            orgInfoBuilder.append(org.toString() + '\n');
-        }
-        return orgInfoBuilder.toString();
     }
 }

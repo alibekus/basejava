@@ -1,10 +1,13 @@
 package model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection extends AbstractSection {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class ListSection extends Section {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,6 +22,9 @@ public class ListSection extends AbstractSection {
         this.items = items;
     }
 
+    public List<String> getItems() {
+        return items;
+    }
 
     @Override
     public String toString() {

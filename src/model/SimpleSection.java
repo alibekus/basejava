@@ -1,11 +1,17 @@
 package model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Objects;
 
-public class SimpleSection extends AbstractSection {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class SimpleSection extends Section {
 
     private static final long serialVersionUID = 1L;
-    private final String description;
+    private String description;
+
+    public SimpleSection() {
+    }
 
     public SimpleSection(String description) {
         Objects.requireNonNull(description, "description must not be null!");

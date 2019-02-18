@@ -5,7 +5,7 @@ import model.Resume;
 
 import java.io.*;
 
-public class StorageSerializer implements StorageSerialization {
+public class ObjectSerializer implements Serialization {
 
     public void doWrite(Resume resume, OutputStream os) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(os)) {

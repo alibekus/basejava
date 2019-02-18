@@ -2,7 +2,7 @@ package storage;
 
 import exception.StorageException;
 import model.Resume;
-import storage.serialization.StorageSerialization;
+import storage.serialization.Serialization;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,9 +13,9 @@ public class FileStorage extends AbstractStorage<File> {
 
     private File directory;
 
-    private StorageSerialization serializer;
+    private Serialization serializer;
 
-    protected FileStorage(File directory, StorageSerialization serializer) {
+    protected FileStorage(File directory, Serialization serializer) {
         Objects.requireNonNull(directory, "directory must not be null");
         this.directory = directory;
         this.serializer = serializer;

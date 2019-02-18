@@ -1,10 +1,10 @@
 package storage;
 
-import storage.serialization.StorageSerializer;
+import storage.serialization.ObjectSerializer;
 
 public class PathStorageTest extends AbstractStorageTest {
 
     public PathStorageTest() {
-        super(new PathStorage(STORAGE_DIR.getPath(), new StorageSerializer()));
+        super(new PathStorage(STORAGE_DIR.getPath(), new ObjectSerializer()));
     }
 }

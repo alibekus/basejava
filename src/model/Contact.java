@@ -1,13 +1,19 @@
 package model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Contact implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private final String title;
-    private final String value;
+    private String title;
+    private String value;
+
+    public Contact() {
+    }
 
     public Contact(String title, String value) {
         Objects.requireNonNull(title, "title must not be null!");
@@ -16,10 +22,14 @@ public class Contact implements Serializable {
         this.value = value;
     }
 
-    String getTitle() {return title;}
+    public String getTitle() {return title;}
 
     public String getValue() {
         return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override

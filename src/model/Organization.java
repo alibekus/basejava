@@ -1,7 +1,11 @@
 package model;
 
 import util.DateUtil;
+import util.LocalDateAdapter;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -10,19 +14,31 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private final Contact nameLink;
+    private Contact nameLink;
     private List<Position> positions;
+
+    public Organization() {
+    }
 
     public Organization(String name, String url, Position... positions) {
         this(name, url, Arrays.asList(positions));
     }
 
-    private Organization(String name, String url, List<Position> positions) {
+    public Organization(String name, String url, List<Position> positions) {
         this.nameLink = new Contact(name, url);
         this.positions = new ArrayList<>(positions);
+    }
+
+    public Contact getNameLink() {
+        return nameLink;
+    }
+
+    public List<Position> getPositions() {
+        return positions;
     }
 
     String getName() {
@@ -55,14 +71,20 @@ public class Organization implements Serializable {
                 + "\n-------------------------------------------------------";
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable {
 
         private static final long serialVersionUID = 1L;
-        private final LocalDate startDate;
-        private final LocalDate endDate;
-        private final String title;
-        private final String description;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate startDate;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate endDate;
+        private String title;
+        private String description;
         private transient final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+
+        public Position() {
+        }
 
         public Position(LocalDate startDate, String title, String description) {
             this(startDate, DateUtil.NOW, title, description);
