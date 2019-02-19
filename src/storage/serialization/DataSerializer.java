@@ -1,14 +1,28 @@
 package storage.serialization;
 
+import exception.StorageException;
 import model.*;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+
+import static model.Organization.Position;
 
 public class DataSerializer implements Serialization {
+
+
+    private <T> void writeData(Collection<T> collection, DataOutputStream dos, Consumer<T> consumer)
+            throws IOException {
+        dos.writeInt(collection.size());
+        for (T s : collection) {
+            consumer.accept(s);
+        }
+    }
 
     @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {
@@ -21,7 +35,6 @@ public class DataSerializer implements Serialization {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue().getValue());
             }
-            // TO DO implements sections
             Map<SectionType, Section> sections = resume.getSections();
             dos.writeInt(sections.size());
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
@@ -35,28 +48,37 @@ public class DataSerializer implements Serialization {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATION:
-                        List<String> items = ((ListSection) section).getItems();
-                        dos.writeInt(items.size());
-                        for (String item : items) {
-                            dos.writeUTF(item);
-                        }
+                        writeData(((ListSection) section).getItems(), dos, s -> {
+                            try {
+                                dos.writeUTF(s);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                throw new StorageException("Data writing error", s, e);
+                            }
+                        });
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
-                        List<Organization> orgs = ((OrganizationSection) section).getOrganizations();
-                        dos.writeInt(orgs.size());
-                        for (Organization org : orgs) {
-                            dos.writeUTF(org.getNameLink().getTitle());
-                            dos.writeUTF(org.getNameLink().getValue());
-                            List<Organization.Position> positions = org.getPositions();
-                            dos.writeInt(positions.size());
-                            for (Organization.Position pos : org.getPositions()) {
-                                dos.writeUTF(pos.getStartDate().toString());
-                                dos.writeUTF(pos.getEndDate().toString());
-                                dos.writeUTF(pos.getTitle());
-                                dos.writeUTF(pos.getDescription());
+                        writeData(((OrganizationSection) section).getOrganizations(), dos, org -> {
+                            try {
+                                dos.writeUTF(org.getNameLink().getTitle());
+                                dos.writeUTF(org.getNameLink().getValue());
+                                writeData(org.getPositions(), dos, pos -> {
+                                    try {
+                                        dos.writeUTF(pos.getStartDate().toString());
+                                        dos.writeUTF(pos.getEndDate().toString());
+                                        dos.writeUTF(pos.getTitle());
+                                        dos.writeUTF(pos.getDescription());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                        throw new StorageException("Data writing error", pos.toString(), e);
+                                    }
+                                });
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                throw new StorageException("Data writing error", org.toString(), e);
                             }
-                        }
+                        });
                 }
             }
         }
@@ -75,7 +97,6 @@ public class DataSerializer implements Serialization {
                 Contact contact = new Contact(type.getTitle(), contactValue);
                 resume.addContact(type, contact);
             }
-            // TO DO implements sections
             int sectionsCount = dis.readInt();
             for (int i = 0; i < sectionsCount; i++) {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
@@ -101,13 +122,13 @@ public class DataSerializer implements Serialization {
                             String name = dis.readUTF();
                             String url = dis.readUTF();
                             int positionCounts = dis.readInt();
-                            List<Organization.Position> positions = new ArrayList<>();
+                            List<Position> positions = new ArrayList<>();
                             for (int k = 0; k < positionCounts; k++) {
                                 LocalDate startDate = LocalDate.parse(dis.readUTF());
                                 LocalDate endDate = LocalDate.parse(dis.readUTF());
                                 String title = dis.readUTF();
                                 String desc = dis.readUTF();
-                                positions.add(new Organization.Position(startDate, endDate, title, desc));
+                                positions.add(new Position(startDate, endDate, title, desc));
                             }
                             orgSection.addOrganization(new Organization(name, url, positions));
                         }
