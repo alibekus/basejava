@@ -1,7 +1,6 @@
 package storage.serialization;
 
 import model.*;
-import storage.DataSerialization;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -14,11 +13,23 @@ import static model.Organization.Position;
 
 public class DataSerializer implements Serialization {
 
-    private <T> void writeData(Collection<T> collection, DataOutputStream dos, DataSerialization<T> dataSerializer)
+    public interface DataConsumer<T> {
+        void consume(T data) throws IOException;
+    }
+
+    private <T> void writeData(Collection<T> collection, DataOutputStream dos, DataConsumer<T> dataConsumer)
             throws IOException {
         dos.writeInt(collection.size());
         for (T s : collection) {
-            dataSerializer.dataSerialize(s);
+            dataConsumer.consume(s);
+        }
+    }
+
+    private <T> void readData(T data, DataInputStream dis, DataConsumer<T> dataConsumer)
+            throws IOException {
+        int count = dis.readInt();
+        for (int i = 0; i < count; i++) {
+            dataConsumer.consume(data);
         }
     }
 
@@ -44,9 +55,7 @@ public class DataSerializer implements Serialization {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATION:
-                        writeData(((ListSection) section).getItems(), dos, s -> {
-                            dos.writeUTF(s);
-                        });
+                        writeData(((ListSection) section).getItems(), dos, dos::writeUTF);
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
@@ -71,51 +80,44 @@ public class DataSerializer implements Serialization {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            int contactsCount = dis.readInt();
-            for (int i = 0; i < contactsCount; i++) {
+            readData(resume, dis, resume1 -> {
                 ContactType type = ContactType.valueOf(dis.readUTF());
                 String contactValue = dis.readUTF();
                 Contact contact = new Contact(type.getTitle(), contactValue);
-                resume.addContact(type, contact);
-            }
-            int sectionsCount = dis.readInt();
-            for (int i = 0; i < sectionsCount; i++) {
+                resume1.addContact(type, contact);
+            });
+            readData(resume, dis, resume1 -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
                     case OBJECTIVE:
                     case PERSONAL:
-                        resume.addSection(sectionType, new SimpleSection(dis.readUTF()));
+                        resume1.addSection(sectionType, new SimpleSection(dis.readUTF()));
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATION:
-                        int itemCounts = dis.readInt();
                         List<String> items = new ArrayList<>();
-                        for (int j = 0; j < itemCounts; j++) {
-                            items.add(dis.readUTF());
-                        }
-                        resume.addSection(sectionType, new ListSection(items));
+                        readData(resume1, dis, resume2 -> items.add(dis.readUTF()));
+                        resume1.addSection(sectionType, new ListSection(items));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        int orgCounts = dis.readInt();
                         OrganizationSection orgSection = new OrganizationSection();
-                        for (int j = 0; j < orgCounts; j++) {
+                        readData(resume1, dis, resume2 -> {
                             String name = dis.readUTF();
                             String url = dis.readUTF();
-                            int positionCounts = dis.readInt();
                             List<Position> positions = new ArrayList<>();
-                            for (int k = 0; k < positionCounts; k++) {
+                            readData(resume1, dis, resume3 -> {
                                 LocalDate startDate = LocalDate.parse(dis.readUTF());
                                 LocalDate endDate = LocalDate.parse(dis.readUTF());
                                 String title = dis.readUTF();
                                 String desc = dis.readUTF();
                                 positions.add(new Position(startDate, endDate, title, desc));
-                            }
+                            });
                             orgSection.addOrganization(new Organization(name, url, positions));
-                        }
-                        resume.addSection(sectionType, orgSection);
+                        });
+                        resume1.addSection(sectionType, orgSection);
                 }
-            }
+            });
             return resume;
         }
     }
