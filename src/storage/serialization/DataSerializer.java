@@ -1,7 +1,7 @@
 package storage.serialization;
 
-import exception.StorageException;
 import model.*;
+import storage.DataSerialization;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -9,18 +9,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import static model.Organization.Position;
 
 public class DataSerializer implements Serialization {
 
-
-    private <T> void writeData(Collection<T> collection, DataOutputStream dos, Consumer<T> consumer)
+    private <T> void writeData(Collection<T> collection, DataOutputStream dos, DataSerialization<T> dataSerializer)
             throws IOException {
         dos.writeInt(collection.size());
         for (T s : collection) {
-            consumer.accept(s);
+            dataSerializer.dataSerialize(s);
         }
     }
 
@@ -30,15 +28,13 @@ public class DataSerializer implements Serialization {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
             Map<ContactType, Contact> contacts = resume.getContacts();
-            dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, Contact> entry : contacts.entrySet()) {
-                dos.writeUTF(entry.getKey().name());
-                dos.writeUTF(entry.getValue().getValue());
-            }
+            writeData(contacts.entrySet(), dos, contactEntry -> {
+                dos.writeUTF(contactEntry.getKey().name());
+                dos.writeUTF(contactEntry.getValue().getValue());
+            });
             Map<SectionType, Section> sections = resume.getSections();
-            dos.writeInt(sections.size());
-            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
-                SectionType sectionType = entry.getKey();
+            writeData(sections.entrySet(), dos, sectionEntry -> {
+                SectionType sectionType = sectionEntry.getKey();
                 dos.writeUTF(sectionType.name());
                 Section section = resume.getSections().get(sectionType);
                 switch (sectionType) {
@@ -49,38 +45,23 @@ public class DataSerializer implements Serialization {
                     case ACHIEVEMENT:
                     case QUALIFICATION:
                         writeData(((ListSection) section).getItems(), dos, s -> {
-                            try {
-                                dos.writeUTF(s);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                throw new StorageException("Data writing error", s, e);
-                            }
+                            dos.writeUTF(s);
                         });
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
                         writeData(((OrganizationSection) section).getOrganizations(), dos, org -> {
-                            try {
-                                dos.writeUTF(org.getNameLink().getTitle());
-                                dos.writeUTF(org.getNameLink().getValue());
-                                writeData(org.getPositions(), dos, pos -> {
-                                    try {
-                                        dos.writeUTF(pos.getStartDate().toString());
-                                        dos.writeUTF(pos.getEndDate().toString());
-                                        dos.writeUTF(pos.getTitle());
-                                        dos.writeUTF(pos.getDescription());
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                        throw new StorageException("Data writing error", pos.toString(), e);
-                                    }
-                                });
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                throw new StorageException("Data writing error", org.toString(), e);
-                            }
+                            dos.writeUTF(org.getNameLink().getTitle());
+                            dos.writeUTF(org.getNameLink().getValue());
+                            writeData(org.getPositions(), dos, pos -> {
+                                dos.writeUTF(pos.getStartDate().toString());
+                                dos.writeUTF(pos.getEndDate().toString());
+                                dos.writeUTF(pos.getTitle());
+                                dos.writeUTF(pos.getDescription());
+                            });
                         });
                 }
-            }
+            });
         }
     }
 
