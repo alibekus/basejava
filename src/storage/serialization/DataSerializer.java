@@ -13,23 +13,27 @@ import static model.Organization.Position;
 
 public class DataSerializer implements Serialization {
 
-    public interface DataConsumer<T> {
-        void consume(T data) throws IOException;
+    private interface DataWriter<T> {
+        void write(T data) throws IOException;
     }
 
-    private <T> void writeData(Collection<T> collection, DataOutputStream dos, DataConsumer<T> dataConsumer)
+    private interface DataReader {
+        void read() throws IOException;
+    }
+
+    private <T> void writeData(Collection<T> collection, DataOutputStream dos, DataWriter<T> dataWriter)
             throws IOException {
         dos.writeInt(collection.size());
         for (T s : collection) {
-            dataConsumer.consume(s);
+            dataWriter.write(s);
         }
     }
 
-    private <T> void readData(T data, DataInputStream dis, DataConsumer<T> dataConsumer)
+    private void readData(DataInputStream dis, DataReader dataReader)
             throws IOException {
         int count = dis.readInt();
         for (int i = 0; i < count; i++) {
-            dataConsumer.consume(data);
+            dataReader.read();
         }
     }
 
@@ -80,33 +84,33 @@ public class DataSerializer implements Serialization {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            readData(resume, dis, resume1 -> {
+            readData(dis, () -> {
                 ContactType type = ContactType.valueOf(dis.readUTF());
                 String contactValue = dis.readUTF();
                 Contact contact = new Contact(type.getTitle(), contactValue);
-                resume1.addContact(type, contact);
+                resume.addContact(type, contact);
             });
-            readData(resume, dis, resume1 -> {
+            readData(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
                     case OBJECTIVE:
                     case PERSONAL:
-                        resume1.addSection(sectionType, new SimpleSection(dis.readUTF()));
+                        resume.addSection(sectionType, new SimpleSection(dis.readUTF()));
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATION:
                         List<String> items = new ArrayList<>();
-                        readData(resume1, dis, resume2 -> items.add(dis.readUTF()));
-                        resume1.addSection(sectionType, new ListSection(items));
+                        readData(dis, () -> items.add(dis.readUTF()));
+                        resume.addSection(sectionType, new ListSection(items));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
                         OrganizationSection orgSection = new OrganizationSection();
-                        readData(resume1, dis, resume2 -> {
+                        readData(dis, () -> {
                             String name = dis.readUTF();
                             String url = dis.readUTF();
                             List<Position> positions = new ArrayList<>();
-                            readData(resume1, dis, resume3 -> {
+                            readData(dis, () -> {
                                 LocalDate startDate = LocalDate.parse(dis.readUTF());
                                 LocalDate endDate = LocalDate.parse(dis.readUTF());
                                 String title = dis.readUTF();
@@ -115,7 +119,7 @@ public class DataSerializer implements Serialization {
                             });
                             orgSection.addOrganization(new Organization(name, url, positions));
                         });
-                        resume1.addSection(sectionType, orgSection);
+                        resume.addSection(sectionType, orgSection);
                 }
             });
             return resume;
