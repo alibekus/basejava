@@ -1,3 +1,5 @@
+package singleton;
+
 public class LazySingleton {
 
     private static volatile LazySingleton INSTANCE;

@@ -1,3 +1,5 @@
+package concurrency;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class MainConcurrency {
 
     private synchronized void inc() {
 //        synchronized (this) {
-//        synchronized (MainConcurrency.class) {
+//        synchronized (concurrency.MainConcurrency.class) {
         counter++;
 //                wait();
 //                readFile
