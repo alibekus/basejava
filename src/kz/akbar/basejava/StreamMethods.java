@@ -1,5 +1,6 @@
 package kz.akbar.basejava;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,39 +10,31 @@ public class StreamMethods {
 
     /**
      * accepts array of integer numbers, each number from 1 to 9,
-     * remove duplicates and compose one number from unique digits in minimal value
+     * removes duplicates and compose one number from unique digits in minimal value
+     *
      * @param values - array of int
      * @return - composed from unique number of values in minimal value
      */
     private static int minValue(int[] values) {
-
-        return Arrays.stream(values).sorted().distinct().reduce(0, (left, right) -> {
-            long number = 0;
-            int[] digits = Arrays.stream(values).sorted().distinct().toArray();
-
-            for (int i = 0; i < digits.length; i++) {
-                number += (long) Math.pow(10, digits.length - i - 1) * digits[i];
-            }
-            return (int) number;
-        });
+        return Arrays.stream(values).sorted().distinct().reduce(0, (left, right) -> left * 10 + right);
     }
 
     /**
      * accepts list of Integer objects, calculate sum of integers, in dependence of odd or even sum,
-     * remove odd or even numbers from list
+     * removes odd or even numbers from list
+     *
      * @param integers - list of Integers
      * @return - list of only with odd or even integers.
      */
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
-
-        return integers.stream().mapToInt(value -> value).filter(value -> {
-            if (integers.stream().mapToInt(value1 -> value1).sum() % 2 == 0) {
-                return value % 2 != 0;
-            } else {
-                return value % 2 == 0;
-            }
-        }).boxed().collect(Collectors.toList());
+        if (integers.stream().mapToInt(value -> value).sum() % 2 == 0) {
+            return integers.stream().mapToInt(value -> value).filter(value -> value % 2 != 0)
+                    .boxed().collect(Collectors.toList());
+        } else {
+            return integers.stream().mapToInt(value -> value).filter(value -> value % 2 == 0)
+                    .boxed().collect(Collectors.toList());
+        }
     }
 
     public static void main(String[] args) {
