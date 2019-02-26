@@ -1,10 +1,13 @@
 package kz.akbar.basejava.storage;
 
+import kz.akbar.basejava.Config;
 import kz.akbar.basejava.exception.ExistStorageException;
 import kz.akbar.basejava.exception.NotExistStorageException;
 import kz.akbar.basejava.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
+
+
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
@@ -27,7 +30,7 @@ public class AbstractStorageTest {
 
     final Storage storage;
 
-    protected static final File STORAGE_DIR = new File("TestStorageDir");
+    protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;

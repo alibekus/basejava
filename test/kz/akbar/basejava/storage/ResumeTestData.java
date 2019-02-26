@@ -13,7 +13,7 @@ class ResumeTestData {
 
     private static ResumeTestData instance;
 
-    private final String phoneNumber = "+7(921) 855-0482";
+    /*private final String phoneNumber = "+7(921) 855-0482";
     private final String skype = "grigory.kislin";
     private final String email = "gkislin@yandex.ru";
     private final String linkedIn = "https://www.linkedin.com/in/gkislin";
@@ -34,7 +34,7 @@ class ResumeTestData {
     private List<LocalDate> endEduDates = new ArrayList<>();
     private List<String> contactItems = new ArrayList<>();
     private List<String> achievements = new ArrayList<>();
-    private List<String> qualifications = new ArrayList<>();
+    private List<String> qualifications = new ArrayList<>();*/
 
     static Resume getResumeInstance(String uuid, String fullName) {
         if (instance == null) {
@@ -43,7 +43,7 @@ class ResumeTestData {
         return instance.fillResume(uuid, fullName);
     }
 
-    private void fillContacts() {
+    /*private void fillContacts() {
         contactItems.add(phoneNumber);
         contactItems.add(email);
         contactItems.add(homePage);
@@ -217,14 +217,14 @@ class ResumeTestData {
         eduDuties.add("Аспирантура (программист С, С++)");
         eduDuties.add("Инженер (программист Fortran, C)");
         eduDuties.add("Закончил с отличием");
-    }
+    }*/
 
 
     private Resume fillResume(String uuid, String fullName) {
         SimpleSection simpleSection;
         ListSection listSection;
         Resume resume = new Resume(uuid, fullName);
-        fillContacts();
+        /*fillContacts();
         fillObjective();
         fillPersonalInfo();
         fillAchievements();
@@ -278,11 +278,11 @@ class ResumeTestData {
                 Contact contact = new Contact(type.getTitle(), (String) contactIterator.next());
                 resume.addContact(type, contact);
             }
-        }
+        }*/
         return resume;
     }
 
-    private void fillOrganizations(int count, SectionType sectionType, List<String> companyNames,
+    /*private void fillOrganizations(int count, SectionType sectionType, List<String> companyNames,
                                    List<String> positions, List<String> duties, List<LocalDate> startDates,
                                    List<LocalDate> endDates, Resume resume) {
         OrganizationSection organizationSection = new OrganizationSection();
@@ -320,7 +320,7 @@ class ResumeTestData {
             System.out.println("- - - - - - - - - - - - - " + type.getTitle() + "- - - - - - - - - - - - -");
             System.out.println(resume.getSections().get(type));
         }
-    }
+    }*/
 
 
     public static void main(String[] args) {
@@ -329,8 +329,8 @@ class ResumeTestData {
         //------------Resume's info printing--------------
         System.out.println("==============================Print resume==============================");
         System.out.println(resume.toString());
-        dataTest.printContacts(resume);
-        dataTest.printSections(resume);
+//        dataTest.printContacts(resume);
+//        dataTest.printSections(resume);
     }
 
 }
