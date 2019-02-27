@@ -1,8 +1,14 @@
 package kz.akbar.basejava.exception;
 
+import java.sql.SQLException;
+
 public class StorageException extends RuntimeException {
 
     private final String uuid;
+
+    public StorageException(SQLException e) {
+        this(null,e);
+    }
 
     public StorageException(String message) {
         this(message,null,null);

@@ -1,12 +1,9 @@
 package kz.akbar.basejava;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class StreamMethods {
 
@@ -23,7 +20,7 @@ public class StreamMethods {
     }
 
     /**
-     * accepts list of Integer objects, calculate sum of integers, in dependence of odd or even sum,
+     * accepts list of Integer objects, calculate sum of integers, in dependence of odd or even of the sum,
      * removes odd or even numbers from list
      *
      * @param integers - list of Integers
@@ -31,19 +28,11 @@ public class StreamMethods {
      */
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
-        /*IntStream intStream = integers.stream().mapToInt(value -> value);
-        if (intStream.sum() % 2 == 0) {
-            return intStream.filter(value -> value % 2 != 0)
-                    .boxed().collect(Collectors.toList());
-        } else {
-            return intStream.filter(value -> value % 2 == 0)
-                    .boxed().collect(Collectors.toList());
-        }*/
-        Map<Boolean, List<Integer>> oddEven = integers.stream().collect(Collectors
-                .partitioningBy(value -> value % 2 == 0));
-        return integers.stream().mapToInt(value -> value).sum() % 2 == 0
-                ? oddEven.get(false).stream().collect(Collectors.toList())
-                : oddEven.get(true).stream().collect(Collectors.toList());
+        Map<Boolean, List<Integer>> oddEven = integers.stream()
+                .collect(Collectors.partitioningBy(value -> value % 2 == 0));
+        return (integers.stream().mapToInt(value -> value).sum() % 2 == 0
+                ? oddEven.get(false)
+                : oddEven.get(true)).stream().collect(Collectors.toList());
     }
 
     public static void main(String[] args) {
