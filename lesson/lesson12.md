@@ -3,10 +3,10 @@
 
 ## Разбор Домашнего Задания-11: реализация dead lock.
 
-## java.util.concurrent
--  <a href="http://habrahabr.ru/company/luxoft/blog/157273/">Обзор java.util.concurrent.*</a></li>
+## java.kz.akbar.basejava.util.concurrent
+-  <a href="http://habrahabr.ru/company/luxoft/blog/157273/">Обзор java.kz.akbar.basejava.util.concurrent.*</a></li>
 - <a href="https://en.wikipedia.org/wiki/Compare-and-swap">Compare-and-swap</a>
-- <a href="https://habrahabr.ru/post/277669/"> Справочник по синхронизаторам java.util.concurrent.*</a>
+- <a href="https://habrahabr.ru/post/277669/"> Справочник по синхронизаторам java.kz.akbar.basejava.util.concurrent.*</a>
 - <a href="http://articles.javatalks.ru/articles/17">Использование ThreadLocal переменных</a>
 
 >  Замечания по видео:

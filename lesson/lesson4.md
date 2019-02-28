@@ -18,7 +18,7 @@
 
 ## Reflection. Аннотации. Модульное тестирование
   - <a href="http://easy-code.ru/lesson/java-annotations">Аннотации</a>
-  - <a href="http://www.quizful.net/post/java-reflection-api">Введение в Java Reflection API</a>
+  - <a href="http://www.quizful.net/post/java-kz.akbar.reflection-api">Введение в Java Reflection API</a>
   - Модульное тестирование <a href="http://junit.org/">JUnit 4</a>
   - <a href="http://www.javenue.info/post/19">Тестирование с помощью JUnit (Test Case)</a>
 

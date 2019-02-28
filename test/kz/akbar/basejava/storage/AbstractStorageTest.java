@@ -7,20 +7,20 @@ import kz.akbar.basejava.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
-
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
 
 public class AbstractStorageTest {
 
-    private static final String UUID1 = "uuid1";
-    private static final String UUID2 = "uuid2";
-    private static final String UUID3 = "uuid3";
-    private static final String UUID4 = "uuid4";
-    private static final String UUID5 = "uuid5";
+    private static final String UUID1 = UUID.randomUUID().toString();
+    private static final String UUID2 = UUID.randomUUID().toString();
+    private static final String UUID3 = UUID.randomUUID().toString();
+    private static final String UUID4 = UUID.randomUUID().toString();
+    private static final String UUID5 = UUID.randomUUID().toString();
 
     private static final Resume RESUME1 = ResumeTestData.getResumeInstance(UUID1, "FullName1");
     private static final Resume RESUME2 = ResumeTestData.getResumeInstance(UUID2, "FullName2");
@@ -100,9 +100,9 @@ public class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume updateResume = new Resume(UUID1,"Dummy");
+        Resume updateResume = new Resume(UUID1, "Dummy");
         storage.update(updateResume);
-        assertEquals(storage.get(UUID1),updateResume);
+        assertEquals(storage.get(UUID1), updateResume);
     }
 
     @Test(expected = NotExistStorageException.class)

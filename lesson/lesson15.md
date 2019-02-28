@@ -11,7 +11,7 @@
 ### Сервлеты
 - <a href="http://devcolibri.com/4284">Создаем Servlet</a>. Параметры. Кодировка. 
 - Дополнительно:
-    - <a href="http://stackoverflow.com/questions/3106452/how-do-servlets-work-instantiation-shared-variables-and-multithreading">How do servlets work?</a>
+    - <a href="http://stackoverflow.com/questions/3106452/how-do-servlets-work-instantiation-shared-variables-and-kz.akbar.concurrency">How do servlets work?</a>
     - <a href="http://www.intuit.ru/studies/courses/569/425/lecture/9683">Язык программирования Java и среда NetBeans: Введение в сетевое программирование</a>
     - <a href="http://www.intuit.ru/studies/courses/1102/134/info">Основы работы с HTML</a>
     - <a href="http://ru.html.net/tutorials/html/">Учебник HTML</a>

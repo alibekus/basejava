@@ -13,14 +13,15 @@ class ResumeTestData {
 
     private static ResumeTestData instance;
 
-    /*private final String phoneNumber = "+7(921) 855-0482";
+    private final String phoneNumber = "+7(921) 855-0482";
     private final String skype = "grigory.kislin";
     private final String email = "gkislin@yandex.ru";
     private final String linkedIn = "https://www.linkedin.com/in/gkislin";
     private final String gitHub = "https://gitHub.com/gkislin";
     private final String stackOverflow = "https://stackoverflow.com/users/548473";
     private final String homePage = "http://gkislin.ru/";
-    private String personalInfo;
+    private List<String> contactItems = new ArrayList<>();
+    /*private String personalInfo;
     private String objective;
     private List<String> companyNames = new ArrayList<>();
     private List<String> jobPositions = new ArrayList<>();
@@ -32,7 +33,6 @@ class ResumeTestData {
     private List<String> eduDuties = new ArrayList<>();
     private List<LocalDate> startEduDates = new ArrayList<>();
     private List<LocalDate> endEduDates = new ArrayList<>();
-    private List<String> contactItems = new ArrayList<>();
     private List<String> achievements = new ArrayList<>();
     private List<String> qualifications = new ArrayList<>();*/
 
@@ -43,7 +43,7 @@ class ResumeTestData {
         return instance.fillResume(uuid, fullName);
     }
 
-    /*private void fillContacts() {
+    private void fillContacts() {
         contactItems.add(phoneNumber);
         contactItems.add(email);
         contactItems.add(homePage);
@@ -54,7 +54,7 @@ class ResumeTestData {
     }
 
 
-    private void fillObjective() {
+    /*private void fillObjective() {
         this.objective = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
     }
 
@@ -221,11 +221,11 @@ class ResumeTestData {
 
 
     private Resume fillResume(String uuid, String fullName) {
-        SimpleSection simpleSection;
-        ListSection listSection;
+//        SimpleSection simpleSection;
+//        ListSection listSection;
         Resume resume = new Resume(uuid, fullName);
-        /*fillContacts();
-        fillObjective();
+        fillContacts();
+        /*fillObjective();
         fillPersonalInfo();
         fillAchievements();
         fillQualifications();
@@ -268,7 +268,7 @@ class ResumeTestData {
                             startEduDates, endEduDates, resume);
                     break;
             }
-        }
+        }*/
         //----------Contacts entering---------------------
         System.out.println("============================Entering contacts============================");
         Iterator contactIterator = contactItems.listIterator();
@@ -278,7 +278,7 @@ class ResumeTestData {
                 Contact contact = new Contact(type.getTitle(), (String) contactIterator.next());
                 resume.addContact(type, contact);
             }
-        }*/
+        }
         return resume;
     }
 

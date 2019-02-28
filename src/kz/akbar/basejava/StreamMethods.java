@@ -30,9 +30,7 @@ public class StreamMethods {
     private static List<Integer> oddOrEven(List<Integer> integers) {
         Map<Boolean, List<Integer>> oddEven = integers.stream()
                 .collect(Collectors.partitioningBy(value -> value % 2 == 0));
-        return (integers.stream().mapToInt(value -> value).sum() % 2 == 0
-                ? oddEven.get(false)
-                : oddEven.get(true)).stream().collect(Collectors.toList());
+        return oddEven.get(integers.stream().mapToInt(value -> value).sum() % 2 != 0);
     }
 
     public static void main(String[] args) {
