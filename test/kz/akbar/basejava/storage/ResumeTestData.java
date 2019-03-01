@@ -270,11 +270,11 @@ class ResumeTestData {
             }
         }*/
         //----------Contacts entering---------------------
-        System.out.println("============================Entering contacts============================");
+//        System.out.println("============================Entering contacts============================");
         Iterator contactIterator = contactItems.listIterator();
         for (ContactType type : ContactType.values()) {
             if (contactIterator.hasNext()) {
-                System.out.println("Contact " + type.getTitle());
+//                System.out.println("Contact " + type.getTitle());
                 Contact contact = new Contact(type.getTitle(), (String) contactIterator.next());
                 resume.addContact(type, contact);
             }
