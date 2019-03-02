@@ -6,7 +6,9 @@ import kz.akbar.basejava.model.ContactType;
 import kz.akbar.basejava.model.Resume;
 import kz.akbar.basejava.sql.SqlExecution;
 import kz.akbar.basejava.sql.SqlHelper;
+import kz.akbar.basejava.sql.SqlTransaction;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -58,11 +60,7 @@ public class SqlStorage implements Storage {
                     ResultSet rs = preparedStatement.executeQuery();
                     while (rs.next()) {
                         String uuid = rs.getString("uuid").trim();
-                        Resume resume = uuidResumes.get(uuid);
-                        if (resume == null) {
-                            resume = new Resume(uuid, rs.getString("username"));
-                            uuidResumes.put(uuid, resume);
-                        }
+                        Resume resume = computeIfAbsent(uuidResumes,uuid,rs);
                         addContact(resume, rs);
                     }
                     return new ArrayList<>(uuidResumes.values());
@@ -85,18 +83,21 @@ public class SqlStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        helper.transactionalExecuteSql(conn -> {
-            try (PreparedStatement preparedStatement = conn.prepareStatement(
-                    "UPDATE resumes SET username = ? WHERE uuid = ?")) {
-                preparedStatement.setString(1, resume.getFullName());
-                preparedStatement.setString(2, resume.getUuid());
-                if (preparedStatement.executeUpdate() == 0) {
-                    throw new NotExistStorageException(resume.getUuid());
+        helper.transactionalExecuteSql(new SqlTransaction<Boolean>() {
+            @Override
+            public Boolean execute(Connection conn) throws SQLException {
+                try (PreparedStatement preparedStatement = conn.prepareStatement(
+                        "UPDATE resumes SET username = ? WHERE uuid = ?")) {
+                    preparedStatement.setString(1, resume.getFullName());
+                    preparedStatement.setString(2, resume.getUuid());
+                    if (preparedStatement.executeUpdate() == 0) {
+                        throw new NotExistStorageException(resume.getUuid());
+                    }
                 }
+                SqlStorage.this.deleteContacts(conn, resume);
+                SqlStorage.this.writeContacts(conn, resume);
+                return true;
             }
-            deleteContacts(resume);
-            writeContacts(conn, resume);
-            return true;
         });
     }
 
@@ -117,20 +118,20 @@ public class SqlStorage implements Storage {
     }
 
     private void addContact(Resume resume, ResultSet rs) throws SQLException {
-        String title = rs.getString("type");
-        if (title != null) {
-            ContactType type = ContactType.valueOf(title);
+        String name = rs.getString("type");
+        if (name != null) {
+            ContactType type = ContactType.valueOf(name);
             Contact contact = new Contact(type.getTitle(), rs.getString("value"));
             resume.addContact(type, contact);
         }
     }
 
-    private void deleteContacts(Resume resume) {
-        helper.executeSql("DELETE FROM contacts WHERE resume_uuid=?", (SqlExecution<Resume>) ps -> {
+    private void deleteContacts(Connection conn, Resume resume) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement(
+                "DELETE FROM contacts WHERE resume_uuid = ?")) {
             ps.setString(1, resume.getUuid());
             ps.execute();
-            return null;
-        });
+        }
     }
 
     private void writeContacts(Connection conn, Resume resume) throws SQLException {
@@ -144,5 +145,15 @@ public class SqlStorage implements Storage {
             }
             ps.executeBatch();
         }
+    }
+
+    private Resume computeIfAbsent(Map<String,Resume> uuidResumes, String uuid, ResultSet rs)
+            throws SQLException {
+        Resume resume = uuidResumes.get(uuid);
+        if (resume == null) {
+            resume = new Resume(uuid, rs.getString("username"));
+            uuidResumes.put(uuid, resume);
+        }
+        return resume;
     }
 }
