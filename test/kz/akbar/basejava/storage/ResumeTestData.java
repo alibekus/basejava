@@ -21,7 +21,7 @@ class ResumeTestData {
     private final String stackOverflow = "https://stackoverflow.com/users/548473";
     private final String homePage = "http://gkislin.ru/";
     private List<String> contactItems = new ArrayList<>();
-    /*private String personalInfo;
+    private String personalInfo;
     private String objective;
     private List<String> achievements = new ArrayList<>();
     private List<String> qualifications = new ArrayList<>();
@@ -37,9 +37,7 @@ class ResumeTestData {
     private List<LocalDate> endEduDates = new ArrayList<>();*/
 
     static Resume getResumeInstance(String uuid, String fullName) {
-        if (instance == null) {
-            instance = new ResumeTestData();
-        }
+        instance = new ResumeTestData();
         return instance.fillResume(uuid, fullName);
     }
 
@@ -54,7 +52,7 @@ class ResumeTestData {
     }
 
 
-    /*private void fillObjective() {
+    private void fillObjective() {
         this.objective = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
     }
 
@@ -225,7 +223,7 @@ class ResumeTestData {
 //        ListSection listSection;
         Resume resume = new Resume(uuid, fullName);
         fillContacts();
-        /*fillObjective();
+        fillObjective();
         fillPersonalInfo();
         fillAchievements();
         fillQualifications();
@@ -240,7 +238,7 @@ class ResumeTestData {
         fillEduStartDates();
         fillEduEndDates();
         System.out.println("=================Entering sections===================");*/
-        /*for (SectionType sectionType : SectionType.values()) {
+        for (SectionType sectionType : SectionType.values()) {
 //            System.out.println("Section: " + sectionType.getTitle());
             switch (sectionType) {
                 case OBJECTIVE:
@@ -262,9 +260,9 @@ class ResumeTestData {
                 case EDUCATION:
                     fillOrganizations(eduNames.size(), sectionType, eduNames, eduPositions, eduDuties,
                             startEduDates, endEduDates, resume);
-                    break;
+                    break;*/
             }
-        }*/
+        }
         //----------Contacts entering---------------------
 //        System.out.println("============================Entering contacts============================");
         Iterator contactIterator = contactItems.listIterator();
@@ -325,8 +323,8 @@ class ResumeTestData {
         //------------Resume's info printing--------------
         System.out.println("==============================Print resume==============================");
         System.out.println(resume.toString());
-//        dataTest.printContacts(resume);
-//        dataTest.printSections(resume);
+        /*dataTest.printContacts(resume);
+        dataTest.printSections(resume);*/
     }
 
 }

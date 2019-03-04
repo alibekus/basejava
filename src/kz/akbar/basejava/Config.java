@@ -8,7 +8,7 @@ import java.util.Properties;
 
 public class Config {
 
-    private static final File PROPS = new File("config\\db.properties");
+    private static final File PROPS = new File("C:\\Users\\Alibek\\Documents\\IT\\Edu\\Java\\javaops\\basejava\\config\\db.properties");
     private static final Config INSTANCE = new Config();
     private Storage storage;
     private File storageDir;

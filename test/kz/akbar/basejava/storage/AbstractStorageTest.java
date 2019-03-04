@@ -20,11 +20,11 @@ public class AbstractStorageTest {
     private static final String UUID4 = UUID.randomUUID().toString();
     private static final String UUID5 = UUID.randomUUID().toString();
 
-    private static final Resume RESUME1 = ResumeTestData.getResumeInstance(UUID1, "FullName1");
-    private static final Resume RESUME2 = ResumeTestData.getResumeInstance(UUID2, "FullName2");
-    private static final Resume RESUME3 = ResumeTestData.getResumeInstance(UUID3, "FullName3");
-    private static final Resume RESUME4 = ResumeTestData.getResumeInstance(UUID4, "FullName4");
-    private static final Resume RESUME5 = ResumeTestData.getResumeInstance(UUID5, "FullName5");
+    private static final Resume RESUME1 = ResumeTestData.getResumeInstance(UUID1, "James Gosling");
+    private static final Resume RESUME2 = ResumeTestData.getResumeInstance(UUID2, "Bjarne Stroustrup");
+    private static final Resume RESUME3 = ResumeTestData.getResumeInstance(UUID3, "Richard Stallman");
+    private static final Resume RESUME4 = ResumeTestData.getResumeInstance(UUID4, "Donald Knuth");
+    private static final Resume RESUME5 = ResumeTestData.getResumeInstance(UUID5, "Ken Tompson");
 
     final Storage storage;
 
@@ -62,6 +62,7 @@ public class AbstractStorageTest {
     public void getAllSorted() {
         List<Resume> actualResumes = storage.getAllSorted();
         List<Resume> expectedResumes = Arrays.asList(RESUME1, RESUME2, RESUME3, RESUME4);
+        Collections.sort(expectedResumes);
         assertEquals(expectedResumes.size(), actualResumes.size());
         assertEquals(expectedResumes, actualResumes);
     }

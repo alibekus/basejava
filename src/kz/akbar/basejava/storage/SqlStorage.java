@@ -5,10 +5,7 @@ import kz.akbar.basejava.model.*;
 import kz.akbar.basejava.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SqlStorage implements Storage {
 
@@ -28,38 +25,69 @@ public class SqlStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        return helper.executeSql("SELECT * FROM resumes r " +
-                "LEFT JOIN contacts c " +
-                "ON r.uuid = c.resume_uuid " +
-                "WHERE uuid = ?", ps -> {
+        Resume resume = helper.executeSql("SELECT * FROM resumes WHERE uuid = ?", ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
                 throw new NotExistStorageException(uuid);
             }
-            Resume resume = new Resume(rs.getString("uuid"), rs.getString("username"));
-            do {
+            return new Resume(uuid, rs.getString("username"));
+        });
+
+        helper.executeSql("SELECT * FROM contacts WHERE resume_uuid = ?", ps -> {
+            ps.setString(1, uuid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
                 addContact(rs, resume);
-            } while (rs.next());
+            }
+            return null;
+        });
+
+        return helper.executeSql("SELECT * FROM opaq_sections WHERE resume_uuid = ?", ps -> {
+            ps.setString(1, uuid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                addSection(rs, resume);
+            }
             return resume;
         });
     }
 
     @Override
     public List<Resume> getAllSorted() {
-        return helper.executeSql("SELECT * FROM resumes r " +
-                        "LEFT JOIN contacts c ON r.uuid = c.resume_uuid " +
-                        "ORDER BY username,uuid",
+        Map<String, Resume> uuidResumes = helper.executeSql("SELECT * FROM resumes",
                 preparedStatement -> {
-                    Map<String, Resume> uuidResumes = new LinkedHashMap<>();
+                    Map<String, Resume> resumesMap = new LinkedHashMap<>();
                     ResultSet rs = preparedStatement.executeQuery();
                     while (rs.next()) {
-                        String uuid = rs.getString("uuid").trim();
-                        String username = rs.getString("username");
-                        Resume resume = uuidResumes.computeIfAbsent(uuid, uuid1 -> new Resume(uuid1, username));
-                        addContact(rs, resume);
+                        String uuid = rs.getString("uuid");
+                        resumesMap.put(uuid, new Resume(uuid, rs.getString("username")));
                     }
-                    return new ArrayList<>(uuidResumes.values());
+                    return resumesMap;
+                });
+
+        helper.executeSql("SELECT * FROM contacts",
+                preparedStatement -> {
+                    ResultSet rs = preparedStatement.executeQuery();
+                    while (rs.next()) {
+                        String uuid = rs.getString("resume_uuid");
+                        ContactType type = ContactType.valueOf(rs.getString("contact_type"));
+                        Contact contact = new Contact(type.getTitle(), rs.getString("contact_value"));
+                        uuidResumes.get(uuid).addContact(type, contact);
+                    }
+                    return null;
+                });
+        return helper.executeSql("SELECT * FROM opaq_sections",
+                preparedStatement -> {
+                    ResultSet rs = preparedStatement.executeQuery();
+                    while (rs.next()) {
+                        String uuid = rs.getString("resume_uuid");
+                        uuidResumes.put(uuid, addSection(rs, uuidResumes.get(uuid)));
+                    }
+
+                    ArrayList<Resume> resumes = new ArrayList<>(uuidResumes.values());
+                    Collections.sort(resumes);
+                    return resumes;
                 });
     }
 
@@ -74,6 +102,7 @@ public class SqlStorage implements Storage {
                 preparedStatement.execute();
             }
             writeContacts(conn, resume);
+            writeSections(conn, resume);
             return null;
         });
     }
@@ -91,6 +120,8 @@ public class SqlStorage implements Storage {
             }
             deleteContacts(conn, resume);
             writeContacts(conn, resume);
+            deleteSections(conn, resume);
+            writeSections(conn, resume);
             return null;
         });
     }
@@ -120,6 +151,28 @@ public class SqlStorage implements Storage {
         }
     }
 
+    private Resume addSection(ResultSet rs, Resume resume) throws SQLException {
+        String name = rs.getString("section_type");
+        if (name != null) {
+            SectionType type = SectionType.valueOf(name);
+            Section section = null;
+            switch (type) {
+                case OBJECTIVE:
+                case PERSONAL:
+                    section = new TextSection(rs.getString("section_value"));
+                    break;
+                case ACHIEVEMENTS:
+                case QUALIFICATIONS:
+                    String itemsString = rs.getString("section_value");
+                    List<String> itemsList = Arrays.asList(itemsString.split("\n"));
+                    section = new ListSection(itemsList);
+                    break;
+            }
+            resume.addSection(type, section);
+        }
+        return resume;
+    }
+
     private void deleteContacts(Connection conn, Resume resume) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement(
                 "DELETE FROM contacts WHERE resume_uuid = ?")) {
@@ -137,6 +190,29 @@ public class SqlStorage implements Storage {
                     ps.setString(1, resume.getUuid());
                     ps.setString(2, contactEntry.getKey().name());
                     ps.setString(3, contactEntry.getValue().getValue());
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+            }
+        }
+    }
+
+    private void deleteSections(Connection conn, Resume resume) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM opaq_sections WHERE resume_uuid = ?")) {
+            ps.setString(1, resume.getUuid());
+            ps.executeUpdate();
+        }
+    }
+
+    private void writeSections(Connection conn, Resume resume) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement(
+                "INSERT INTO opaq_sections (resume_uuid, section_type, section_value) VALUES (?,?,?)")) {
+            Map<SectionType, Section> sections = resume.getSections();
+            if (sections.size() > 0) {
+                for (Map.Entry<SectionType, Section> sectionEntry : sections.entrySet()) {
+                    ps.setString(1, resume.getUuid());
+                    ps.setString(2, sectionEntry.getKey().name());
+                    ps.setString(3, sectionEntry.getValue().toString());
                     ps.addBatch();
                 }
                 ps.executeBatch();

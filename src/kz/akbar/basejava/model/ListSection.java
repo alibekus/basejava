@@ -28,14 +28,11 @@ public class ListSection extends Section {
 
     @Override
     public String toString() {
-//        StringBuilder stringItems = new StringBuilder();
-        String list = "";
+        String itemList = "";
         for (String item : items) {
-            list.join("\n", item.trim());
-//            stringItems.append(item.trim()).append('\n');
+            itemList = String.join("\n", itemList.trim(), item.trim());
         }
-//        return stringItems.toString();
-        return list;
+        return itemList;
     }
 
     @Override
