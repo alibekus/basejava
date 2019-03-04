@@ -28,21 +28,19 @@ public class SqlStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        Resume resume = helper.executeSql("SELECT * FROM resumes WHERE uuid = ?", ps -> {
+        return helper.executeSql("SELECT * FROM resumes r " +
+                "LEFT JOIN contacts c " +
+                "ON r.uuid = c.resume_uuid " +
+                "WHERE uuid = ?", ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
                 throw new NotExistStorageException(uuid);
             }
-            return new Resume(uuid, rs.getString("username"));
-        });
-
-        return helper.executeSql("SELECT * FROM contacts WHERE resume_uuid = ?", ps -> {
-            ps.setString(1, uuid);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
+            Resume resume = new Resume(rs.getString("uuid"), rs.getString("username"));
+            do {
                 addContact(rs, resume);
-            }
+            } while (rs.next());
             return resume;
         });
     }
