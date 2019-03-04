@@ -1,5 +1,6 @@
 package kz.akbar.basejava.sql;
 
+import kz.akbar.basejava.exception.SqlExceptionConvertor;
 import kz.akbar.basejava.exception.StorageException;
 
 import java.sql.Connection;

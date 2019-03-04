@@ -59,8 +59,8 @@ public class DataSerializer implements Serialization {
                     case PERSONAL:
                         dos.writeUTF(section.toString());
                         break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATION:
+                    case ACHIEVEMENTS:
+                    case QUALIFICATIONS:
                         writeData(((ListSection) section).getItems(), dos, dos::writeUTF);
                         break;
                     case EDUCATION:
@@ -97,10 +97,10 @@ public class DataSerializer implements Serialization {
                 switch (sectionType) {
                     case OBJECTIVE:
                     case PERSONAL:
-                        resume.addSection(sectionType, new SimpleSection(dis.readUTF()));
+                        resume.addSection(sectionType, new TextSection(dis.readUTF()));
                         break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATION:
+                    case ACHIEVEMENTS:
+                    case QUALIFICATIONS:
                         List<String> items = new ArrayList<>();
                         readData(dis, () -> items.add(dis.readUTF()));
                         resume.addSection(sectionType, new ListSection(items));

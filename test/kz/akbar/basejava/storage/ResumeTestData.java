@@ -23,7 +23,9 @@ class ResumeTestData {
     private List<String> contactItems = new ArrayList<>();
     /*private String personalInfo;
     private String objective;
-    private List<String> companyNames = new ArrayList<>();
+    private List<String> achievements = new ArrayList<>();
+    private List<String> qualifications = new ArrayList<>();
+    /*private List<String> companyNames = new ArrayList<>();
     private List<String> jobPositions = new ArrayList<>();
     private List<String> jobDuties = new ArrayList<>();
     private List<LocalDate> startJobDates = new ArrayList<>();
@@ -32,9 +34,7 @@ class ResumeTestData {
     private List<String> eduPositions = new ArrayList<>();
     private List<String> eduDuties = new ArrayList<>();
     private List<LocalDate> startEduDates = new ArrayList<>();
-    private List<LocalDate> endEduDates = new ArrayList<>();
-    private List<String> achievements = new ArrayList<>();
-    private List<String> qualifications = new ArrayList<>();*/
+    private List<LocalDate> endEduDates = new ArrayList<>();*/
 
     static Resume getResumeInstance(String uuid, String fullName) {
         if (instance == null) {
@@ -96,7 +96,7 @@ class ResumeTestData {
         qualifications.add("JavaScript: jQuery, ExtJS, Bootstrap.js, underscore.js.");
     }
 
-    private void fillCompanyNames() {
+    /*private void fillCompanyNames() {
         companyNames.add("Java Online Projects");
         companyNames.add("Wrike");
         companyNames.add("RIT Center");
@@ -221,7 +221,7 @@ class ResumeTestData {
 
 
     private Resume fillResume(String uuid, String fullName) {
-//        SimpleSection simpleSection;
+//        TextSection simpleSection;
 //        ListSection listSection;
         Resume resume = new Resume(uuid, fullName);
         fillContacts();
@@ -229,7 +229,7 @@ class ResumeTestData {
         fillPersonalInfo();
         fillAchievements();
         fillQualifications();
-        fillCompanyNames();
+        /*fillCompanyNames();
         fillJobPositions();
         fillJobDuties();
         fillJobStartDates();
@@ -239,27 +239,23 @@ class ResumeTestData {
         fillEduDuties();
         fillEduStartDates();
         fillEduEndDates();
-        System.out.println("=================Entering sections===================");
-        for (SectionType sectionType : SectionType.values()) {
-            System.out.println("Section: " + sectionType.getTitle());
+        System.out.println("=================Entering sections===================");*/
+        /*for (SectionType sectionType : SectionType.values()) {
+//            System.out.println("Section: " + sectionType.getTitle());
             switch (sectionType) {
                 case OBJECTIVE:
-                    simpleSection = new SimpleSection(objective);
-                    resume.addSection(sectionType, simpleSection);
+                    resume.addSection(sectionType, new TextSection(objective));
                     break;
                 case PERSONAL:
-                    simpleSection = new SimpleSection(personalInfo);
-                    resume.addSection(sectionType, simpleSection);
+                    resume.addSection(sectionType, new TextSection(personalInfo));
                     break;
-                case ACHIEVEMENT:
-                    listSection = new ListSection(achievements);
-                    resume.addSection(sectionType, listSection);
+                case ACHIEVEMENTS:
+                    resume.addSection(sectionType, new ListSection(achievements));
                     break;
-                case QUALIFICATION:
-                    listSection = new ListSection(qualifications);
-                    resume.addSection(sectionType, listSection);
+                case QUALIFICATIONS:
+                    resume.addSection(sectionType, new ListSection(qualifications));
                     break;
-                case EXPERIENCE:
+                /*case EXPERIENCE:
                     fillOrganizations(companyNames.size(), sectionType, companyNames, jobPositions, jobDuties,
                             startJobDates, endJobDates, resume);
                     break;

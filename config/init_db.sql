@@ -34,5 +34,5 @@ create unique index if not exists contacts_id_uindex
   on contacts (id);
 
 create unique index contacts_resume_uuid_type_index
-  on contacts (resume_uuid, type);
+  on contacts (resume_uuid, contact_type);
 

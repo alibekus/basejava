@@ -3,16 +3,14 @@ package kz.akbar.basejava.storage;
 import kz.akbar.basejava.Config;
 import kz.akbar.basejava.exception.ExistStorageException;
 import kz.akbar.basejava.exception.NotExistStorageException;
-import kz.akbar.basejava.model.Resume;
+import kz.akbar.basejava.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class AbstractStorageTest {
 
@@ -53,6 +51,7 @@ public class AbstractStorageTest {
     @Test
     public void get() {
         assertEquals(RESUME1, storage.get(UUID1));
+
     }
 
     @Test(expected = NotExistStorageException.class)

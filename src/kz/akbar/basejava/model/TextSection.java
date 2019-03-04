@@ -5,15 +5,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SimpleSection extends Section {
+public class TextSection extends Section {
 
     private static final long serialVersionUID = 1L;
     private String description;
 
-    public SimpleSection() {
+    public TextSection() {
     }
 
-    public SimpleSection(String description) {
+    public TextSection(String description) {
         Objects.requireNonNull(description, "description must not be null!");
         this.description = description;
     }
@@ -27,7 +27,7 @@ public class SimpleSection extends Section {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SimpleSection that = (SimpleSection) o;
+        TextSection that = (TextSection) o;
         return description.equals(that.description);
     }
 

@@ -1,7 +1,5 @@
-package kz.akbar.basejava.sql;
+package kz.akbar.basejava.exception;
 
-import kz.akbar.basejava.exception.ExistStorageException;
-import kz.akbar.basejava.exception.StorageException;
 import org.postgresql.util.PSQLException;
 
 import java.sql.SQLException;

@@ -30,7 +30,7 @@ public class ListSection extends Section {
     public String toString() {
         StringBuilder stringItems = new StringBuilder();
         for (String item : items) {
-            stringItems.append("- ").append(item.trim()).append('\n');
+            stringItems.append(item.trim()).append('\n');
         }
         return stringItems.toString();
     }

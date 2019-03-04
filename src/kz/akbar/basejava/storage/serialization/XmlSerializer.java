@@ -12,7 +12,7 @@ public class XmlSerializer implements Serialization {
     public XmlSerializer() {
         xmlParser = new XmlParser(
                 Resume.class, Organization.class, Contact.class,
-                OrganizationSection.class, SimpleSection.class, ListSection.class, Organization.Position.class);
+                OrganizationSection.class, TextSection.class, ListSection.class, Organization.Position.class);
     }
 
     @Override
