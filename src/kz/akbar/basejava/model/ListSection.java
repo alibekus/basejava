@@ -28,11 +28,7 @@ public class ListSection extends Section {
 
     @Override
     public String toString() {
-        String itemList = "";
-        for (String item : items) {
-            itemList = String.join("\n", itemList.trim(), item.trim());
-        }
-        return itemList;
+        return String.join("\n", items);
     }
 
     @Override
