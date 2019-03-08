@@ -3,9 +3,13 @@ package kz.akbar.basejava.storage;
 import kz.akbar.basejava.exception.NotExistStorageException;
 import kz.akbar.basejava.model.*;
 import kz.akbar.basejava.sql.SqlHelper;
+import kz.akbar.basejava.util.JsonParser;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SqlStorage implements Storage {
 
@@ -13,6 +17,15 @@ public class SqlStorage implements Storage {
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
         helper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
+        System.out.println("SqlStorage constructed!");
+        try {
+            System.out.println("Postgres driver loading...");
+            Class.forName("org.postgresql.Driver");
+            System.out.println("Postgres driver has been loaded successfully!");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Postgres driver class loading error: " + e.getCause());
+        }
     }
 
     @Override
@@ -26,7 +39,7 @@ public class SqlStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         return helper.transactionalExecuteSql(conn -> {
-            Resume resume = null;
+            Resume resume;
             try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM resumes " +
                     "WHERE uuid = ?")) {
                 preparedStatement.setString(1, uuid);
@@ -42,7 +55,7 @@ public class SqlStorage implements Storage {
                     "WHERE resume_uuid = ?")) {
                 preparedStatement.setString(1, uuid);
                 ResultSet resultSet = preparedStatement.executeQuery();
-                while(resultSet.next()) {
+                while (resultSet.next()) {
                     addContact(resultSet, resume);
                 }
             }
@@ -51,7 +64,7 @@ public class SqlStorage implements Storage {
                 preparedStatement.setString(1, uuid);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    addSection(resultSet,resume);
+                    addSection(resultSet, resume);
                 }
             }
             return resume;
@@ -150,22 +163,10 @@ public class SqlStorage implements Storage {
     }
 
     private Resume addSection(ResultSet rs, Resume resume) throws SQLException {
-        String name = rs.getString("section_type");
-        if (name != null) {
-            SectionType type = SectionType.valueOf(name);
-            Section section = null;
-            switch (type) {
-                case OBJECTIVE:
-                case PERSONAL:
-                    section = new TextSection(rs.getString("section_value"));
-                    break;
-                case ACHIEVEMENTS:
-                case QUALIFICATIONS:
-                    String itemsString = rs.getString("section_value");
-                    List<String> itemsList = Arrays.asList(itemsString.split("\n"));
-                    section = new ListSection(itemsList);
-                    break;
-            }
+        String value = rs.getString("section_value");
+        if (value != null) {
+            SectionType type = SectionType.valueOf(rs.getString("section_type"));
+            Section section = JsonParser.read(value, Section.class);
             resume.addSection(type, section);
         }
         return resume;
@@ -195,7 +196,8 @@ public class SqlStorage implements Storage {
                 for (Map.Entry<SectionType, Section> sectionEntry : sections.entrySet()) {
                     preparedStatement.setString(1, resume.getUuid());
                     preparedStatement.setString(2, sectionEntry.getKey().name());
-                    preparedStatement.setString(3, sectionEntry.getValue().toString());
+                    Section section = sectionEntry.getValue();
+                    preparedStatement.setString(3, JsonParser.write(section, Section.class));
                     preparedStatement.addBatch();
                 }
                 preparedStatement.executeBatch();
@@ -211,10 +213,10 @@ public class SqlStorage implements Storage {
     }
 
     private void deleteContacts(Connection conn, Resume resume) throws SQLException {
-        deleteResumeData(conn,resume,"DELETE FROM contacts WHERE resume_uuid = ?");
+        deleteResumeData(conn, resume, "DELETE FROM contacts WHERE resume_uuid = ?");
     }
 
     private void deleteSections(Connection conn, Resume resume) throws SQLException {
-        deleteResumeData(conn,resume,"DELETE FROM sections WHERE resume_uuid = ?");
+        deleteResumeData(conn, resume, "DELETE FROM sections WHERE resume_uuid = ?");
     }
 }

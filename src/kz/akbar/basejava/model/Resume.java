@@ -40,6 +40,10 @@ public class Resume implements Comparable<Resume>, Serializable {
         sections.put(type, section);
     }
 
+    public Contact getContact(ContactType type) {
+        return contacts.get(type);
+    }
+
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
