@@ -21,7 +21,10 @@ public class Organization implements Serializable {
     private Contact nameLink;
     private List<Position> positions;
 
-    public Organization() {
+    public Organization(String name) {
+        nameLink = new Contact();
+        nameLink.setTitle(name);
+        positions = new ArrayList<>();
     }
 
     public Organization(String name, String url, Position... positions) {
@@ -33,16 +36,16 @@ public class Organization implements Serializable {
         this.positions = new ArrayList<>(positions);
     }
 
+    public void addUrl(String url) {
+        this.nameLink.setValue(url);
+    }
+
     public Contact getNameLink() {
         return nameLink;
     }
 
     public List<Position> getPositions() {
         return positions;
-    }
-
-    String getName() {
-        return nameLink.getTitle();
     }
 
     public void addPosition(Position position) {
@@ -67,8 +70,15 @@ public class Organization implements Serializable {
 
     @Override
     public String toString() {
-        return "Организация: " + nameLink + "\n" + positions
-                + "\n-------------------------------------------------------";
+        return "Организация: " + nameLink + "\n" + printPositions();
+    }
+
+    private String printPositions() {
+        StringBuilder positionsBuilder = new StringBuilder();
+        for (Position position : positions) {
+            positionsBuilder.append(position);
+        }
+        return positionsBuilder.toString();
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
@@ -94,11 +104,26 @@ public class Organization implements Serializable {
             Objects.requireNonNull(startDate, "startDate must not be null");
             Objects.requireNonNull(endDate, "endDate must not be null");
             Objects.requireNonNull(title, "title must not be null");
-            Objects.requireNonNull(description, "description must not be null");
             this.startDate = startDate;
             this.endDate = endDate;
             this.title = title;
             this.description = description == null ? "" : description;
+        }
+
+        public void setStartDate(LocalDate startDate) {
+            this.startDate = startDate;
+        }
+
+        public void setEndDate(LocalDate endDate) {
+            this.endDate = endDate;
+        }
+
+        public void setPositionTitle(String position) {
+            this.title = position;
+        }
+
+        public void setDuties(String duties) {
+            this.description = duties;
         }
 
         public LocalDate getStartDate() {
@@ -135,9 +160,9 @@ public class Organization implements Serializable {
 
         @Override
         public String toString() {
-            return '\n' + startDate.format(formatter) + " - " + endDate.format(formatter) + '\n'
+            return startDate.format(formatter) + " - " + endDate.format(formatter) + '\n'
                     + "Позиция: " + title + '\n'
-                    + "Описание: " + description;
+                    + "Описание: " + description + '\n';
         }
     }
 }

@@ -48,6 +48,7 @@ public class Config {
         if (!homeDir.isDirectory()) {
             throw new IllegalStateException(homeDir + " is not directory");
         }
+        System.out.println("homeDir: " + homeDir);
         return homeDir;
     }
 }

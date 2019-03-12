@@ -22,14 +22,25 @@ public class Contact implements Serializable {
         this.value = value;
     }
 
-    public String getTitle() {return title;}
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getTitle() {
+        return title;
+    }
 
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    @Override
+    public String toString() {
+        return title + ": " + value;
     }
 
     @Override
@@ -44,10 +55,5 @@ public class Contact implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(title, value);
-    }
-
-    @Override
-    public String toString() {
-        return title + ": " + value;
     }
 }

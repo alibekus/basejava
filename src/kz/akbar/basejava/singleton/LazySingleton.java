@@ -2,8 +2,6 @@ package kz.akbar.basejava.singleton;
 
 public class LazySingleton {
 
-    private static volatile LazySingleton INSTANCE;
-
     private LazySingleton() {
     }
 
