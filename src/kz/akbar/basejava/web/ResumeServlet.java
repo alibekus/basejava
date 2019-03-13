@@ -29,10 +29,18 @@ public class ResumeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String uuid = request.getParameter("uuid");
+        String mode = request.getParameter("mode");
+        Resume resume = null;
         String fullName = request.getParameter("fullName");
-        Resume resume = sqlStorage.get(uuid);
-        resume.setFullName(fullName);
+        switch (mode) {
+            case "create":
+                resume = new Resume(fullName);
+                break;
+            case "edit":
+                String uuid = request.getParameter("uuid");
+                resume = sqlStorage.get(uuid);
+                resume.setFullName(fullName);
+        }
         for (ContactType type : ContactType.values()) {
             Contact contact = new Contact(type.getTitle(), request.getParameter(type.name()));
             if (contact.getValue().trim().length() != 0) {
@@ -60,29 +68,50 @@ public class ResumeServlet extends HttpServlet {
                     Map<String, String[]> parameterMap = request.getParameterMap();
                     Set<Map.Entry<String, String[]>> paramEntries = parameterMap.entrySet();
                     section = new OrganizationSection();
+                    Organization organization = null;
+                    Organization.Position position;
                     for (Map.Entry paramEntry : paramEntries) {
-                        Organization organization;
                         String paramKey = (String) paramEntry.getKey();
                         String[] paramKeys = paramKey.split("=");
                         if (paramKeys[0].equals(type.name())) {
-                            String[] paramValues = (String[]) paramEntry.getValue();
-                            organization = new Organization(paramKeys[1]);
-                            organization.addUrl(paramValues[1]);
-                            for (int i = 2; i < paramValues.length; i += 4) {
-                                Organization.Position position = new Organization.Position();
-                                position.setStartDate(LocalDate.parse(paramValues[i]));
-                                position.setEndDate(LocalDate.parse(paramValues[i + 1]));
-                                position.setPositionTitle(paramValues[i + 2]);
-                                position.setDuties(paramValues[i + 3]);
-                                organization.addPosition(position);
+                            switch (mode) {
+                                case "create":
+                                    String orgName = request.getParameter(type.name().concat("=orgName"));
+                                    String url = request.getParameter(type.name().concat("=url"));
+                                    LocalDate startDate = LocalDate.parse(request.getParameter(type.name().concat("=startDate")));
+                                    LocalDate endDate = LocalDate.parse(request.getParameter(type.name().concat("=endDate")));
+                                    String positionTitle = request.getParameter(type.name().concat("=positionTitle"));
+                                    String duties = request.getParameter(type.name().concat("=duties"));
+                                    position = new Organization.Position(startDate, endDate, positionTitle, duties);
+                                    organization = new Organization(orgName, url, position);
+                                    break;
+                                case "edit":
+                                    String[] paramValues = (String[]) paramEntry.getValue();
+                                    organization = new Organization(paramKeys[1]);
+                                    organization.addUrl(paramValues[1]);
+                                    for (int i = 2; i < paramValues.length; i += 4) {
+                                        position = new Organization.Position();
+                                        position.setStartDate(LocalDate.parse(paramValues[i]));
+                                        position.setEndDate(LocalDate.parse(paramValues[i + 1]));
+                                        position.setPositionTitle(paramValues[i + 2]);
+                                        position.setDuties(paramValues[i + 3]);
+                                        organization.addPosition(position);
+                                    }
+                                    ((OrganizationSection) section).addOrganization(organization);
                             }
-                            ((OrganizationSection) section).addOrganization(organization);
                         }
                     }
+                    ((OrganizationSection) section).addOrganization(organization);
             }
             resume.addSection(type, section);
         }
-        sqlStorage.update(resume);
+        switch (mode) {
+            case "create":
+                sqlStorage.save(resume);
+                break;
+            case "edit":
+                sqlStorage.update(resume);
+        }
         response.sendRedirect("resume");
     }
 
@@ -106,6 +135,10 @@ public class ResumeServlet extends HttpServlet {
             case "edit":
                 resume = sqlStorage.get(uuid);
                 break;
+            case "create":
+                request.getRequestDispatcher(("/WEB-INF/jsp/create.jsp"))
+                        .forward(request, response);
+                return;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
         }

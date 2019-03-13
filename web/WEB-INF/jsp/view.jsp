@@ -27,8 +27,8 @@
                                             or section.key.name().equals(SectionType.EDUCATION.name())}">
             <c:forEach var="org" items="${section.value.organizations}">
                 <jsp:useBean id="org" type="kz.akbar.basejava.model.Organization"/>
-                <%=org.toString().replace("\n", "<br>")%>
-                ==========================================================================<br>
+                <p><%=org.toString().replace("\n", "<br>")%></p>
+                <hr>
             </c:forEach>
         </c:when>
         <c:otherwise>
