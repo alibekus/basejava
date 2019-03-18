@@ -36,6 +36,10 @@ public class Organization implements Serializable {
         this.positions = new ArrayList<>(positions);
     }
 
+    public Organization() {
+
+    }
+
     public void addUrl(String url) {
         this.nameLink.setValue(url);
     }

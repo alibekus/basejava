@@ -11,10 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class ResumeServlet extends HttpServlet {
@@ -29,6 +26,15 @@ public class ResumeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        /*Map<String, String[]> parametersMap = request.getParameterMap();
+        Set<Map.Entry<String, String[]>> parameterEntries = parametersMap.entrySet();
+        for (Map.Entry entry : parameterEntries) {
+            System.out.println("param key: " + entry.getKey());
+            String[] paramValues = (String[]) entry.getValue();
+            for (int i = 0; i < paramValues.length; i++) {
+                System.out.println("param value" + i + ": " + paramValues[i]);
+            }
+        }*/
         String mode = request.getParameter("mode");
         Resume resume = null;
         String fullName = request.getParameter("fullName");
@@ -65,28 +71,71 @@ public class ResumeServlet extends HttpServlet {
                     break;
                 case EXPERIENCE:
                 case EDUCATION:
-                    Map<String, String[]> parameterMap = request.getParameterMap();
-                    Set<Map.Entry<String, String[]>> paramEntries = parameterMap.entrySet();
+                    Map<String, String[]> parametersMap = request.getParameterMap();
+                    Set<Map.Entry<String, String[]>> paramEntries = parametersMap.entrySet();
+                    String orgName, url, positionTitle, duties;
+                    orgName = url = positionTitle = duties = "";
+                    LocalDate startDate, endDate;
+                    startDate = endDate = null;
                     section = new OrganizationSection();
                     Organization organization = null;
                     Organization.Position position;
+                    int orgNumber = 0;
+                    int posNumber = 0;
                     for (Map.Entry paramEntry : paramEntries) {
                         String paramKey = (String) paramEntry.getKey();
-                        String[] paramKeys = paramKey.split("=");
+                        if (!paramKey.contains("_")) {
+                            continue;
+                        }
+                        String[] paramKeys = paramKey.split("_");
+                        String[] paramValues;
                         if (paramKeys[0].equals(type.name())) {
                             switch (mode) {
                                 case "create":
-                                    String orgName = request.getParameter(type.name().concat("=orgName"));
-                                    String url = request.getParameter(type.name().concat("=url"));
-                                    LocalDate startDate = LocalDate.parse(request.getParameter(type.name().concat("=startDate")));
-                                    LocalDate endDate = LocalDate.parse(request.getParameter(type.name().concat("=endDate")));
-                                    String positionTitle = request.getParameter(type.name().concat("=positionTitle"));
-                                    String duties = request.getParameter(type.name().concat("=duties"));
-                                    position = new Organization.Position(startDate, endDate, positionTitle, duties);
-                                    organization = new Organization(orgName, url, position);
+                                    paramValues = (String[]) paramEntry.getValue();
+                                    switch (paramKeys[1]) {
+                                        case "orgName":
+                                            orgName = paramValues[0];
+                                            break;
+                                        case "url":
+                                            url = paramValues[0];
+                                            break;
+                                        case "startDate":
+                                            startDate = LocalDate.parse(paramValues[0] + "-01");
+                                            break;
+                                        case "endDate":
+                                            endDate = LocalDate.parse(paramValues[0] + "-01");
+                                            break;
+                                        case "positionTitle":
+                                            positionTitle = paramValues[0];
+                                            break;
+                                        case "duties":
+                                            duties = paramValues[0];
+                                            //if organization more than one position in org
+                                            if (orgName.length() == 0 | orgName == null) {
+                                                continue;
+                                            }
+                                            position = new Organization.Position(startDate, endDate, positionTitle, duties);
+                                            if (orgNumber != Integer.parseInt(paramKeys[2])) {
+                                                organization = new Organization(orgName, url, position);
+                                                ((OrganizationSection) section).addOrganization(organization);
+                                                orgNumber = Integer.parseInt(paramKeys[2]);
+                                                posNumber = Integer.parseInt(paramKeys[3]);
+                                            }
+                                            if (posNumber != Integer.parseInt(paramKeys[3])) {
+                                                List<Organization> organizations = ((OrganizationSection) section).getOrganizations();
+                                                for (Organization org : organizations) {
+                                                    if (orgName.equals(org.getNameLink().getTitle())) {
+                                                        organization = org;
+                                                    }
+                                                }
+                                                organization.addPosition(position);
+                                                posNumber = Integer.parseInt(paramKeys[3]);
+                                            }
+                                    }
                                     break;
                                 case "edit":
-                                    String[] paramValues = (String[]) paramEntry.getValue();
+                                    paramValues = (String[]) paramEntry.getValue();
                                     organization = new Organization(paramKeys[1]);
                                     organization.addUrl(paramValues[1]);
                                     for (int i = 2; i < paramValues.length; i += 4) {
@@ -101,7 +150,6 @@ public class ResumeServlet extends HttpServlet {
                             }
                         }
                     }
-                    ((OrganizationSection) section).addOrganization(organization);
             }
             resume.addSection(type, section);
         }
