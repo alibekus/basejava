@@ -3,6 +3,7 @@ package kz.akbar.basejava.web;
 import kz.akbar.basejava.Config;
 import kz.akbar.basejava.model.*;
 import kz.akbar.basejava.storage.SqlStorage;
+import kz.akbar.basejava.util.DateUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -11,12 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.*;
 
 
 public class ResumeServlet extends HttpServlet {
 
-    SqlStorage sqlStorage;
+    private SqlStorage sqlStorage;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -36,6 +38,10 @@ public class ResumeServlet extends HttpServlet {
             }
         }*/
         String mode = request.getParameter("mode");
+        if (mode.equals("cancel")) {
+            response.sendRedirect("resume");
+            return;
+        }
         Resume resume = null;
         String fullName = request.getParameter("fullName");
         switch (mode) {
@@ -74,7 +80,7 @@ public class ResumeServlet extends HttpServlet {
                     Map<String, String[]> parametersMap = request.getParameterMap();
                     Set<Map.Entry<String, String[]>> paramEntries = parametersMap.entrySet();
                     String orgName, url, positionTitle, duties;
-                    orgName = url = positionTitle = duties = "";
+                    orgName = url = positionTitle = "";
                     LocalDate startDate, endDate;
                     startDate = endDate = null;
                     section = new OrganizationSection();
@@ -89,64 +95,56 @@ public class ResumeServlet extends HttpServlet {
                         }
                         String[] paramKeys = paramKey.split("_");
                         String[] paramValues;
+                        String[] yearMonth;
                         if (paramKeys[0].equals(type.name())) {
-                            switch (mode) {
-                                case "create":
-                                    paramValues = (String[]) paramEntry.getValue();
-                                    switch (paramKeys[1]) {
-                                        case "orgName":
-                                            orgName = paramValues[0];
-                                            break;
-                                        case "url":
-                                            url = paramValues[0];
-                                            break;
-                                        case "startDate":
-                                            startDate = LocalDate.parse(paramValues[0] + "-01");
-                                            break;
-                                        case "endDate":
-                                            endDate = LocalDate.parse(paramValues[0] + "-01");
-                                            break;
-                                        case "positionTitle":
-                                            positionTitle = paramValues[0];
-                                            break;
-                                        case "duties":
-                                            duties = paramValues[0];
-                                            //if organization more than one position in org
-                                            if (orgName.length() == 0 | orgName == null) {
-                                                continue;
-                                            }
-                                            position = new Organization.Position(startDate, endDate, positionTitle, duties);
-                                            if (orgNumber != Integer.parseInt(paramKeys[2])) {
-                                                organization = new Organization(orgName, url, position);
-                                                ((OrganizationSection) section).addOrganization(organization);
-                                                orgNumber = Integer.parseInt(paramKeys[2]);
-                                                posNumber = Integer.parseInt(paramKeys[3]);
-                                            }
-                                            if (posNumber != Integer.parseInt(paramKeys[3])) {
-                                                List<Organization> organizations = ((OrganizationSection) section).getOrganizations();
-                                                for (Organization org : organizations) {
-                                                    if (orgName.equals(org.getNameLink().getTitle())) {
-                                                        organization = org;
-                                                    }
+                            if (mode.equals("create") || mode.equals("edit")) {
+                                paramValues = (String[]) paramEntry.getValue();
+                                switch (paramKeys[3]) {
+                                    case "name":
+                                        orgName = paramValues[0];
+                                        break;
+                                    case "url":
+                                        url = paramValues[0];
+                                        break;
+                                    case "startDate":
+                                        yearMonth = paramValues[0].split("-");
+                                        if (!yearMonth[0].equals("")) {
+                                            startDate = DateUtil.of(Integer.parseInt(yearMonth[0]), Month.of(Integer.parseInt(yearMonth[1])));
+                                        }
+                                        break;
+                                    case "endDate":
+                                        yearMonth = paramValues[0].split("-");
+                                        if (!yearMonth[0].equals("")) {
+                                            endDate = DateUtil.of(Integer.parseInt(yearMonth[0]), Month.of(Integer.parseInt(yearMonth[1])));
+                                        }
+                                        break;
+                                    case "positionTitle":
+                                        positionTitle = paramValues[0];
+                                        break;
+                                    case "duties":
+                                        duties = paramValues[0];
+                                        //if organization more than one position in org
+                                        if (orgName.length() == 0) {
+                                            continue;
+                                        }
+                                        position = new Organization.Position(startDate, endDate, positionTitle, duties);
+                                        if (orgNumber != Integer.parseInt(paramKeys[2])) {
+                                            organization = new Organization(orgName, url, position);
+                                            ((OrganizationSection) section).addOrganization(organization);
+                                            orgNumber = Integer.parseInt(paramKeys[2]);
+                                            posNumber = Integer.parseInt(paramKeys[4]);
+                                        }
+                                        if (posNumber != Integer.parseInt(paramKeys[4])) {
+                                            List<Organization> organizations = ((OrganizationSection) section).getOrganizations();
+                                            for (Organization org : organizations) {
+                                                if (orgName.equals(org.getNameLink().getTitle())) {
+                                                    organization = org;
                                                 }
-                                                organization.addPosition(position);
-                                                posNumber = Integer.parseInt(paramKeys[3]);
                                             }
-                                    }
-                                    break;
-                                case "edit":
-                                    paramValues = (String[]) paramEntry.getValue();
-                                    organization = new Organization(paramKeys[1]);
-                                    organization.addUrl(paramValues[1]);
-                                    for (int i = 2; i < paramValues.length; i += 4) {
-                                        position = new Organization.Position();
-                                        position.setStartDate(LocalDate.parse(paramValues[i]));
-                                        position.setEndDate(LocalDate.parse(paramValues[i + 1]));
-                                        position.setPositionTitle(paramValues[i + 2]);
-                                        position.setDuties(paramValues[i + 3]);
-                                        organization.addPosition(position);
-                                    }
-                                    ((OrganizationSection) section).addOrganization(organization);
+                                            organization.addPosition(position);
+                                            posNumber = Integer.parseInt(paramKeys[4]);
+                                        }
+                                }
                             }
                         }
                     }
@@ -162,7 +160,6 @@ public class ResumeServlet extends HttpServlet {
         }
         response.sendRedirect("resume");
     }
-
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -184,14 +181,13 @@ public class ResumeServlet extends HttpServlet {
                 resume = sqlStorage.get(uuid);
                 break;
             case "create":
-                request.getRequestDispatcher(("/WEB-INF/jsp/create.jsp"))
-                        .forward(request, response);
-                return;
+                resume = new Resume();
+                break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
         }
         request.setAttribute("resume", resume);
-        request.getRequestDispatcher(("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp"))
+        request.getRequestDispatcher(("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/createEdit.jsp"))
                 .forward(request, response);
     }
 }

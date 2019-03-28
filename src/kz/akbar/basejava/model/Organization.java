@@ -37,7 +37,6 @@ public class Organization implements Serializable {
     }
 
     public Organization() {
-
     }
 
     public void addUrl(String url) {
@@ -122,7 +121,7 @@ public class Organization implements Serializable {
             this.endDate = endDate;
         }
 
-        public void setPositionTitle(String position) {
+        public void setTitle(String position) {
             this.title = position;
         }
 
