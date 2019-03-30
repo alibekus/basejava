@@ -56,7 +56,7 @@ public class DeadLockMain {
         thread2.start();
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         DeadLockMain deadLockMain = new DeadLockMain();
         deadLockMain.deadLockExec();
     }

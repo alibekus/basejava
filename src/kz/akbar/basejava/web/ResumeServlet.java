@@ -26,7 +26,7 @@ public class ResumeServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         request.setCharacterEncoding("UTF-8");
         /*Map<String, String[]> parametersMap = request.getParameterMap();
         Set<Map.Entry<String, String[]>> parameterEntries = parametersMap.entrySet();
@@ -86,8 +86,8 @@ public class ResumeServlet extends HttpServlet {
                     section = new OrganizationSection();
                     Organization organization = null;
                     Organization.Position position;
-                    int orgNumber = 0;
-                    int posNumber = 0;
+                    int orgNumber = -1;
+                    int posNumber = -1;
                     for (Map.Entry paramEntry : paramEntries) {
                         String paramKey = (String) paramEntry.getKey();
                         if (!paramKey.contains("_")) {
@@ -129,10 +129,9 @@ public class ResumeServlet extends HttpServlet {
                                         }
                                         position = new Organization.Position(startDate, endDate, positionTitle, duties);
                                         if (orgNumber != Integer.parseInt(paramKeys[2])) {
-                                            organization = new Organization(orgName, url, position);
+                                            organization = new Organization(orgName, url);
                                             ((OrganizationSection) section).addOrganization(organization);
                                             orgNumber = Integer.parseInt(paramKeys[2]);
-                                            posNumber = Integer.parseInt(paramKeys[4]);
                                         }
                                         if (posNumber != Integer.parseInt(paramKeys[4])) {
                                             List<Organization> organizations = ((OrganizationSection) section).getOrganizations();

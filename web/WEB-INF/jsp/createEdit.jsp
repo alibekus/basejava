@@ -67,14 +67,6 @@
             return posNumber;
         }
 
-        function decreasePositionNum(sectionTypeName, orgNumber) {
-            var sectionOrgNumber = typeName.concat(orgNumber);
-            if (secOrgPositions.has(sectionOrgNumber)) {
-                var posNum = secOrgPositions.get(sectionOrgNumber);
-                secOrgPositions.put(sectionOrgNumber, --posNum);
-            }
-        }
-
         function addOrgSection(typename) {
             typeName = typename;
             var orgSection = document.getElementById(typename + "_orgItems");
@@ -119,7 +111,7 @@
             newPosItem += "<dd><input type=\"text\" name=\"" + typeName + "_org_" + orgNumber + "_positionTitle_"
                 + posNumber + "\" size=\"50\" onchange=\"isEmptyText(this.value, 'Должность')\" value=\"\"></dd>";
             newPosItem += "<dt>Обязанности: </dt>";
-            newPosItem += "<dd><textarea type=\"text\" name=\"" + typeName + "_org_" + orgNumber + "_duties_"
+            newPosItem += "<dd><textarea name=\"" + typeName + "_org_" + orgNumber + "_duties_"
                 + posNumber + "\" cols=\"50\" rows=\"5\" onchange=\"isEmptyText(this.value, 'Обязанности')\"></textarea></dd></dl>";
             newPosItem += "<p><input type=\"button\" id= \"" + typeName + "_org_" + orgNumber + "_pos_"
                 + posNumber + "_removeButton\" value=\"Удалить позицию\" onclick=\"removePosition(this)\"></p>";
@@ -152,7 +144,7 @@
         }
 
         function isEmptyText(str, field) {
-            if (str == " " || str == "") {
+            if (str === " " || str === "") {
                 alert("Введите сведения в поле '" + field + "'");
                 return false
             }
@@ -161,17 +153,17 @@
 
         function isValidEmailAddress(str) {
 //  проверяет  неосталось ли поле пустым
-            if (str == " ") {
+            if (str === " ") {
                 alert("Введите свой электронный адрес.");
                 return false
             }
 // проверяет наличи  '@' с 3 знака
-            else if (str.indexOf("@", 2) == -1) {
+            else if (str.indexOf("@", 2) === -1) {
                 alert("Вы ввели  " + str + ". Вы уверенны, что это ваш электронный адрес.");
                 return false
             }
             // проверяет наличие 'точки' с 4 знака
-            else if (str.indexOf(".", 3) == -1) {
+            else if (str.indexOf(".", 3) === -1) {
                 alert("Вы ввели " + str + ". Вы уверенны, что это ваш электронный адрес.");
                 return false
             }
@@ -179,15 +171,15 @@
         }
 
         function isValidURL(str) {
-            if (str == " " || str == "") {
+            if (str === " " || str === "") {
                 if (!confirm("Отсутствует адрес сайта. Продолжить без адреса?")) {
                     // проверяет наличие 'http://' с 0 знака
-                    if (str.indexOf("http://", 0) == -1) {
+                    if (str.indexOf("http://", 0) === -1) {
                         alert("Не указана протокол, например, http://");
                         return false;
                     }
                     // проверяет наличие 'точки' с 8 знака
-                    if (str.indexOf(".", 7) == -1) {
+                    if (str.indexOf(".", 7) === -1) {
                         alert("Не указана доменная зона");
                         return false;
                     }
@@ -195,22 +187,6 @@
                     return true;
                 }
             }
-        }
-
-        function randomText(length) {
-            var text = "";
-            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            for (var i = 0; i < length; i++)
-                text += possible.charAt(Math.floor(Math.random() * possible.length));
-            return text;
-        }
-
-        function randomDate(start, end) {
-            var date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-            var month = date.getMonth() + 1;
-            var year = date.getFullYear();
-            var yearMonth = year + "-" + month;
-            return yearMonth;
         }
 
         function cancelModeBack() {
@@ -236,7 +212,7 @@
         </c:choose>
         <dl>
             <dt><h3>Имя:</h3></dt>
-            <dd><input type="text" id="fullName" name="fullName" size="50" value="${resume.fullName}">
+            <dd><label for="fullName"></label><input type="text" id="fullName" name="fullName" size="50" value="${resume.fullName}">
             </dd>
         </dl>
         <h3>Контакты:</h3>
@@ -307,8 +283,7 @@
                                             </dd>
                                             <dt>Обязанности:</dt>
                                             <dd>
-                                                <textarea type="text"
-                                                          id="${sectionType.name()}_org_${orgCount.index}_duties_${positionCount.index}"
+                                                <textarea id="${sectionType.name()}_org_${orgCount.index}_duties_${positionCount.index}"
                                                           name="${sectionType.name()}_org_${orgCount.index}_duties_${positionCount.index}"
                                                           rows="5" cols="60">${position.getDescription()}
                                                 </textarea>
@@ -338,11 +313,11 @@
                         <dt><h4>${sectionType.title}</h4></dt>
                         <dd>
                             <c:if test="${sectionType.name().equals(\"OBJECTIVE\") || sectionType.name().equals(\"PERSONAL\")}">
-                                <textarea type="text" name="${sectionType.name()}" cols="50"
+                                <textarea name="${sectionType.name()}" cols="50"
                                           rows="5">${resume.getSection(sectionType)}</textarea>
                             </c:if>
                             <c:if test="${sectionType.name().equals(\"ACHIEVEMENTS\") || sectionType.name().equals(\"QUALIFICATIONS\")}">
-                                <textarea type="text" name="${sectionType.name()}" cols="80"
+                                <textarea name="${sectionType.name()}" cols="80"
                                           rows="10">${resume.getSection(sectionType)}</textarea>
                             </c:if>
                         </dd>

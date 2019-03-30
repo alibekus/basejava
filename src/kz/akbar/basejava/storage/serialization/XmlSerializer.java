@@ -7,7 +7,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class XmlSerializer implements Serialization {
-    private XmlParser xmlParser;
+    private final XmlParser xmlParser;
 
     public XmlSerializer() {
         xmlParser = new XmlParser(

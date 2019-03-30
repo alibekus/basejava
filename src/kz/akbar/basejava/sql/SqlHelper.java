@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class SqlHelper {
 
-    private ConnectionFactory connectionFactory;
+    private final ConnectionFactory connectionFactory;
 
     public SqlHelper(ConnectionFactory factory) {
         connectionFactory = factory;

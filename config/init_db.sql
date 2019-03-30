@@ -1,4 +1,4 @@
-create table if not exists resumes
+create table resumes
 (
   uuid char(36) not null
     constraint resumes_pk
@@ -13,7 +13,7 @@ alter table resumes owner to postgres;
 create unique index resumes_uuid_uindex
   on resumes (uuid);
 
-create table if not exists contacts
+create table contacts
 (
   id serial not null
     constraint contacts_pk
@@ -33,7 +33,7 @@ alter table contacts owner to postgres;
 create unique index resume_uuid_contact_type_index
   on contacts (resume_uuid, contact_type);
 
-create table if not exists sections
+create table sections
 (
   id serial not null
     constraint opaq_sections_pk
@@ -52,4 +52,6 @@ alter table sections owner to postgres;
 
 create unique index sections_type_uuid_index
   on sections (resume_uuid, section_type);
+
+
 

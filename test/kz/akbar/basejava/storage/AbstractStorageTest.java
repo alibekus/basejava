@@ -28,7 +28,7 @@ public class AbstractStorageTest {
 
     final Storage storage;
 
-    protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
+    static final File STORAGE_DIR = Config.getInstance().getStorageDir();
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;

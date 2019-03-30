@@ -11,43 +11,41 @@ import java.util.List;
 
 class ResumeTestData {
 
-    private static ResumeTestData instance;
-
-    private final String phoneNumber = "+7(921) 855-0482";
-    private final String skype = "grigory.kislin";
-    private final String email = "gkislin@yandex.ru";
-    private final String linkedIn = "https://www.linkedin.com/in/gkislin";
-    private final String gitHub = "https://gitHub.com/gkislin";
-    private final String stackOverflow = "https://stackoverflow.com/users/548473";
-    private final String homePage = "http://gkislin.ru/";
-    private List<String> contactItems = new ArrayList<>();
+    private final List<String> contactItems = new ArrayList<>();
     private String personalInfo;
     private String objective;
-    private List<String> achievements = new ArrayList<>();
-    private List<String> qualifications = new ArrayList<>();
-    private List<String> companyNames = new ArrayList<>();
-    private List<String> jobPositions = new ArrayList<>();
-    private List<String> jobDuties = new ArrayList<>();
-    private List<LocalDate> startJobDates = new ArrayList<>();
-    private List<LocalDate> endJobDates = new ArrayList<>();
-    private List<String> eduNames = new ArrayList<>();
-    private List<String> eduPositions = new ArrayList<>();
-    private List<String> eduDuties = new ArrayList<>();
-    private List<LocalDate> startEduDates = new ArrayList<>();
-    private List<LocalDate> endEduDates = new ArrayList<>();
+    private final List<String> achievements = new ArrayList<>();
+    private final List<String> qualifications = new ArrayList<>();
+    private final List<String> companyNames = new ArrayList<>();
+    private final List<String> jobPositions = new ArrayList<>();
+    private final List<String> jobDuties = new ArrayList<>();
+    private final List<LocalDate> startJobDates = new ArrayList<>();
+    private final List<LocalDate> endJobDates = new ArrayList<>();
+    private final List<String> eduNames = new ArrayList<>();
+    private final List<String> eduPositions = new ArrayList<>();
+    private final List<String> eduDuties = new ArrayList<>();
+    private final List<LocalDate> startEduDates = new ArrayList<>();
+    private final List<LocalDate> endEduDates = new ArrayList<>();
 
     static Resume getResumeInstance(String uuid, String fullName) {
-        instance = new ResumeTestData();
+        ResumeTestData instance = new ResumeTestData();
         return instance.fillResume(uuid, fullName);
     }
 
     private void fillContacts() {
+        String phoneNumber = "+7(921) 855-0482";
         contactItems.add(phoneNumber);
+        String email = "gkislin@yandex.ru";
         contactItems.add(email);
+        String homePage = "http://gkislin.ru/";
         contactItems.add(homePage);
+        String linkedIn = "https://www.linkedin.com/in/gkislin";
         contactItems.add(linkedIn);
+        String gitHub = "https://gitHub.com/gkislin";
         contactItems.add(gitHub);
+        String stackOverflow = "https://stackoverflow.com/users/548473";
         contactItems.add(stackOverflow);
+        String skype = "grigory.kislin";
         contactItems.add(skype);
     }
 
@@ -318,7 +316,7 @@ class ResumeTestData {
 
     public static void main(String[] args) {
         ResumeTestData dataTest = new ResumeTestData();
-        Resume resume = dataTest.getResumeInstance("uuid1", "Григорий Кислин");
+        Resume resume = getResumeInstance("uuid1", "Григорий Кислин");
         //------------Resume's info printing--------------
         System.out.println("==============================Print resume==============================");
         System.out.println(resume.toString());
